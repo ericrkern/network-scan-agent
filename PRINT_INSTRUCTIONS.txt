@@ -1,0 +1,10 @@
+Print the poem using the graphical tool instead.
+
+1. Run this command:
+   system-config-printer
+
+2. Select the HP printer
+3. Click "Print Test Page" first to test
+4. Then print your poem.pdf
+
+Or simply double-click the poem.pdf file in your file manager and print from there.
