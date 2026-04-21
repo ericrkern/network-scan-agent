@@ -9,7 +9,7 @@ import re
 import json
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 import concurrent.futures
 
@@ -21,15 +21,105 @@ COMMON_PORTS = [22, 80, 443, 445, 631, 8080, 5900, 3000, 5000]
 SCAN_TIMEOUT = 2
 
 
-def load_seen_devices():
-    """Load cache of previously seen devices"""
+def human_duration_since(first_seen_str: str) -> str:
+    """Convert first_seen timestamp to human readable duration (e.g. '3 days, 14 hrs')"""
+    try:
+        first_seen = datetime.strptime(first_seen_str, "%Y-%m-%d %H:%M:%S")
+        now = datetime.now()
+        delta = now - first_seen
+
+        days = delta.days
+        hours = delta.seconds // 3600
+        minutes = (delta.seconds % 3600) // 60
+
+        if days > 0:
+            return f"{days}d {hours}h"
+        elif hours > 0:
+            return f"{hours}h {minutes}m"
+        else:
+            return f"{minutes}m"
+    except:
+        return "—"
+
+
+def record_event(device_record, event_type: str, reason: str = "scan"):
+    """Record an online/offline event for a device (keep last 15 events)"""
+    if "events" not in device_record:
+        device_record["events"] = []
+    
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    device_record["events"].append({
+        "timestamp": timestamp,
+        "event": event_type,  # "online" or "offline"
+        "reason": reason
+    })
+    
+    # Keep only the most recent 15 events
+    if len(device_record["events"]) > 15:
+        device_record["events"] = device_record["events"][-15:]
+    
+    device_record["last_status"] = event_type
+    device_record["last_status_time"] = timestamp
+    return device_record
+
+
+def format_first_seen(first_seen_str: str) -> str:
+    """Format first seen timestamp for display"""
+    try:
+        dt = datetime.strptime(first_seen_str, "%Y-%m-%d %H:%M:%S")
+        return dt.strftime("%Y-%m-%d")
+    except:
+        return first_seen_str
+
+
+def load_device_records():
+    """Load persistent device records with first_seen timestamps and event history"""
     try:
         if os.path.exists(SEEN_DEVICES_CACHE):
             with open(SEEN_DEVICES_CACHE, 'r') as f:
-                return set(json.load(f))
+                data = json.load(f)
+                if isinstance(data, list):
+                    # Migrate old simple list format to new dict format
+                    print("   Migrating legacy cache to new format...")
+                    records = {}
+                    for ip in data:
+                        records[ip] = {
+                            "first_seen": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            "last_seen": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            "hostname": "—",
+                            "mac": "—",
+                            "type": "Unknown",
+                            "events": [],
+                            "last_status": "online",
+                            "last_status_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        }
+                    return records
+                # Ensure all records have events and status fields (migration)
+                for ip, record in data.items():
+                    if "events" not in record:
+                        record["events"] = []
+                    if "last_status" not in record:
+                        record["last_status"] = "online"
+                    if "last_status_time" not in record:
+                        record["last_status_time"] = record.get("last_seen", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+                return data
     except Exception as e:
-        print(f"Warning: Could not load seen devices cache: {e}")
-    return set()
+        print(f"Warning: Could not load device records: {e}")
+    return {}
+
+
+def load_seen_ips(records):
+    """Extract just the IP set for backward compatibility"""
+    return set(records.keys())
+
+
+def save_device_records(records):
+    """Save rich device records with timestamps"""
+    try:
+        with open(SEEN_DEVICES_CACHE, 'w') as f:
+            json.dump(records, f, indent=2)
+    except Exception as e:
+        print(f"Warning: Could not save device records: {e}")
 
 
 def save_seen_devices(seen_devices):
@@ -125,12 +215,15 @@ def scan_network(network_cidr):
     return live_hosts
 
 
-def identify_device(ip):
-    """Gather all information about a device"""
+def identify_device(ip, existing_records=None):
+    """Gather all information about a device, preserving first_seen if known"""
+    if existing_records is None:
+        existing_records = {}
+
     hostname = get_hostname(ip)
     mac = get_mac(ip)
     ports = scan_ports(ip, COMMON_PORTS)
-    
+
     # Determine device type based on ports/hostname
     device_type = "Unknown"
     if ports:
@@ -144,7 +237,7 @@ def identify_device(ip):
             device_type = "Web Device"
         elif 5900 in ports:
             device_type = "VNC/Remote Desktop"
-    
+
     if hostname:
         if "router" in hostname.lower() or "gateway" in hostname.lower():
             device_type = "Router/Gateway"
@@ -154,15 +247,42 @@ def identify_device(ip):
             device_type = "Mobile Phone"
         elif "roku" in hostname.lower():
             device_type = "Streaming Device"
-    
+
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Check if we have historical record
+    if ip in existing_records:
+        record = existing_records[ip]
+        first_seen = record.get("first_seen", now_str)
+        # Update last seen and any new info
+        record.update({
+            "last_seen": now_str,
+            "hostname": hostname or record.get("hostname", "—"),
+            "mac": mac or record.get("mac", "—"),
+            "type": device_type if device_type != "Unknown" else record.get("type", "Unknown")
+        })
+        existing_records[ip] = record
+    else:
+        # New device - record first seen time
+        existing_records[ip] = {
+            "first_seen": now_str,
+            "last_seen": now_str,
+            "hostname": hostname or "—",
+            "mac": mac or "—",
+            "type": device_type
+        }
+        first_seen = now_str
+
     return {
         "ip": ip,
         "hostname": hostname or "—",
         "mac": mac or "—",
         "ports": ports,
         "type": device_type,
-        "discovered": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    }
+        "discovered": now_str,
+        "first_seen": first_seen,
+        "duration": human_duration_since(first_seen)
+    }, existing_records
 
 
 def extract_existing_ips(devices_file):
@@ -184,7 +304,7 @@ def extract_existing_ips(devices_file):
 
 
 def format_device_entry(device):
-    """Format a device as a markdown entry"""
+    """Format a device as a markdown entry with network uptime"""
     ports_str = ', '.join(map(str, device['ports'])) if device['ports'] else 'None detected'
     
     entry = f"""### New Device Discovered: {device['ip']}
@@ -324,12 +444,22 @@ def main():
     print(f"🔍 Network Scan Agent Started at {datetime.now()}")
     print("=" * 50)
     
-    # Get existing IPs from both cache and file
-    print("📋 Loading existing device list...")
-    cached_ips = load_seen_devices()
+    # Load rich device records (with first_seen timestamps)
+    print("📋 Loading existing device records...")
+    device_records = load_device_records()
+    existing_ips = load_seen_ips(device_records)
     file_ips = extract_existing_ips(DEVICES_FILE)
-    existing_ips = cached_ips.union(file_ips)
-    print(f"   Total known devices: {len(existing_ips)}")
+    # Merge file IPs into records if missing
+    for ip in file_ips:
+        if ip not in device_records:
+            device_records[ip] = {
+                "first_seen": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "last_seen": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "hostname": "—",
+                "mac": "—",
+                "type": "Unknown"
+            }
+    print(f"   Total known devices: {len(device_records)}")
     
     # Scan all networks
     all_live_hosts = []
@@ -346,30 +476,40 @@ def main():
     # Filter out known devices
     new_ips = [ip for ip in all_live_hosts if ip not in existing_ips]
     
-    # Update cache with all seen devices
-    all_seen = existing_ips.union(set(all_live_hosts))
-    save_seen_devices(all_seen)
+    # Update records with all seen devices (preserves first_seen)
+    for ip in all_live_hosts:
+        if ip not in device_records:
+            device_records[ip] = {
+                "first_seen": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "last_seen": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "hostname": "—",
+                "mac": "—",
+                "type": "Unknown"
+            }
+        else:
+            device_records[ip]["last_seen"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    save_device_records(device_records)
     
     if not new_ips:
         print("\n✅ No new devices found. All clear!")
-        print(f"   Known devices: {len(existing_ips)}")
+        print(f"   Known devices: {len(device_records)}")
         print(f"   Currently online: {len(all_live_hosts)}")
         # Still update scan history even if no new devices
-        update_scan_history(0, len(all_seen), len(all_live_hosts))
+        update_scan_history(0, len(device_records), len(all_live_hosts))
         return
     
     print(f"\n🆕 {len(new_ips)} NEW device(s) detected!")
     for ip in new_ips:
         print(f"   - {ip} (NEW!)")
     
-    # Gather details on new devices
+    # Gather details on new devices (pass records to preserve first_seen)
     print("\n🔎 Gathering device details...")
     new_devices = []
     for ip in new_ips:
         print(f"   Investigating {ip}...", end=' ')
-        device = identify_device(ip)
-        new_devices.append(device)
-        print(f"[{device['type']}]")
+        device_info, device_records = identify_device(ip, device_records)
+        new_devices.append(device_info)
+        print(f"[{device_info['type']}]")
     
     # Update the file
     print("\n📝 Updating devices.md with new devices...")
@@ -377,11 +517,11 @@ def main():
     
     print("\n✨ Scan complete!")
     print(f"   New devices added: {len(new_devices)}")
-    print(f"   Total known devices: {len(all_seen)}")
+    print(f"   Total known devices: {len(device_records)}")
     print(f"   Next scan: in 1 hour")
     
     # Update scan history
-    update_scan_history(len(new_devices), len(all_seen), len(all_live_hosts))
+    update_scan_history(len(new_devices), len(device_records), len(all_live_hosts))
 
 
 if __name__ == "__main__":

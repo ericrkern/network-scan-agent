@@ -1,0 +1,19 @@
+[Unit]
+Description=Network Pulse Dashboard - Live Device Monitor
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/jetson/Documents/Network/dashboard
+ExecStart=/usr/bin/python3 /home/jetson/Documents/Network/dashboard/app.py
+Restart=always
+RestartSec=5
+User=irene
+Environment=PYTHONUNBUFFERED=1
+
+# Security
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=default.target

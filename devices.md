@@ -1,6 +1,7 @@
 # Network Device Inventory
-**Generated:** 2026-04-20  
-**Source:** Multi-subnet scan from Jetson host (192.168.0.197)
+**Generated:** 2026-04-21  
+**Source:** Multi-subnet scan from Jetson host (192.168.0.197)  
+**Enhanced with:** First-seen timestamps and network uptime tracking (`On Network` column)
 
 ---
 
@@ -52,6 +53,41 @@
 | 100.95.15.82 | iphone172.tail2a3b45.ts.net | Online | None | iOS protocol | **iPhone** |
 | 100.100.100.100 | magicdns.localhost-tailscale-daemon | Online | 53, 80, 8080 | DNS, HTTP | **Tailscale MagicDNS Service** |
 
+---
+
+## Device Connectivity Log
+
+This table tracks when devices were first seen (came online), their last known activity, and current status. Updated by the hourly network scan agent.
+
+| IP Address | Hostname | First Seen | Last Seen | On Network | Current Status |
+|------------|----------|------------|-----------|------------|----------------|
+| 192.168.0.1 | home.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Router) |
+| 192.168.0.197 | yahboom | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (This Host) |
+| 192.168.0.143 | — | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Printer) |
+| 192.168.0.233 | RokuUltraB.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Streaming) |
+| 100.71.191.72 | emergingtechs-mac-mini.tail2a3b45.ts.net | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Mac Mini) |
+| 100.78.64.7 | emergingtechs-macbook-pro.tail2a3b45.ts.net | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (MacBook Pro) |
+| 100.92.6.101 | thinkstationpgx-9c48.tail2a3b45.ts.net | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (OpenClaw Server) |
+| 100.76.245.26 | — | 2026-04-20 | 2026-04-20 18:35 | ~14h | **Offline** |
+| 100.93.92.44 | — | 2026-04-20 | 2026-04-20 18:35 | ~14h | **Offline** |
+| 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
+
+*Last updated: 2026-04-21 10:49:02*
+
+---
+
+## Recent Online/Offline Changes (Since Last Scan)
+
+This table shows only devices that changed state (came online or went offline) between scans. Hostnames are included where known.
+
+| Status       | Devices                          | Scan Time           | Notes |
+|--------------|----------------------------------|---------------------|-------|
+| **Online** | —                                 | None                         | 2026-04-21 07:01:43 | No devices came online in the latest scan. |
+| **Offline**| —                                 | None                         | 2026-04-21 07:01:43 | No devices went offline in the latest scan. |
+| **Online** | esp32s3-9F9FA0.MG8702             | ESP32-S3 IoT (192.168.0.246) | 2026-04-20 18:35:03 | New IoT device joined the LAN. |
+| **Online** | device.MG8702                     | Unknown Client (192.168.0.158) | 2026-04-20 16:33:02 | New client device discovered. |
+
+*This table is focused exclusively on state changes. The full scan history is in the section above.*
 ---
 
 ## Access Details by Device Type
@@ -1108,6 +1144,23 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-21 10:49:02 | 0 | 10 | 37 |
+| 2026-04-21 10:08:07 | 0 | 12 | 37 |
+| 2026-04-21 10:05:17 | 0 | 12 | 37 |
+| 2026-04-21 09:48:02 | 0 | 12 | 37 |
+| 2026-04-21 08:47:22 | 0 | 12 | 37 |
+| 2026-04-21 07:47:02 | 0 | 11 | 37 |
+| 2026-04-21 07:01:43 | 0 | 11 | 37 |
+| 2026-04-21 06:57:44 | 0 | 12 | 37 |
+| 2026-04-21 06:47:02 | 0 | 11 | 37 |
+| 2026-04-21 06:46:46 | 0 | 11 | 37 |
+| 2026-04-21 05:46:02 | 0 | 11 | 37 |
+| 2026-04-21 04:45:02 | 0 | 11 | 37 |
+| 2026-04-21 03:44:02 | 0 | 11 | 37 |
+| 2026-04-21 02:43:02 | 0 | 11 | 37 |
+| 2026-04-21 01:42:02 | 0 | 11 | 37 |
+| 2026-04-21 00:41:02 | 0 | 11 | 37 |
+| 2026-04-20 23:40:02 | 0 | 11 | 37 |
 | 2026-04-20 22:39:02 | 0 | 12 | 37 |
 | 2026-04-20 21:38:02 | 0 | 11 | 37 |
 | 2026-04-20 20:37:02 | 0 | 12 | 37 |
@@ -1118,4 +1171,29 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 | 2026-04-20 15:36:51 | 0 | 13 | 35 |
 
 
-*Last updated: 2026-04-20 22:39:02*
+*Last updated: 2026-04-21 10:49:02*
+
+---
+
+## Recent Online/Offline Changes (Since Last Scan)
+
+This table shows only devices that changed state (came online or went offline) between scans. Hostnames are included where known.
+
+| Status       | Devices                          | Scan Time           | Notes |
+|--------------|----------------------------------|---------------------|-------|
+| **Online** | —                                 | None                         | 2026-04-21 07:01:43 | No devices came online in the latest scan. |
+| **Offline**| —                                 | None                         | 2026-04-21 07:01:43 | No devices went offline in the latest scan. |
+| **Online** | esp32s3-9F9FA0.MG8702             | ESP32-S3 IoT (192.168.0.246) | 2026-04-20 18:35:03 | New IoT device joined the LAN. |
+| **Online** | device.MG8702                     | Unknown Client (192.168.0.158) | 2026-04-20 16:33:02 | New client device discovered. |
+
+*This table is focused exclusively on state changes. The full scan history is in the section above.*
+
+---
+
+## 🔬 Deep Scan Results - 2026-04-21 10:29:53
+
+**Scanned 36 devices with full Nmap service/OS detection.**
+
+### Key Findings:
+
+*Deep scan completed at 2026-04-21 10:29:53. Full JSON results in `deep_scan_results.json`.*
