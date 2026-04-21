@@ -1,366 +1,381 @@
 {
-  "scan_time": "2026-04-21T10:29:53.494702",
-  "devices_scanned": 36,
+  "scan_time": "2026-04-21T11:52:12.058680",
+  "devices_scanned": 30,
   "results": {
-    "10.0.0.0": {
-      "ip": "10.0.0.0",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:33.647563",
-      "raw_output_length": 0,
-      "status": "success"
-    },
     "10.122.11.69": {
       "ip": "10.122.11.69",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:34.226755",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T10:45:06.681020",
+      "raw_output_length": 125,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "100.100.100.100": {
       "ip": "100.100.100.100",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:34.783586",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "100.70.174.39": {
       "ip": "100.70.174.39",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:35.341133",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "100.71.191.72": {
       "ip": "100.71.191.72",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:35.899687",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "100.76.245.26": {
       "ip": "100.76.245.26",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:36.455299",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T10:56:53.589957",
+      "raw_output_length": 125,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "100.78.64.7": {
       "ip": "100.78.64.7",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:37.013598",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "100.79.216.111": {
       "ip": "100.79.216.111",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:37.589361",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "100.92.6.101": {
       "ip": "100.92.6.101",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:38.147511",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "100.93.92.44": {
       "ip": "100.93.92.44",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:38.700777",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T11:07:56.838404",
+      "raw_output_length": 125,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "100.95.15.82": {
       "ip": "100.95.15.82",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:39.257570",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "149.154.167.99": {
       "ip": "149.154.167.99",
       "hostname": "\u2014",
       "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:39.809700",
-      "raw_output_length": 0,
-      "status": "success"
-    },
-    "172.16.0.0": {
-      "ip": "172.16.0.0",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:40.382160",
-      "raw_output_length": 0,
-      "status": "success"
-    },
-    "172.17.0.0": {
-      "ip": "172.17.0.0",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:40.934765",
-      "raw_output_length": 0,
+      "ports": [
+        80,
+        443
+      ],
+      "tcp_ports": [
+        80,
+        443
+      ],
+      "udp_ports": [],
+      "services": {
+        "80/tcp": "http     nginx 1.18.0",
+        "443/tcp": "ssl/http nginx 1.18.0"
+      },
+      "host_up": true,
+      "scan_time": "2026-04-21T11:11:52.976505",
+      "raw_output_length": 11979,
+      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
       "status": "success"
     },
     "172.17.0.1": {
       "ip": "172.17.0.1",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:41.508359",
-      "raw_output_length": 0,
-      "status": "success"
-    },
-    "192.168.0.0": {
-      "ip": "192.168.0.0",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:42.060191",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "192.168.0.1": {
       "ip": "192.168.0.1",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:42.616729",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "192.168.0.127": {
       "ip": "192.168.0.127",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:43.171961",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "192.168.0.131": {
       "ip": "192.168.0.131",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:43.726460",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T11:25:12.920555",
+      "raw_output_length": 124,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "192.168.0.135": {
       "ip": "192.168.0.135",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:44.281249",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T11:25:17.542446",
+      "raw_output_length": 124,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "192.168.0.142": {
       "ip": "192.168.0.142",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:44.835746",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T11:25:18.032151",
+      "raw_output_length": 124,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "192.168.0.143": {
       "ip": "192.168.0.143",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:45.390552",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T11:25:22.308748",
+      "raw_output_length": 125,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "192.168.0.15": {
       "ip": "192.168.0.15",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:45.943759",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "192.168.0.158": {
       "ip": "192.168.0.158",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:46.498018",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T11:31:37.064238",
+      "raw_output_length": 124,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "192.168.0.182": {
       "ip": "192.168.0.182",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:47.051449",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T11:31:39.440652",
+      "raw_output_length": 124,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "192.168.0.192": {
       "ip": "192.168.0.192",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:47.627659",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T11:31:43.717009",
+      "raw_output_length": 124,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "192.168.0.197": {
       "ip": "192.168.0.197",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:48.187607",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "192.168.0.233": {
       "ip": "192.168.0.233",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:48.759731",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "192.168.0.246": {
       "ip": "192.168.0.246",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:49.313475",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T11:38:00.214681",
+      "raw_output_length": 124,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "192.168.0.49": {
       "ip": "192.168.0.49",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:49.866840",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T11:38:01.260707",
+      "raw_output_length": 124,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "192.168.0.59": {
       "ip": "192.168.0.59",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:50.418953",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T11:38:05.540126",
+      "raw_output_length": 124,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "192.168.0.67": {
       "ip": "192.168.0.67",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:50.971866",
-      "raw_output_length": 0,
-      "status": "success"
-    },
-    "192.168.100.0": {
-      "ip": "192.168.100.0",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:51.526088",
-      "raw_output_length": 0,
-      "status": "success"
+      "host_up": false,
+      "scan_time": "2026-04-21T11:38:07.688494",
+      "raw_output_length": 125,
+      "stderr_tail": "",
+      "status": "no_response"
     },
     "192.168.100.1": {
       "ip": "192.168.100.1",
       "hostname": "\u2014",
       "os": "Unknown",
       "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
       "services": {},
-      "scan_time": "2026-04-21T10:29:52.079484",
-      "raw_output_length": 0,
-      "status": "success"
-    },
-    "192.168.50.0": {
-      "ip": "192.168.50.0",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:52.632711",
-      "raw_output_length": 0,
+      "host_up": true,
+      "scan_time": "2026-04-21T11:48:40.635254",
+      "raw_output_length": 441,
+      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
       "status": "success"
     },
     "192.168.50.1": {
       "ip": "192.168.50.1",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "services": {},
-      "scan_time": "2026-04-21T10:29:53.193852",
-      "raw_output_length": 0,
-      "status": "success"
+      "status": "success",
+      "error": "Scan timed out",
+      "fallback_scan_timeouts": false,
+      "fallback_open_port_lines": [
+        "443/tcp  open  https   syn-ack",
+        "5000/tcp open  upnp    syn-ack",
+        "53/tcp   open  domain  syn-ack",
+        "80/tcp   open  http    syn-ack"
+      ],
+      "fallback_raw": [
+        {
+          "cmd": [
+            "nmap",
+            "-n",
+            "-Pn",
+            "-sT",
+            "--open",
+            "--reason",
+            "-T3",
+            "--top-ports",
+            "200",
+            "--host-timeout",
+            "30s",
+            "192.168.50.1"
+          ],
+          "rc": 0,
+          "stdout_tail": "Starting Nmap 7.80 ( https://nmap.org ) at 2026-04-21 11:50 EDT\nNmap scan report for 192.168.50.1\nHost is up, received user-set (0.0053s latency).\nNot shown: 193 closed ports, 3 filtered ports\nReason: 193 conn-refused, 2 host-unreaches and 1 no-response\nSome closed ports may be reported as filtered due to --defeat-rst-ratelimit\nPORT     STATE SERVICE REASON\n53/tcp   open  domain  syn-ack\n80/tcp   open  http    syn-ack\n443/tcp  open  https   syn-ack\n5000/tcp open  upnp    syn-ack\n\nNmap done: 1 IP address (1 host up) scanned in 1.24 seconds\n",
+          "stderr_tail": ""
+        },
+        {
+          "cmd": [
+            "nmap",
+            "-n",
+            "-Pn",
+            "-sU",
+            "--open",
+            "--reason",
+            "-T3",
+            "--max-retries",
+            "1",
+            "--host-timeout",
+            "30s",
+            "-p",
+            "53,67,68,69,123,137,138,161,1900,5353",
+            "192.168.50.1"
+          ],
+          "rc": 1,
+          "stdout_tail": "",
+          "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!\n"
+        }
+      ],
+      "tcp_ports": [
+        53,
+        80,
+        443,
+        5000
+      ],
+      "udp_ports": [],
+      "ports": [
+        53,
+        80,
+        443,
+        5000
+      ],
+      "services": {
+        "443/tcp": "https",
+        "5000/tcp": "upnp",
+        "53/tcp": "domain",
+        "80/tcp": "http"
+      },
+      "host_up": true
     }
-  }
+  },
+  "merged_sources": [
+    "deep_scan_subnets_50_100_results.json"
+  ]
 }

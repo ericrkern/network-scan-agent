@@ -72,7 +72,7 @@ This table tracks when devices were first seen (came online), their last known a
 | 100.93.92.44 | — | 2026-04-20 | 2026-04-20 18:35 | ~14h | **Offline** |
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
-*Last updated: 2026-04-21 10:49:02*
+*Last updated: 2026-04-21 11:50:02*
 
 ---
 
@@ -1144,6 +1144,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-21 11:50:02 | 0 | 11 | 37 |
+| 2026-04-21 11:42:48 | 0 | 11 | 37 |
+| 2026-04-21 11:36:32 | 0 | 11 | 37 |
 | 2026-04-21 10:49:02 | 0 | 10 | 37 |
 | 2026-04-21 10:08:07 | 0 | 12 | 37 |
 | 2026-04-21 10:05:17 | 0 | 12 | 37 |
@@ -1171,7 +1174,7 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 | 2026-04-20 15:36:51 | 0 | 13 | 35 |
 
 
-*Last updated: 2026-04-21 10:49:02*
+*Last updated: 2026-04-21 11:50:02*
 
 ---
 
@@ -1190,10 +1193,35 @@ This table shows only devices that changed state (came online or went offline) b
 
 ---
 
-## 🔬 Deep Scan Results - 2026-04-21 10:29:53
 
-**Scanned 36 devices with full Nmap service/OS detection.**
 
+---
+
+
+
+---
+
+
+
+---
+
+## 🔬 Deep Scan Results - 2026-04-21 11:52:12
+
+**Scanned 30 devices with full Nmap service/OS detection.**
+
+### Key Findings:
+- **149.154.167.99**: TCP [80, 443] | UDP [] | OS: Unknown
+- **192.168.50.1**: TCP [53, 80, 443, 5000] | UDP [] | OS: Unknown
+
+*Deep scan completed at 2026-04-21 11:52:12. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- **149.154.167.99**: TCP [80, 443] | UDP [] | OS: Unknown
+
+*Deep scan completed at 2026-04-21 11:41:56. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-21 11:25:46. Full JSON results in `deep_scan_results.json`.*
 ### Key Findings:
 
 *Deep scan completed at 2026-04-21 10:29:53. Full JSON results in `deep_scan_results.json`.*

@@ -16,6 +16,7 @@ import concurrent.futures
 # Configuration
 DEVICES_FILE = "/home/jetson/Documents/Network/devices.md"
 SEEN_DEVICES_CACHE = "/home/jetson/Documents/Network/.seen_devices.json"
+SCAN_SNAPSHOTS_FILE = "/home/jetson/Documents/Network/.scan_snapshots.json"
 NETWORKS = ["192.168.0.0/24", "192.168.50.0/24", "192.168.100.0/24"]
 COMMON_PORTS = [22, 80, 443, 445, 631, 8080, 5900, 3000, 5000]
 SCAN_TIMEOUT = 2
@@ -129,6 +130,44 @@ def save_seen_devices(seen_devices):
             json.dump(list(seen_devices), f)
     except Exception as e:
         print(f"Warning: Could not save seen devices cache: {e}")
+
+
+def save_scan_snapshot(scan_time: str, online_ips, device_records):
+    """Persist an exact per-scan online snapshot for later diffing in dashboard."""
+    try:
+        snapshots = []
+        if os.path.exists(SCAN_SNAPSHOTS_FILE):
+            with open(SCAN_SNAPSHOTS_FILE, "r") as f:
+                try:
+                    snapshots = json.load(f)
+                except Exception:
+                    snapshots = []
+
+        online_devices = []
+        for ip in sorted(set(online_ips)):
+            rec = device_records.get(ip, {})
+            hostname = rec.get("hostname", "—")
+            if not hostname or hostname == "—":
+                hostname = ip
+            online_devices.append({
+                "ip": ip,
+                "hostname": hostname
+            })
+
+        snapshots.append({
+            "scan_time": scan_time,
+            "online_count": len(set(online_ips)),
+            "online_devices": online_devices
+        })
+
+        # Keep most recent 500 snapshots.
+        if len(snapshots) > 500:
+            snapshots = snapshots[-500:]
+
+        with open(SCAN_SNAPSHOTS_FILE, "w") as f:
+            json.dump(snapshots, f, indent=2)
+    except Exception as e:
+        print(f"Warning: Could not save scan snapshot: {e}")
 
 
 def ping_host(ip):
@@ -473,22 +512,46 @@ def main():
     all_live_hosts = list(set(all_live_hosts))
     print(f"\n📊 Total unique live hosts: {len(all_live_hosts)}")
     
+    scan_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
     # Filter out known devices
     new_ips = [ip for ip in all_live_hosts if ip not in existing_ips]
     
     # Update records with all seen devices (preserves first_seen)
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     for ip in all_live_hosts:
         if ip not in device_records:
             device_records[ip] = {
-                "first_seen": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "last_seen": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "first_seen": now_str,
+                "last_seen": now_str,
                 "hostname": "—",
                 "mac": "—",
-                "type": "Unknown"
+                "type": "Unknown",
+                "events": [],
+                "last_status": "online",
+                "last_status_time": now_str,
             }
         else:
-            device_records[ip]["last_seen"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            previous_status = device_records[ip].get("last_status")
+            device_records[ip]["last_seen"] = now_str
+            if previous_status != "online":
+                record_event(device_records[ip], "online", "scan")
+            else:
+                device_records[ip]["last_status"] = "online"
+                device_records[ip]["last_status_time"] = now_str
+
+    # Mark known but currently unseen devices as offline.
+    live_set = set(all_live_hosts)
+    for ip, rec in device_records.items():
+        if ip in live_set:
+            continue
+        if rec.get("last_status") != "offline":
+            record_event(rec, "offline", "scan")
+        else:
+            rec["last_status_time"] = now_str
+
     save_device_records(device_records)
+    save_scan_snapshot(scan_timestamp, all_live_hosts, device_records)
     
     if not new_ips:
         print("\n✅ No new devices found. All clear!")

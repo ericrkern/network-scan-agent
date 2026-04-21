@@ -16,7 +16,13 @@ app = Flask(__name__, static_folder='static', template_folder='templates')
 
 DEVICES_FILE = "/home/jetson/Documents/Network/devices.md"
 CACHE_FILE = "/home/jetson/Documents/Network/.seen_devices.json"
+SCAN_SNAPSHOTS_FILE = "/home/jetson/Documents/Network/.scan_snapshots.json"
 SCAN_SCRIPT = "/home/jetson/Documents/Network/network_scan_agent.py"
+
+
+def is_active_status(status: str) -> bool:
+    """Treat both Online and Stealth as active/online for counters."""
+    return status in ("Online", "Stealth")
 
 
 def parse_markdown_devices():
@@ -166,6 +172,96 @@ def load_scan_history():
     return filtered
 
 
+def load_recent_change_hostnames_from_md():
+    """
+    Parse 'Recent Online/Offline Changes' table in devices.md.
+    Returns: {scan_time: {"online":[...], "offline":[...]}}
+    """
+    changes_by_scan = {}
+    try:
+        if not os.path.exists(DEVICES_FILE):
+            return changes_by_scan
+        with open(DEVICES_FILE, "r") as f:
+            lines = f.readlines()
+
+        in_section = False
+        for raw in lines:
+            line = raw.strip()
+            if line.startswith("## Recent Online/Offline Changes"):
+                in_section = True
+                continue
+            if in_section and line.startswith("## "):
+                break
+            if not in_section or not line.startswith("|"):
+                continue
+            if "Status" in line or "---" in line:
+                continue
+
+            parts = [p.strip() for p in line.split("|")[1:-1]]
+            # Expected rough shape: status | devices | scan time/extra | notes...
+            if len(parts) < 3:
+                continue
+            status_col = parts[0].replace("*", "").strip().lower()
+            devices_col = parts[1].strip()
+
+            # Find timestamp in any column.
+            scan_time = None
+            for p in parts:
+                try:
+                    datetime.strptime(p[:19], "%Y-%m-%d %H:%M:%S")
+                    scan_time = p[:19]
+                    break
+                except Exception:
+                    continue
+            if not scan_time:
+                continue
+
+            if scan_time not in changes_by_scan:
+                changes_by_scan[scan_time] = {"online": [], "offline": []}
+
+            if devices_col in ("—", "-", "None", ""):
+                continue
+
+            # Devices column may have comma-separated hostnames.
+            names = [n.strip() for n in devices_col.split(",") if n.strip()]
+            if "online" in status_col:
+                changes_by_scan[scan_time]["online"].extend(names)
+            elif "offline" in status_col:
+                changes_by_scan[scan_time]["offline"].extend(names)
+    except Exception as e:
+        print(f"Warning: could not parse recent change hostnames: {e}")
+
+    return changes_by_scan
+
+
+def load_scan_snapshots():
+    """Load exact historical online snapshots captured at scan time."""
+    try:
+        if not os.path.exists(SCAN_SNAPSHOTS_FILE):
+            return {}
+        with open(SCAN_SNAPSHOTS_FILE, "r") as f:
+            rows = json.load(f)
+        by_time = {}
+        for r in rows:
+            ts = r.get("scan_time")
+            if not ts:
+                continue
+            devs = r.get("online_devices", [])
+            m = {}
+            for d in devs:
+                ip = d.get("ip")
+                if not ip:
+                    continue
+                m[ip] = {
+                    "ip": ip,
+                    "hostname": d.get("hostname", ip)
+                }
+            by_time[ts] = m
+        return by_time
+    except Exception:
+        return {}
+
+
 def infer_online_devices_for_scan(scan_time_str: str):
     """Best-effort reconstruction of which devices were online at a given scan time."""
     try:
@@ -259,6 +355,15 @@ def enrich_scan_history_with_state_changes(scan_history_rows):
     if not scan_history_rows:
         return scan_history_rows
 
+    md_info = parse_markdown_devices()
+    md_recent_changes = load_recent_change_hostnames_from_md()
+    snapshots_by_time = load_scan_snapshots()
+    try:
+        with open(CACHE_FILE, "r") as f:
+            cache_records = json.load(f)
+    except Exception:
+        cache_records = {}
+
     # Cache online-device sets per scan time
     online_by_scan = {}
     for row in scan_history_rows:
@@ -266,29 +371,163 @@ def enrich_scan_history_with_state_changes(scan_history_rows):
         online_list = infer_online_devices_for_scan(scan_time)
         online_by_scan[scan_time] = {d["ip"]: d for d in online_list}
 
+    def host_for_ip(ip: str) -> str:
+        rich = md_info.get(ip, {})
+        if rich.get("hostname") and rich.get("hostname") != "—":
+            return rich["hostname"]
+        rec = cache_records.get(ip, {})
+        h = rec.get("hostname", "—")
+        return h if h not in ("—", "", None) else ip
+
+    def event_hostnames_between(prev_time_str: str, curr_time_str: str):
+        """Collect hostnames that had online/offline events between two scans."""
+        try:
+            prev_time = datetime.strptime(prev_time_str, "%Y-%m-%d %H:%M:%S")
+            curr_time = datetime.strptime(curr_time_str, "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            return [], []
+
+        online_hosts = []
+        offline_hosts = []
+        for ip, rec in cache_records.items():
+            for ev in rec.get("events", []):
+                ts = ev.get("timestamp")
+                kind = ev.get("event")
+                if kind not in ("online", "offline") or not ts:
+                    continue
+                try:
+                    ev_time = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
+                except Exception:
+                    continue
+                if prev_time < ev_time <= curr_time:
+                    name = host_for_ip(ip)
+                    if kind == "online":
+                        online_hosts.append(name)
+                    else:
+                        offline_hosts.append(name)
+        # Preserve order, remove duplicates
+        seen = set()
+        online_hosts = [h for h in online_hosts if not (h in seen or seen.add(h))]
+        seen = set()
+        offline_hosts = [h for h in offline_hosts if not (h in seen or seen.add(h))]
+        return online_hosts, offline_hosts
+
+    def to_int(value, default=0):
+        try:
+            return int(str(value).strip())
+        except Exception:
+            return default
+
     enriched = []
     for idx, row in enumerate(scan_history_rows):
         current_time = row.get("scan_time", "")
-        current_map = online_by_scan.get(current_time, {})
+        current_map = snapshots_by_time.get(current_time, online_by_scan.get(current_time, {}))
+        current_online_count = to_int(row.get("online", 0))
 
         if idx + 1 < len(scan_history_rows):
-            prev_time = scan_history_rows[idx + 1].get("scan_time", "")
-            prev_map = online_by_scan.get(prev_time, {})
+            prev_row = scan_history_rows[idx + 1]
+            prev_time = prev_row.get("scan_time", "")
+            prev_map = snapshots_by_time.get(prev_time, online_by_scan.get(prev_time, {}))
+            prev_online_count = to_int(prev_row.get("online", 0))
         else:
             prev_map = {}
+            prev_online_count = 0
 
-        came_online_ips = sorted(set(current_map.keys()) - set(prev_map.keys()))
-        went_offline_ips = sorted(set(prev_map.keys()) - set(current_map.keys()))
+        row_copy = dict(row)
+        delta_online = current_online_count - prev_online_count
+
+        # Use Online column delta as source of truth for direction and count.
+        inferred_added_ips = sorted(set(current_map.keys()) - set(prev_map.keys()))
+        inferred_removed_ips = sorted(set(prev_map.keys()) - set(current_map.keys()))
+        event_online_hosts, event_offline_hosts = event_hostnames_between(prev_time if idx + 1 < len(scan_history_rows) else "1970-01-01 00:00:00", current_time)
+
+        if delta_online > 0:
+            came_online_ips = inferred_added_ips[:delta_online]
+            went_offline_ips = []
+        elif delta_online < 0:
+            came_online_ips = []
+            went_offline_ips = inferred_removed_ips[:abs(delta_online)]
+        else:
+            came_online_ips = []
+            went_offline_ips = []
 
         came_online = [current_map[ip].get("hostname", ip) for ip in came_online_ips]
         went_offline = [prev_map[ip].get("hostname", ip) for ip in went_offline_ips]
 
-        row_copy = dict(row)
+        # Prefer explicit hostnames from devices.md Recent Online/Offline Changes.
+        md_changes = md_recent_changes.get(current_time, {})
+        if delta_online > 0 and md_changes.get("online"):
+            came_online = md_changes.get("online", [])[:delta_online]
+        if delta_online < 0 and md_changes.get("offline"):
+            went_offline = md_changes.get("offline", [])[:abs(delta_online)]
+
+        # Then prefer explicit event-derived hostnames when available.
+        if delta_online > 0 and event_online_hosts:
+            came_online = event_online_hosts[:delta_online]
+        if delta_online < 0 and event_offline_hosts:
+            went_offline = event_offline_hosts[:abs(delta_online)]
+
+        # Fallback: infer from first_seen / last_seen deltas between scans.
+        try:
+            curr_dt = datetime.strptime(current_time, "%Y-%m-%d %H:%M:%S")
+            prev_dt = datetime.strptime(prev_time, "%Y-%m-%d %H:%M:%S") if idx + 1 < len(scan_history_rows) else datetime.min
+        except Exception:
+            curr_dt = None
+            prev_dt = None
+
+        if curr_dt and prev_dt:
+            if delta_online > 0 and len(came_online) < delta_online:
+                candidates = []
+                for ip, rec in cache_records.items():
+                    ts = rec.get("first_seen")
+                    if not ts:
+                        continue
+                    try:
+                        t = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
+                    except Exception:
+                        continue
+                    if prev_dt < t <= curr_dt:
+                        candidates.append(host_for_ip(ip))
+                for name in candidates:
+                    if name not in came_online:
+                        came_online.append(name)
+                    if len(came_online) >= delta_online:
+                        break
+
+            if delta_online < 0 and len(went_offline) < abs(delta_online):
+                candidates = []
+                for ip, rec in cache_records.items():
+                    ts = rec.get("last_seen")
+                    if not ts:
+                        continue
+                    try:
+                        t = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
+                    except Exception:
+                        continue
+                    if prev_dt < t <= curr_dt:
+                        candidates.append(host_for_ip(ip))
+                for name in candidates:
+                    if name not in went_offline:
+                        went_offline.append(name)
+                    if len(went_offline) >= abs(delta_online):
+                        break
+
+        # Ensure displayed hostname counts align with online delta even when inference is incomplete.
+        if delta_online > 0 and len(came_online) < delta_online:
+            missing = delta_online - len(came_online)
+            came_online.extend([f"Unresolved (+{i+1})" for i in range(missing)])
+        if delta_online < 0 and len(went_offline) < abs(delta_online):
+            missing = abs(delta_online) - len(went_offline)
+            went_offline.extend([f"Unresolved (-{i+1})" for i in range(missing)])
+
         row_copy["state_changes"] = {
             "online": came_online,
             "offline": went_offline,
             "online_count": len(came_online),
             "offline_count": len(went_offline),
+            "delta_online": delta_online,
+            "reported_online": current_online_count,
+            "previous_online": prev_online_count,
         }
         enriched.append(row_copy)
 
@@ -412,7 +651,7 @@ def index():
                          devices=devices, 
                          last_updated=last_updated,
                          total_devices=len(devices),
-                         online_count=len([d for d in devices if d['status'] == 'Online']))
+                         online_count=len([d for d in devices if is_active_status(d.get('status', ''))]))
 
 
 @app.route('/api/devices')
@@ -425,7 +664,7 @@ def api_devices():
         "scan_history": scan_history,
         "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "total": len(devices),
-        "online": len([d for d in devices if d['status'] == 'Online'])
+        "online": len([d for d in devices if is_active_status(d.get('status', ''))])
     })
 
 
