@@ -12,6 +12,7 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 import concurrent.futures
+import importlib.util
 
 # Configuration
 DEVICES_FILE = "/home/jetson/Documents/Network/devices.md"
@@ -20,6 +21,7 @@ SCAN_SNAPSHOTS_FILE = "/home/jetson/Documents/Network/.scan_snapshots.json"
 NETWORKS = ["192.168.0.0/24", "192.168.50.0/24", "192.168.100.0/24"]
 COMMON_PORTS = [22, 80, 443, 445, 631, 8080, 5900, 3000, 5000]
 SCAN_TIMEOUT = 2
+DEEP_SCAN_SCRIPT = "/home/jetson/Documents/Network/deep_scan.py"
 
 
 def human_duration_since(first_seen_str: str) -> str:
@@ -324,6 +326,172 @@ def identify_device(ip, existing_records=None):
     }, existing_records
 
 
+def _load_deep_scan_module():
+    """Load deep_scan.py dynamically so we can reuse its scanner function."""
+    if not os.path.exists(DEEP_SCAN_SCRIPT):
+        return None
+    try:
+        spec = importlib.util.spec_from_file_location("deep_scan_runtime", DEEP_SCAN_SCRIPT)
+        if not spec or not spec.loader:
+            return None
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module
+    except Exception as e:
+        print(f"   Warning: could not load deep scanner module: {e}")
+        return None
+
+
+def infer_device_type_from_ports(hostname: str, ports):
+    """Infer a human-friendly device label from hostname + deep-scan ports."""
+    ports = set(ports or [])
+    host_l = (hostname or "").lower()
+
+    if 445 in ports or 139 in ports or 3389 in ports:
+        return "Windows"
+    if 631 in ports:
+        return "Printer/Scanner"
+    if 5900 in ports:
+        return "VNC/Remote Desktop"
+    if 22 in ports and not (445 in ports or 139 in ports):
+        return "Linux/SSH Server"
+    if 8060 in ports or "roku" in host_l:
+        return "Streaming Device"
+    if "iphone" in host_l or "android" in host_l or "phone" in host_l:
+        return "Mobile Phone"
+    if "router" in host_l or "gateway" in host_l:
+        return "Router/Gateway"
+    if 80 in ports or 443 in ports or 8080 in ports:
+        return "Web Device"
+    return "Unknown"
+
+
+def access_methods_from_ports(ip: str, ports):
+    """Generate likely access methods from discovered ports."""
+    methods = []
+    pset = set(ports or [])
+    if 22 in pset:
+        methods.append(f"SSH (`ssh user@{ip}`)")
+    if 80 in pset:
+        methods.append(f"HTTP (`http://{ip}`)")
+    if 443 in pset:
+        methods.append(f"HTTPS (`https://{ip}`)")
+    if 445 in pset:
+        methods.append(f"SMB (`smb://{ip}`)")
+    if 3389 in pset:
+        methods.append("RDP")
+    if 631 in pset:
+        methods.append("CUPS/IPP")
+    if 5900 in pset:
+        methods.append("VNC")
+    if 8080 in pset:
+        methods.append(f"HTTP-Alt (`http://{ip}:8080`)")
+    if 8443 in pset:
+        methods.append(f"HTTPS-Alt (`https://{ip}:8443`)")
+    return ", ".join(methods) if methods else "No known access"
+
+
+def run_online_deep_scan_and_enrich(online_transition_ips, device_records):
+    """
+    Deep scan devices that just came online/newly appeared and enrich cache records.
+    Returns a list of enrichment rows for devices.md.
+    """
+    if not online_transition_ips:
+        return []
+
+    deep_mod = _load_deep_scan_module()
+    if deep_mod is None or not hasattr(deep_mod, "run_nmap_deep_scan"):
+        print("   Warning: deep scan module unavailable; skipping online deep scan trigger")
+        return []
+
+    print("\n🧪 Online detector triggered deep scans:")
+    enrichment_rows = []
+    for ip in sorted(set(online_transition_ips)):
+        print(f"   - Deep scanning {ip}...")
+        try:
+            deep = deep_mod.run_nmap_deep_scan(ip)
+        except Exception as e:
+            print(f"     ⚠️ deep scan failed for {ip}: {e}")
+            continue
+
+        record = device_records.get(ip, {})
+        hostname = get_hostname(ip) or record.get("hostname", "—")
+        mac = get_mac(ip) or record.get("mac", "—")
+
+        open_ports = deep.get("ports", []) if isinstance(deep, dict) else []
+        if not open_ports:
+            # Preserve previously known ports if deep scan had no response.
+            open_ports = record.get("ports", [])
+
+        inferred_type = infer_device_type_from_ports(hostname, open_ports)
+        if inferred_type == "Unknown":
+            inferred_type = record.get("type", "Unknown")
+
+        # Enrich cache record for dashboard/API consumption.
+        record["hostname"] = hostname or record.get("hostname", "—")
+        record["mac"] = mac or record.get("mac", "—")
+        record["type"] = inferred_type
+        record["ports"] = open_ports
+        if isinstance(deep, dict) and deep.get("services"):
+            record["services"] = deep.get("services", {})
+        device_records[ip] = record
+
+        enrichment_rows.append({
+            "ip": ip,
+            "hostname": record.get("hostname", "—") or "—",
+            "mac": record.get("mac", "—") or "—",
+            "ports": ", ".join(map(str, open_ports)) if open_ports else "None",
+            "access": access_methods_from_ports(ip, open_ports),
+            "identity": inferred_type,
+        })
+
+    return enrichment_rows
+
+
+def update_online_enrichment_table(rows):
+    """Write/replace a compact table of online-trigger deep scan enrichment."""
+    if not rows:
+        return
+    try:
+        with open(DEVICES_FILE, "r") as f:
+            content = f.read()
+    except Exception as e:
+        print(f"   Warning: could not read {DEVICES_FILE} for enrichment table: {e}")
+        return
+
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    section_lines = [
+        "## ⚡ Online Detector Enrichment",
+        "",
+        f"Updated: {timestamp}",
+        "",
+        "| IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |",
+        "|-----|----------|-----|--------|------------|---------------|----------|",
+    ]
+    for r in rows:
+        section_lines.append(
+            f"| {r['ip']} | {r['hostname']} | {r['mac']} | Online | {r['ports']} | {r['access']} | {r['identity']} |"
+        )
+    section = "\n".join(section_lines) + "\n"
+
+    if "## ⚡ Online Detector Enrichment" in content:
+        content = re.sub(
+            r"## ⚡ Online Detector Enrichment.*?(?=\n## |\Z)",
+            section.strip(),
+            content,
+            flags=re.DOTALL,
+        )
+    else:
+        content = content.rstrip() + "\n\n---\n\n" + section
+
+    try:
+        with open(DEVICES_FILE, "w") as f:
+            f.write(content)
+        print("   Online detector enrichment table updated")
+    except Exception as e:
+        print(f"   Warning: could not write online enrichment table: {e}")
+
+
 def extract_existing_ips(devices_file):
     """Extract all existing IP addresses from devices.md"""
     existing_ips = set()
@@ -519,6 +687,7 @@ def main():
     
     # Update records with all seen devices (preserves first_seen)
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    online_transition_ips = []
     for ip in all_live_hosts:
         if ip not in device_records:
             device_records[ip] = {
@@ -531,11 +700,13 @@ def main():
                 "last_status": "online",
                 "last_status_time": now_str,
             }
+            online_transition_ips.append(ip)
         else:
             previous_status = device_records[ip].get("last_status")
             device_records[ip]["last_seen"] = now_str
             if previous_status != "online":
                 record_event(device_records[ip], "online", "scan")
+                online_transition_ips.append(ip)
             else:
                 device_records[ip]["last_status"] = "online"
                 device_records[ip]["last_status_time"] = now_str
@@ -549,6 +720,10 @@ def main():
             record_event(rec, "offline", "scan")
         else:
             rec["last_status_time"] = now_str
+
+    enrichment_rows = run_online_deep_scan_and_enrich(online_transition_ips, device_records)
+    if enrichment_rows:
+        update_online_enrichment_table(enrichment_rows)
 
     save_device_records(device_records)
     save_scan_snapshot(scan_timestamp, all_live_hosts, device_records)

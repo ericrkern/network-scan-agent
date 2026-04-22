@@ -9,6 +9,9 @@ import os
 import subprocess
 from datetime import datetime
 from pathlib import Path
+import urllib.request
+import urllib.error
+import xml.etree.ElementTree as ET
 
 from flask import Flask, render_template, jsonify, request, send_from_directory
 
@@ -21,13 +24,18 @@ SCAN_SCRIPT = "/home/jetson/Documents/Network/network_scan_agent.py"
 
 
 def is_active_status(status: str) -> bool:
-    """Treat both Online and Stealth as active/online for counters."""
-    return status in ("Online", "Stealth")
+    """Only treat explicitly online devices as active."""
+    return status == "Online"
 
 
 def parse_markdown_devices():
     """Parse rich device information from devices.md including tables and Access Details section"""
     device_info = {}
+    def clean_cell(value: str) -> str:
+        if value is None:
+            return ""
+        return value.replace("**", "").replace("`", "").strip()
+
     try:
         with open(DEVICES_FILE, 'r') as f:
             content = f.read()
@@ -58,20 +66,28 @@ def parse_markdown_devices():
                             if j < len(headers):
                                 header = headers[j].lower()
                                 if any(x in header for x in ['ip', 'address']):
-                                    ip = cell.strip()
-                                elif 'hostname' in header and cell.strip() not in ['—', '', 'None']:
-                                    hostname = cell.strip()
+                                    ip = clean_cell(cell)
+                                elif 'hostname' in header and clean_cell(cell) not in ['—', '', 'None']:
+                                    hostname = clean_cell(cell)
                                 elif any(x in header for x in ['identity', 'device']):
-                                    identity = cell.replace('**', '').replace('*', '').strip()
-                                elif 'mac' in header and cell.strip() not in ['—', '', 'None']:
-                                    mac = cell.strip()
+                                    identity = clean_cell(cell).replace('*', '').strip()
+                                elif 'mac' in header and clean_cell(cell) not in ['—', '', 'None']:
+                                    mac = clean_cell(cell)
                                 elif any(x in header for x in ['port', 'ports']):
-                                    ports = cell.strip()
+                                    ports = clean_cell(cell)
                                 elif any(x in header for x in ['access', 'method']):
-                                    access = cell.strip()
+                                    access = clean_cell(cell)
                         
                         if ip:
-                            device_info[ip] = {
+                            existing = device_info.get(ip, {})
+                            existing_hostname = existing.get("hostname")
+                            existing_identity = existing.get("identity")
+                            existing_mac = existing.get("mac")
+                            existing_ports = existing.get("ports")
+                            existing_access = existing.get("access")
+
+                            # Keep richer/known values if a later table row is sparse.
+                            merged = {
                                 "hostname": hostname,
                                 "identity": identity,
                                 "mac": mac,
@@ -79,6 +95,21 @@ def parse_markdown_devices():
                                 "access": access,
                                 "source": "table"
                             }
+                            if existing:
+                                if merged["hostname"] in ("—", "", "None", None) and existing_hostname not in ("—", "", "None", None):
+                                    merged["hostname"] = existing_hostname
+                                if merged["identity"] in ("Unknown Device", "Unknown", "—", "", None) and existing_identity not in ("Unknown Device", "Unknown", "—", "", None):
+                                    merged["identity"] = existing_identity
+                                if merged["mac"] in ("—", "", "None", None) and existing_mac not in ("—", "", "None", None):
+                                    merged["mac"] = existing_mac
+                                if merged["ports"] in ("—", "", "None", None) and existing_ports not in ("—", "", "None", None):
+                                    merged["ports"] = existing_ports
+                                if merged["access"] in ("—", "", "None", None) and existing_access not in ("—", "", "None", None):
+                                    merged["access"] = existing_access
+                                if existing.get("details"):
+                                    merged["details"] = existing["details"]
+
+                            device_info[ip] = merged
                     i += 1
                 continue
             
@@ -566,14 +597,20 @@ def load_device_data():
                 # Get rich info from markdown if available
                 rich = md_info.get(ip, {})
                 
-                hostname = rich.get("hostname") or cache_hostname
-                if hostname in ["—", None, ""]:
+                rich_hostname = rich.get("hostname")
+                hostname = rich_hostname if rich_hostname not in ["—", "None", None, ""] else cache_hostname
+                if hostname in ["—", "None", None, ""]:
                     hostname = ip
                 
-                identity = rich.get("identity", data.get("type", "Unknown Device"))
+                rich_identity = rich.get("identity")
+                identity = rich_identity if rich_identity not in ["Unknown Device", "Unknown", "—", "None", None, ""] else data.get("type", "Unknown Device")
                 mac = rich.get("mac", data.get("mac", "—"))
                 ports = rich.get("ports", "—")
                 
+                # Drop legacy stealth-tagged devices from previous network installs.
+                if "stealth" in str(identity).lower():
+                    continue
+
                 # Determine visual status
                 if status == "online" or "online" in str(identity).lower():
                     status_color = "emerald"
@@ -581,9 +618,6 @@ def load_device_data():
                 elif status == "offline":
                     status_color = "red"
                     status_text = "Offline"
-                elif "stealth" in str(identity).lower():
-                    status_color = "amber"
-                    status_text = "Stealth"
                 else:
                     status_color = "amber"
                     status_text = "Unknown"
@@ -618,9 +652,9 @@ def load_device_data():
 
     def status_priority(d):
         if d["status"] == "Online": return 0
-        if d["status"] == "Stealth": return 1
-        if d["status"] == "Offline": return 3
-        return 2
+        if d["status"] == "Unknown": return 1
+        if d["status"] == "Offline": return 2
+        return 3
 
     def name_priority(d):
         """Put devices with real hostnames before those that only show IP"""
@@ -639,6 +673,44 @@ def load_device_data():
         )
     )
     return devices
+
+
+def fetch_roku_device_info(ip: str):
+    """
+    Fetch Roku ECP /query/device-info payload if available.
+    Returns a dict of selected fields, or {} when unavailable.
+    """
+    url = f"http://{ip}:8060/query/device-info"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "NetworkPulse/1.0"})
+        with urllib.request.urlopen(req, timeout=2.5) as resp:
+            xml_payload = resp.read()
+        root = ET.fromstring(xml_payload)
+
+        wanted = [
+            "friendly-device-name",
+            "user-device-location",
+            "model-name",
+            "model-number",
+            "software-version",
+            "software-build",
+            "network-name",
+            "power-mode",
+            "uptime",
+            "supports-airplay",
+            "ecp-setting-mode",
+            "developer-enabled",
+        ]
+        info = {}
+        for key in wanted:
+            node = root.find(key)
+            if node is not None and node.text not in (None, ""):
+                info[key] = node.text
+        return info
+    except (urllib.error.URLError, ET.ParseError, TimeoutError, ValueError):
+        return {}
+    except Exception:
+        return {}
 
 
 @app.route('/')
@@ -694,8 +766,29 @@ def api_device_detail(ip):
     
     # Merge additional details
     extra = {}
+    details = list(rich.get("details", [])) if rich.get("details") else []
+
+    # Try live Roku ECP device-info enrichment (fast timeout).
+    roku_info = fetch_roku_device_info(ip)
+    if roku_info:
+        extra["roku_device_info"] = roku_info
+        details.extend([
+            f"Roku Name: {roku_info.get('friendly-device-name', '—')}",
+            f"Location: {roku_info.get('user-device-location', '—')}",
+            f"Model: {roku_info.get('model-name', '—')} ({roku_info.get('model-number', '—')})",
+            f"Software: {roku_info.get('software-version', '—')} build {roku_info.get('software-build', '—')}",
+            f"Network: {roku_info.get('network-name', '—')}",
+            f"Power Mode: {roku_info.get('power-mode', '—')}",
+            f"ECP Mode: {roku_info.get('ecp-setting-mode', '—')}",
+            f"AirPlay Support: {roku_info.get('supports-airplay', '—')}",
+            f"Developer Mode Enabled: {roku_info.get('developer-enabled', '—')}",
+            f"Uptime (seconds): {roku_info.get('uptime', '—')}",
+        ])
+
+    if details:
+        extra["details"] = details
     if rich.get("details"):
-        extra["details"] = rich["details"]
+        extra["details"] = details
     if rich.get("access"):
         extra["access_methods"] = rich["access"]
     if rich.get("source"):

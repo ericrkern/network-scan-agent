@@ -11,10 +11,10 @@
 
 | IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
 |-----|----------|-----|--------|------------|---------------|----------|
-| 192.168.0.1 | home.MG8702 | c8:c7:50:f5:ca:1b | Online | 53, 80, 443, 5000 | Web UI (http/https), DNS | **Motorola MG8702 Router/Gateway** |
+| 192.168.0.1 | verizon-5g-hotspot | c8:c7:50:f5:ca:1b | Online | 53, 80, 443, 5000 | Web UI (http/https), DNS | **Motorola MG8702 Router/Gateway** |
 | 192.168.0.59 | — | 8a:33:76:dd:0b:cb | Online | None | No known access | Unknown client device |
 | 192.168.0.67 | R7000.MG8702 | a0:04:60:31:85:a0 | Stealth (no ping) | UDP: 53,67,68,123,161,1900,5353,547,69,137,138,500,4500,5060 | SNMP, DHCP, VPN, VoIP | **Secondary Router/VPN Gateway** (Netgear R7000 or Lenovo) |
-| 192.168.0.127 | — | 70:8b:cd:7c:f4:54 | Online | 139, 445 | SMB/CIFS | **Windows/Samba File Share** |
+| 192.168.0.127 | DESKTOP-HN6QL1F.MG8702 | 70:8b:cd:7c:f4:54 | Online | 139, 445 | SMB/CIFS | **Windows/Samba File Share** |
 | 192.168.0.135 | motorola-edge-2022.MG8702 | 8a:13:29:33:8a:2d | Online | None | No open ports | **Motorola Edge 2022 Phone** |
 | 192.168.0.143 | — | 30:03:c8:4a:0a:84 | Online | 80, 443, 631, 8080 | Web UI, IPP | **HP Color LaserJet MFP M283fdw** |
 | 192.168.0.158 | device.MG8702 | 44:61:32:c8:42:f0 | Online | None | No open ports | Unknown device |
@@ -44,11 +44,11 @@
 
 | IP | Hostname | Status | Open Ports | Access Method | Identity |
 |-----|----------|--------|------------|---------------|----------|
-| 100.71.191.72 | emergingtechs-mac-mini.tail2a3b45.ts.net | Online | 22, 5900 | SSH, VNC | **Mac Mini** |
+| 100.71.191.72 | apple-mac-mini-m4-pro | Online | 22, 5900 | SSH, VNC | **Mac Mini** |
 | 100.76.245.26 | — | Offline | — | — | **Offline/Unresponsive** |
-| 100.78.64.7 | emergingtechs-macbook-pro.tail2a3b45.ts.net | Online | 22, 5900, **18789** | SSH, VNC, Custom | **MacBook Pro** |
+| 100.78.64.7 | apple-macbook-pro-m5-prime-radiant | Online | 22, 5900, **18789** | SSH, VNC, Custom | **MacBook Pro** |
 | 100.79.216.111 | erics-macbook-pro.tail2a3b45.ts.net | Online | 5000 | AirTunes | **MacBook Pro (AirPlay)** |
-| 100.92.6.101 | thinkstationpgx-9c48.tail2a3b45.ts.net | Online | 22, 80, 8080, **18789** | SSH, HTTP, Custom | **OpenClaw Server/Lenovo ThinkStation** |
+| 100.92.6.101 | thinkstation-pgx-cindy-crawford | Online | 22, 80, 8080, **18789** | SSH, HTTP, Custom | **OpenClaw Server/Lenovo ThinkStation** |
 | 100.93.92.44 | — | Offline | — | — | **Offline/Unresponsive** |
 | 100.95.15.82 | iphone172.tail2a3b45.ts.net | Online | None | iOS protocol | **iPhone** |
 | 100.100.100.100 | magicdns.localhost-tailscale-daemon | Online | 53, 80, 8080 | DNS, HTTP | **Tailscale MagicDNS Service** |
@@ -61,18 +61,18 @@ This table tracks when devices were first seen (came online), their last known a
 
 | IP Address | Hostname | First Seen | Last Seen | On Network | Current Status |
 |------------|----------|------------|-----------|------------|----------------|
-| 192.168.0.1 | home.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Router) |
+| 192.168.0.1 | verizon-5g-hotspot | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Router) |
 | 192.168.0.197 | yahboom | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (This Host) |
 | 192.168.0.143 | — | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Printer) |
 | 192.168.0.233 | RokuUltraB.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Streaming) |
-| 100.71.191.72 | emergingtechs-mac-mini.tail2a3b45.ts.net | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Mac Mini) |
-| 100.78.64.7 | emergingtechs-macbook-pro.tail2a3b45.ts.net | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (MacBook Pro) |
-| 100.92.6.101 | thinkstationpgx-9c48.tail2a3b45.ts.net | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (OpenClaw Server) |
+| 100.71.191.72 | apple-mac-mini-m4-pro | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Mac Mini) |
+| 100.78.64.7 | apple-macbook-pro-m5-prime-radiant | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (MacBook Pro) |
+| 100.92.6.101 | thinkstation-pgx-cindy-crawford | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (OpenClaw Server) |
 | 100.76.245.26 | — | 2026-04-20 | 2026-04-20 18:35 | ~14h | **Offline** |
 | 100.93.92.44 | — | 2026-04-20 | 2026-04-20 18:35 | ~14h | **Offline** |
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
-*Last updated: 2026-04-21 11:50:02*
+*Last updated: 2026-04-22 13:15:02*
 
 ---
 
@@ -583,6 +583,28 @@ openclaw gateway start
 
 ```bash
 # Check channel status
+
+## 🔔 Network Scan Alert - 2026-04-21 20:59:09
+
+**1 new device(s) discovered!**
+
+### New Device Discovered: 192.168.0.81
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.81 |
+| **Hostname** | Watch.MG8702 |
+| **MAC Address** | fa:5b:a6:ab:1a:7f |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-04-21 20:59:09 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+
 
 ## 🔔 Network Scan Alert - 2026-04-20 18:35:03
 
@@ -1144,6 +1166,31 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-22 13:15:02 | 0 | 9 | 38 |
+| 2026-04-22 12:14:02 | 0 | 9 | 38 |
+| 2026-04-22 11:13:02 | 0 | 9 | 38 |
+| 2026-04-22 10:12:02 | 0 | 8 | 38 |
+| 2026-04-22 09:11:02 | 0 | 9 | 38 |
+| 2026-04-22 08:10:02 | 0 | 9 | 38 |
+| 2026-04-22 07:09:02 | 0 | 8 | 38 |
+| 2026-04-22 06:08:02 | 0 | 8 | 38 |
+| 2026-04-22 05:07:02 | 0 | 9 | 38 |
+| 2026-04-22 04:06:02 | 0 | 10 | 38 |
+| 2026-04-22 03:05:02 | 0 | 9 | 38 |
+| 2026-04-22 02:04:02 | 0 | 10 | 38 |
+| 2026-04-22 01:03:02 | 0 | 10 | 38 |
+| 2026-04-22 00:02:02 | 0 | 9 | 38 |
+| 2026-04-21 23:01:02 | 0 | 10 | 38 |
+| 2026-04-21 22:00:02 | 0 | 12 | 38 |
+| 2026-04-21 20:59:09 | 1 | 13 | 38 |
+| 2026-04-21 19:58:02 | 0 | 12 | 37 |
+| 2026-04-21 18:57:02 | 0 | 12 | 37 |
+| 2026-04-21 17:56:02 | 0 | 12 | 37 |
+| 2026-04-21 16:55:02 | 0 | 12 | 37 |
+| 2026-04-21 15:54:02 | 0 | 11 | 37 |
+| 2026-04-21 14:53:02 | 0 | 11 | 37 |
+| 2026-04-21 13:52:02 | 0 | 11 | 37 |
+| 2026-04-21 12:51:02 | 0 | 11 | 37 |
 | 2026-04-21 11:50:02 | 0 | 11 | 37 |
 | 2026-04-21 11:42:48 | 0 | 11 | 37 |
 | 2026-04-21 11:36:32 | 0 | 11 | 37 |
@@ -1174,7 +1221,7 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 | 2026-04-20 15:36:51 | 0 | 13 | 35 |
 
 
-*Last updated: 2026-04-21 11:50:02*
+*Last updated: 2026-04-22 13:15:02*
 
 ---
 
@@ -1205,10 +1252,210 @@ This table shows only devices that changed state (came online or went offline) b
 
 ---
 
-## 🔬 Deep Scan Results - 2026-04-21 11:52:12
 
-**Scanned 30 devices with full Nmap service/OS detection.**
 
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+## 🔬 Deep Scan Results - 2026-04-22 12:31:42
+
+**Scanned 31 devices with full Nmap service/OS detection.**
+
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 12:31:42. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 11:31:30. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 10:29:28. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 09:31:48. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 08:32:34. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 07:30:35. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 06:30:58. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 05:31:20. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 04:31:43. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 03:30:33. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 02:31:41. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 01:31:10. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 00:31:41. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-21 23:31:41. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-21 22:33:28. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-21 21:34:38. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-21 20:33:40. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-21 19:33:24. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- **100.79.216.111**: TCP [5000, 7000, 41009, 51403] | UDP [] | OS: Unknown
+
+*Deep scan completed at 2026-04-21 18:33:58. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- **192.168.0.15**: TCP [135, 139, 445, 3389, 9595, 33354] | UDP [] | OS: Unknown
+
+*Deep scan completed at 2026-04-21 17:32:57. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-21 16:33:56. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-21 15:32:38. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-21 14:32:06. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-21 13:33:33. Full JSON results in `deep_scan_results.json`.*
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-21 12:32:31. Full JSON results in `deep_scan_results.json`.*
 ### Key Findings:
 - **149.154.167.99**: TCP [80, 443] | UDP [] | OS: Unknown
 - **192.168.50.1**: TCP [53, 80, 443, 5000] | UDP [] | OS: Unknown

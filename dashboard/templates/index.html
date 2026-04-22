@@ -107,7 +107,7 @@
 
             <div id="dashboard-tab-content">
             <!-- Stats -->
-            <div class="grid grid-cols-4 gap-4 mb-10">
+            <div class="grid grid-cols-3 gap-4 mb-10">
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
                     <div class="flex justify-between items-start">
                         <div>
@@ -117,17 +117,6 @@
                         <i class="fa-solid fa-circle-check text-4xl text-emerald-500/20"></i>
                     </div>
                     <div class="text-xs text-zinc-500 mt-6 font-mono">CURRENTLY REACHABLE</div>
-                </div>
-                
-                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <div class="text-amber-400 text-sm font-medium mb-1">STEALTH</div>
-                            <div id="stat-stealth" class="text-5xl font-semibold text-white tabular-nums">3</div>
-                        </div>
-                        <i class="fa-solid fa-shield-halved text-4xl text-amber-500/20"></i>
-                    </div>
-                    <div class="text-xs text-zinc-500 mt-6 font-mono">NO PING RESPONSE</div>
                 </div>
                 
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
@@ -310,6 +299,28 @@
                 <div id="history-timeline" class="space-y-8">
                     <!-- Populated by JS -->
                 </div>
+                <div class="mt-8 border-t border-zinc-800 pt-6">
+                    <div class="text-xs uppercase tracking-widest text-zinc-500 mb-4 font-medium flex items-center gap-x-2">
+                        <i class="fa-solid fa-table-list"></i>
+                        ONLINE/OFFLINE TRANSITIONS
+                    </div>
+                    <div class="overflow-x-auto rounded-2xl border border-zinc-800">
+                        <table class="w-full text-xs">
+                            <thead class="bg-zinc-950 text-zinc-400">
+                                <tr>
+                                    <th class="text-left px-4 py-3 font-medium">Timestamp</th>
+                                    <th class="text-left px-4 py-3 font-medium">Transition</th>
+                                    <th class="text-left px-4 py-3 font-medium">Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transition-table-body" class="bg-black">
+                                <tr>
+                                    <td colspan="3" class="px-4 py-4 text-zinc-500">No transition data yet.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <!-- Footer -->
@@ -440,7 +451,7 @@
             container.innerHTML = sections.join('');
             
             // Update stats
-            const online = devices.filter(d => d.status === 'Online' || d.status === 'Stealth').length;
+            const online = devices.filter(d => d.status === 'Online').length;
             document.getElementById('stat-online').textContent = online;
             document.getElementById('stat-offline').textContent = devices.filter(d => d.status === 'Offline').length;
             document.getElementById('stat-total').textContent = devices.length;
@@ -450,6 +461,7 @@
 
         function renderTopology(devices) {
             const topology = document.getElementById('topology-map');
+
             const groups = {};
             for (const d of devices) {
                 const g = d.subnet_group || 'Other Networks';
@@ -457,68 +469,93 @@
                 groups[g].push(d);
             }
 
-            const nodeMeta = [
-                { key: 'Local LAN (192.168.0.0/24)', x: 220, y: 120, color: '#22c55e' },
-                { key: 'Adjacent Subnet (192.168.50.0/24)', x: 620, y: 120, color: '#38bdf8' },
-                { key: 'Adjacent Subnet (192.168.100.0/24)', x: 920, y: 280, color: '#60a5fa' },
-                { key: 'Docker Network (172.17.0.0/16)', x: 620, y: 460, color: '#f59e0b' },
-                { key: 'Other Networks', x: 220, y: 460, color: '#a78bfa' },
-                { key: 'Tailscale Mesh VPN', x: 920, y: 520, color: '#14b8a6' }
-            ];
+            const palette = {
+                'Local LAN (192.168.0.0/24)': '#22c55e',
+                'Adjacent Subnet (192.168.50.0/24)': '#38bdf8',
+                'Adjacent Subnet (192.168.100.0/24)': '#60a5fa',
+                'Docker Network (172.17.0.0/16)': '#f59e0b',
+                'Other Networks': '#a78bfa',
+                'Tailscale Mesh VPN': '#14b8a6'
+            };
 
+            const orderedGroups = Object.keys(groups)
+                .filter((k) => groups[k] && groups[k].length > 0)
+                .sort((a, b) => a.localeCompare(b));
+
+            const centerX = 620;
+            const centerY = 360;
+            const radius = Math.max(190, Math.min(300, 70 + orderedGroups.length * 26));
             const gateway = devices.find(d => d.ip === '192.168.0.1');
-            const gatewayName = gateway ? gateway.hostname : 'Gateway';
-            const centerX = 500;
-            const centerY = 280;
+            const gatewayName = gateway ? gateway.hostname : 'Network Core';
 
-            // Build subnet nodes with connectors
-            const subnetNodesSvg = nodeMeta.map(n => {
-                const list = groups[n.key] || [];
-                const online = list.filter(d => d.status === 'Online' || d.status === 'Stealth').length;
+            const nodeData = orderedGroups.map((key, idx) => {
+                const angle = -Math.PI / 2 + ((2 * Math.PI * idx) / Math.max(orderedGroups.length, 1));
+                const x = Math.round(centerX + radius * Math.cos(angle));
+                const y = Math.round(centerY + radius * Math.sin(angle));
+                const list = groups[key].slice().sort((a, b) => (a.hostname || '').localeCompare(b.hostname || ''));
+                const online = list.filter(d => d.status === 'Online').length;
+                return {
+                    key,
+                    x,
+                    y,
+                    color: palette[key] || '#94a3b8',
+                    list,
+                    online
+                };
+            });
+
+            const subnetNodesSvg = nodeData.map((n) => {
+                const visible = n.list.slice(0, 6);
+                const panelHeight = 72 + (visible.length * 16) + (n.list.length > 6 ? 14 : 0);
+                const rows = visible.map((d, idx) => `
+                    <text x="${n.x - 136}" y="${n.y + 62 + (idx * 16)}" fill="#d4d4d8" font-size="10">${d.hostname || d.ip}</text>
+                    <text x="${n.x + 136}" y="${n.y + 62 + (idx * 16)}" text-anchor="end" fill="#facc15" font-size="10">${d.ip}</text>
+                `).join('');
+                const more = n.list.length > 6
+                    ? `<text x="${n.x}" y="${n.y + 62 + (visible.length * 16)}" text-anchor="middle" fill="#a1a1aa" font-size="10">+${n.list.length - 6} more</text>`
+                    : '';
+
                 return `
-                    <line x1="${centerX}" y1="${centerY}" x2="${n.x}" y2="${n.y}" stroke="${n.color}" stroke-width="2" opacity="0.45" />
+                    <line x1="${centerX}" y1="${centerY}" x2="${n.x}" y2="${n.y}" stroke="${n.color}" stroke-width="2" opacity="0.5" />
                     <circle cx="${n.x}" cy="${n.y}" r="8" fill="${n.color}" />
-                    <rect x="${n.x - 150}" y="${n.y + 14}" width="300" height="76" rx="12" fill="#18181b" stroke="${n.color}" stroke-opacity="0.5" />
-                    <text x="${n.x}" y="${n.y + 38}" text-anchor="middle" fill="#e4e4e7" font-size="14" font-weight="600">${n.key}</text>
-                    <text x="${n.x}" y="${n.y + 58}" text-anchor="middle" fill="#a1a1aa" font-size="12">${list.length} devices • ${online} online</text>
+                    <rect x="${n.x - 150}" y="${n.y + 14}" width="300" height="${panelHeight}" rx="12" fill="#18181b" stroke="${n.color}" stroke-opacity="0.55" />
+                    <text x="${n.x}" y="${n.y + 34}" text-anchor="middle" fill="#e4e4e7" font-size="12" font-weight="600">${n.key}</text>
+                    <text x="${n.x}" y="${n.y + 50}" text-anchor="middle" fill="#a1a1aa" font-size="11">${n.list.length} detected • ${n.online} online</text>
+                    ${rows}
+                    ${more}
                 `;
             }).join('');
 
-            // Clickable device chips under diagram
-            const deviceSections = nodeMeta.map(n => {
-                const list = groups[n.key] || [];
-                if (list.length === 0) return '';
-                return `
-                    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
-                        <div class="text-sm font-semibold mb-3" style="color:${n.color}">${n.key}</div>
-                        <div class="flex flex-wrap gap-2">
-                            ${list.map(d => `
-                                <button onclick="showDeviceHistory('${d.ip}')" class="px-3 py-1.5 rounded-xl bg-zinc-950 border border-zinc-800 hover:bg-zinc-800 text-left">
-                                    <span class="text-xs text-white">${d.hostname}</span>
-                                    <span class="text-[10px] text-yellow-400 font-mono ml-2">${d.ip}</span>
-                                </button>
-                            `).join('')}
-                        </div>
+            const deviceSections = nodeData.map((n) => `
+                <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
+                    <div class="text-sm font-semibold mb-3" style="color:${n.color}">${n.key}</div>
+                    <div class="flex flex-wrap gap-2">
+                        ${n.list.map(d => `
+                            <button onclick="showDeviceHistory('${d.ip}')" class="px-3 py-1.5 rounded-xl bg-zinc-950 border border-zinc-800 hover:bg-zinc-800 text-left">
+                                <span class="text-xs text-white">${d.hostname}</span>
+                                <span class="text-[10px] text-yellow-400 font-mono ml-2">${d.ip}</span>
+                            </button>
+                        `).join('')}
                     </div>
-                `;
-            }).join('');
+                </div>
+            `).join('');
 
             topology.innerHTML = `
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
-                    <div class="text-xs uppercase tracking-widest text-zinc-500 mb-3">Visual Network Map</div>
+                    <div class="text-xs uppercase tracking-widest text-zinc-500 mb-3">Rebuilt Topology (Detected Devices Only)</div>
                     <div class="overflow-x-auto">
-                        <svg viewBox="0 0 1100 620" class="w-full min-w-[900px] h-auto rounded-2xl bg-zinc-950 border border-zinc-800">
+                        <svg viewBox="0 0 1240 900" class="w-full min-w-[1000px] h-auto rounded-2xl bg-zinc-950 border border-zinc-800">
                             <defs>
                                 <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
                                     <stop offset="0%" stop-color="#facc15" stop-opacity="0.35" />
                                     <stop offset="100%" stop-color="#facc15" stop-opacity="0" />
                                 </radialGradient>
                             </defs>
-                            <circle cx="${centerX}" cy="${centerY}" r="120" fill="url(#coreGlow)" />
-                            <rect x="${centerX - 170}" y="${centerY - 56}" width="340" height="112" rx="16" fill="#18181b" stroke="#facc15" stroke-opacity="0.55" />
-                            <text x="${centerX}" y="${centerY - 16}" text-anchor="middle" fill="#fde68a" font-size="16" font-weight="700">Core Gateway</text>
+                            <circle cx="${centerX}" cy="${centerY}" r="116" fill="url(#coreGlow)" />
+                            <rect x="${centerX - 170}" y="${centerY - 54}" width="340" height="108" rx="16" fill="#18181b" stroke="#facc15" stroke-opacity="0.55" />
+                            <text x="${centerX}" y="${centerY - 14}" text-anchor="middle" fill="#fde68a" font-size="16" font-weight="700">Core Gateway</text>
                             <text x="${centerX}" y="${centerY + 8}" text-anchor="middle" fill="#e4e4e7" font-size="14">${gatewayName}</text>
-                            <text x="${centerX}" y="${centerY + 28}" text-anchor="middle" fill="#a1a1aa" font-size="12">${gateway ? gateway.ip : '192.168.0.1'}</text>
+                            <text x="${centerX}" y="${centerY + 28}" text-anchor="middle" fill="#a1a1aa" font-size="12">${gateway ? gateway.ip : 'n/a'}</text>
                             ${subnetNodesSvg}
                         </svg>
                     </div>
@@ -786,7 +823,7 @@
                 
                 // Status badge
                 const statusEl = document.getElementById('modal-status-badge');
-                const isOnline = device.status === 'Online' || device.status === 'Stealth';
+                const isOnline = device.status === 'Online';
                 statusEl.textContent = device.status;
                 statusEl.className = `px-5 py-1 text-sm font-medium rounded-3xl ${isOnline ? 
                     'bg-emerald-500/10 text-emerald-400 border border-emerald-500/40' : 
@@ -865,6 +902,7 @@
                 infoContainer.innerHTML = infoHTML;
                 // Build timeline
                 const timelineEl = document.getElementById('history-timeline');
+                const transitionTableBody = document.getElementById('transition-table-body');
                 let html = '';
                 
                 if (events.length > 0) {
@@ -903,6 +941,32 @@
                                 '<div class="ml-1 border-l border-dashed border-zinc-700 h-8"></div>' : ''}
                         `;
                     });
+
+                    transitionTableBody.innerHTML = sortedEvents.map((event) => {
+                        const isOnlineEvent = event.event === 'online';
+                        const time = new Date(event.timestamp);
+                        const formattedTime = time.toLocaleString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            second: '2-digit'
+                        });
+                        return `
+                            <tr class="border-t border-zinc-800">
+                                <td class="px-4 py-3 font-mono text-zinc-300">${formattedTime}</td>
+                                <td class="px-4 py-3">
+                                    <span class="inline-flex items-center rounded-xl px-2.5 py-1 ${isOnlineEvent ? 
+                                        'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' : 
+                                        'bg-red-500/10 text-red-300 border border-red-500/30'}">
+                                        ${event.event.toUpperCase()}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 text-zinc-400">${event.reason || 'Network scan detection'}</td>
+                            </tr>
+                        `;
+                    }).join('');
                 } else {
                     // Fallback when no events recorded yet
                     html = `
@@ -919,6 +983,11 @@
                                 RUN SCAN TO BUILD HISTORY
                             </div>
                         </div>
+                    `;
+                    transitionTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="3" class="px-4 py-4 text-zinc-500">No transitions recorded yet. Run additional scans to populate this table.</td>
+                        </tr>
                     `;
                 }
                 

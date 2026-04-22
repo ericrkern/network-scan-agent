@@ -12,60 +12,276 @@ Press CTRL+C to quit
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 137-634-202
-127.0.0.1 - - [21/Apr/2026 11:16:20] "GET /api/devices HTTP/1.1" 200 -
-192.168.0.197 - - [21/Apr/2026 11:16:36] "GET / HTTP/1.0" 200 -
-100.79.216.111 - - [21/Apr/2026 11:16:36] "GET /api/devices HTTP/1.1" 200 -
-192.168.0.197 - - [21/Apr/2026 11:16:36] code 400, message Bad request version ('RTSP/1.0')
-192.168.0.197 - - [21/Apr/2026 11:16:36] "OPTIONS / RTSP/1.0" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:16:41] code 400, message Bad HTTP/0.9 request type ('\x00')
-192.168.0.197 - - [21/Apr/2026 11:16:41] "\x00\x1e\x00\x06\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07version\x04bind\x00\x00\x10\x00\x03" HTTPStatus.BAD_REQUEST -
-100.79.216.111 - - [21/Apr/2026 11:16:43] "GET / HTTP/1.1" 200 -
-100.79.216.111 - - [21/Apr/2026 11:16:43] "GET /api/devices HTTP/1.1" 200 -
-192.168.0.197 - - [21/Apr/2026 11:16:46] code 400, message Bad request version ('0.12\x00')
-192.168.0.197 - - [21/Apr/2026 11:16:46] "\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00" HTTPStatus.BAD_REQUEST -
-100.79.216.111 - - [21/Apr/2026 11:16:49] "GET /api/scan/2026-04-21%2006:46:46/online HTTP/1.1" 200 -
-192.168.0.197 - - [21/Apr/2026 11:16:51] code 400, message Bad request version ('GetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00')
-192.168.0.197 - - [21/Apr/2026 11:16:51] "\x00\x00\x00\x1f\x00\x00\x00\x00\x00\x00\x00\x0cGetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:16:51] "OPTIONS / HTTP/1.0" 200 -
-100.79.216.111 - - [21/Apr/2026 11:16:52] "GET /api/device/100.70.174.39 HTTP/1.1" 200 -
-192.168.0.197 - - [21/Apr/2026 11:16:56] code 400, message Bad request version ('\x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
-192.168.0.197 - - [21/Apr/2026 11:16:56] "\x80\x00\x00(rþ\x1d\x13\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:01] code 400, message Bad HTTP/0.9 request type ('\x00')
-192.168.0.197 - - [21/Apr/2026 11:17:01] "\x00\x0c\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:01] code 400, message Bad request syntax ('EHLO')
-192.168.0.197 - - [21/Apr/2026 11:17:01] "EHLO" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:01] code 400, message Bad request syntax ('HELP')
-192.168.0.197 - - [21/Apr/2026 11:17:01] "HELP" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:01] code 400, message Bad request syntax ('\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00')
-192.168.0.197 - - [21/Apr/2026 11:17:01] "\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:01] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie:')
-192.168.0.197 - - [21/Apr/2026 11:17:01] "\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie: mstshash=nmap" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:01] code 400, message Bad request version ('\x00/\x00')
-192.168.0.197 - - [21/Apr/2026 11:17:01] "\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:01] code 400, message Bad HTTP/0.9 request type ('\x80\x9e\x01\x03\x01\x00u\x00\x00\x00')
-192.168.0.197 - - [21/Apr/2026 11:17:01] "\x80\x9e\x01\x03\x01\x00u\x00\x00\x00 \x00\x00f\x00\x00e\x00\x00d\x00\x00c\x00\x00b\x00\x00:\x00\x009\x00\x008\x00\x005\x00\x004\x00\x003\x00\x002\x00\x00/\x00\x00\x1b\x00\x00\x1a\x00\x00\x19\x00\x00\x18\x00\x00\x17\x00\x00\x16\x00\x00\x15\x00\x00\x14\x00\x00\x13\x00\x00\x12\x00\x00\x11\x00\x00" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:01] code 400, message Bad request syntax ('\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01')
-192.168.0.197 - - [21/Apr/2026 11:17:01] "\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:06] code 400, message Bad HTTP/0.9 request type ('l\x00')
-192.168.0.197 - - [21/Apr/2026 11:17:06] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:06] "GET /nice%20ports,/Trinity.txt.bak HTTP/1.0" 404 -
-192.168.0.197 - - [21/Apr/2026 11:17:06] code 400, message Bad request syntax ('\x01default')
-192.168.0.197 - - [21/Apr/2026 11:17:06] "\x01default" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:06] code 400, message Bad request syntax ('0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00')
-192.168.0.197 - - [21/Apr/2026 11:17:06] "0\x84\x00\x00\x00-\x02\x01\x07c\x84\x00\x00\x00$\x04\x00" HTTPStatus.BAD_REQUEST -
-100.79.216.111 - - [21/Apr/2026 11:17:08] "GET /api/devices HTTP/1.1" 200 -
-192.168.0.197 - - [21/Apr/2026 11:17:11] code 400, message Bad HTTP/0.9 request type ('0')
-192.168.0.197 - - [21/Apr/2026 11:17:11] "0\x0c\x02\x01\x01`\x07\x02\x01\x02\x04\x00\x80\x00" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:11] code 400, message Bad request version ('SIP/2.0')
-192.168.0.197 - - [21/Apr/2026 11:17:11] "OPTIONS sip:nm SIP/2.0" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:16] code 400, message Bad request syntax ('TNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00')
-192.168.0.197 - - [21/Apr/2026 11:17:16] "TNMP\x04\x00\x00\x00TNME\x00\x00\x04\x00" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:21] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00')
-192.168.0.197 - - [21/Apr/2026 11:17:21] "\x03\x00\x00\x0b\x06à\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:26] code 400, message Bad request syntax ('DmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13')
-192.168.0.197 - - [21/Apr/2026 11:17:26] "DmdT\x00\x00\x00\x17\x00\x00\x00\x01\x00\x00\x00\x00\x11\x11\x00ÿ\x01ÿ\x13" HTTPStatus.BAD_REQUEST -
-192.168.0.197 - - [21/Apr/2026 11:17:31] code 400, message Bad HTTP/0.9 request type (':\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@')
-192.168.0.197 - - [21/Apr/2026 11:17:31] ":\x00\x00\x00/\x00\x00\x00\x02\x00\x00@\x02\x0f\x00\x01\x00=\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00/\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x1f\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
-100.79.216.111 - - [21/Apr/2026 11:17:33] "GET /api/devices HTTP/1.1" 200 -
-192.168.0.197 - - [21/Apr/2026 11:17:36] code 400, message Bad request syntax ('DIST00000001ARGC00000005ARGV00000002ccARGV00000002-cARGV00000006nmap.cARGV00000002-oARGV00000006nmap.oDOTI00000000')
-192.168.0.197 - - [21/Apr/2026 11:17:36] "DIST00000001ARGC00000005ARGV00000002ccARGV00000002-cARGV00000006nmap.cARGV00000002-oARGV00000006nmap.oDOTI00000000" HTTPStatus.BAD_REQUEST -
+127.0.0.1 - - [21/Apr/2026 11:33:06] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:33:18] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:33:43] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:34:08] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:34:33] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:34:58] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:35:23] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:35:48] "GET /api/devices HTTP/1.1" 200 -
+ * Detected change in '/home/jetson/Documents/Network/dashboard/app.py', reloading
+Network Dashboard starting on http://0.0.0.0:5000
+Accessible via:
+ - Local: http://192.168.0.197:5000
+ - Tailscale: http://100.70.174.39:5000
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 137-634-202
+100.79.216.111 - - [21/Apr/2026 11:36:13] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:36:38] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:37:03] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:37:05] "GET / HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:37:06] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:37:31] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:37:56] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:38:21] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:38:46] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:39:11] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:39:36] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:40:01] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:40:26] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:40:51] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:41:16] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:41:41] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:42:06] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:42:31] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:42:56] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:43:08] "GET / HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:43:08] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:43:33] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:43:58] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:44:23] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:44:48] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:45:13] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:45:38] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:46:03] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:46:28] "GET /api/devices HTTP/1.1" 200 -
+ * Detected change in '/home/jetson/Documents/Network/dashboard/app.py', reloading
+Network Dashboard starting on http://0.0.0.0:5000
+Accessible via:
+ - Local: http://192.168.0.197:5000
+ - Tailscale: http://100.70.174.39:5000
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 137-634-202
+100.79.216.111 - - [21/Apr/2026 11:46:53] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:47:03] "GET / HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:47:04] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:47:29] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:47:54] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:48:19] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:48:44] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:49:09] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:49:34] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:49:59] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:50:24] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:50:49] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:51:14] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:51:25] "GET /api/device/192.168.0.15 HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:51:36] "GET /api/device/192.168.0.59 HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:51:39] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:52:04] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:52:29] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:52:54] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:53:19] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:53:44] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:54:09] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:54:34] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:54:59] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:55:24] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:55:49] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:56:14] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:56:39] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:57:04] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:57:29] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:57:54] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:58:19] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:58:44] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:59:09] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:59:34] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 11:59:59] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:00:24] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:00:49] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:01:14] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:01:39] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:02:04] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:02:29] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:02:54] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:03:19] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:03:44] "GET /api/devices HTTP/1.1" 200 -
+100.70.174.39 - - [21/Apr/2026 12:04:02] "GET / HTTP/1.0" 200 -
+100.70.174.39 - - [21/Apr/2026 12:04:02] code 400, message Bad request version ('RTSP/1.0')
+100.70.174.39 - - [21/Apr/2026 12:04:02] "OPTIONS / RTSP/1.0" HTTPStatus.BAD_REQUEST -
+100.70.174.39 - - [21/Apr/2026 12:04:07] code 400, message Bad HTTP/0.9 request type ('\x00')
+100.70.174.39 - - [21/Apr/2026 12:04:07] "\x00\x1e\x00\x06\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07version\x04bind\x00\x00\x10\x00\x03" HTTPStatus.BAD_REQUEST -
+100.79.216.111 - - [21/Apr/2026 12:04:09] "GET /api/devices HTTP/1.1" 200 -
+100.70.174.39 - - [21/Apr/2026 12:04:12] code 400, message Bad request version ('0.12\x00')
+100.70.174.39 - - [21/Apr/2026 12:04:12] "\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00" HTTPStatus.BAD_REQUEST -
+100.70.174.39 - - [21/Apr/2026 12:04:17] code 400, message Bad request version ('GetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00')
+100.70.174.39 - - [21/Apr/2026 12:04:17] "\x00\x00\x00\x1f\x00\x00\x00\x00\x00\x00\x00\x0cGetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00" HTTPStatus.BAD_REQUEST -
+100.70.174.39 - - [21/Apr/2026 12:04:17] "OPTIONS / HTTP/1.0" 200 -
+100.70.174.39 - - [21/Apr/2026 12:04:22] code 400, message Bad request version ('\x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+100.70.174.39 - - [21/Apr/2026 12:04:22] "\x80\x00\x00(rþ\x1d\x13\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
+100.70.174.39 - - [21/Apr/2026 12:04:27] code 400, message Bad HTTP/0.9 request type ('\x00')
+100.70.174.39 - - [21/Apr/2026 12:04:27] "\x00\x0c\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
+100.70.174.39 - - [21/Apr/2026 12:04:27] code 400, message Bad request syntax ('EHLO')
+100.70.174.39 - - [21/Apr/2026 12:04:27] "EHLO" HTTPStatus.BAD_REQUEST -
+100.70.174.39 - - [21/Apr/2026 12:04:27] code 400, message Bad request syntax ('HELP')
+100.70.174.39 - - [21/Apr/2026 12:04:27] "HELP" HTTPStatus.BAD_REQUEST -
+100.70.174.39 - - [21/Apr/2026 12:04:27] code 400, message Bad request syntax ('\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00')
+100.70.174.39 - - [21/Apr/2026 12:04:27] "\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00" HTTPStatus.BAD_REQUEST -
+100.70.174.39 - - [21/Apr/2026 12:04:27] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie:')
+100.70.174.39 - - [21/Apr/2026 12:04:27] "\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie: mstshash=nmap" HTTPStatus.BAD_REQUEST -
+100.70.174.39 - - [21/Apr/2026 12:04:27] code 400, message Bad request version ('\x00/\x00')
+100.70.174.39 - - [21/Apr/2026 12:04:27] "\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00" HTTPStatus.BAD_REQUEST -
+100.70.174.39 - - [21/Apr/2026 12:04:27] code 400, message Bad HTTP/0.9 request type ('\x80\x9e\x01\x03\x01\x00u\x00\x00\x00')
+100.70.174.39 - - [21/Apr/2026 12:04:27] "\x80\x9e\x01\x03\x01\x00u\x00\x00\x00 \x00\x00f\x00\x00e\x00\x00d\x00\x00c\x00\x00b\x00\x00:\x00\x009\x00\x008\x00\x005\x00\x004\x00\x003\x00\x002\x00\x00/\x00\x00\x1b\x00\x00\x1a\x00\x00\x19\x00\x00\x18\x00\x00\x17\x00\x00\x16\x00\x00\x15\x00\x00\x14\x00\x00\x13\x00\x00\x12\x00\x00\x11\x00\x00" HTTPStatus.BAD_REQUEST -
+100.70.174.39 - - [21/Apr/2026 12:04:27] code 400, message Bad request syntax ('\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01')
+100.70.174.39 - - [21/Apr/2026 12:04:27] "\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01" HTTPStatus.BAD_REQUEST -
+100.70.174.39 - - [21/Apr/2026 12:04:30] code 400, message Bad HTTP/0.9 request type ('l\x00')
+100.70.174.39 - - [21/Apr/2026 12:04:30] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
+100.79.216.111 - - [21/Apr/2026 12:04:34] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:04:59] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:05:24] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:05:49] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:06:14] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:06:39] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:07:04] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:07:29] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:07:54] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:08:19] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:08:44] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:09:09] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:09:34] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:09:59] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:10:24] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:10:49] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:11:14] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:11:39] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:12:04] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:12:29] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:12:54] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:13:19] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:13:44] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:14:09] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:14:34] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:14:59] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:15:24] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:15:49] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:16:14] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:16:39] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:17:04] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:17:29] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:17:54] "GET /api/devices HTTP/1.1" 200 -
+192.168.0.197 - - [21/Apr/2026 12:18:11] "GET / HTTP/1.0" 200 -
+192.168.0.197 - - [21/Apr/2026 12:18:11] code 400, message Bad request version ('RTSP/1.0')
+192.168.0.197 - - [21/Apr/2026 12:18:11] "OPTIONS / RTSP/1.0" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:18:16] code 400, message Bad HTTP/0.9 request type ('\x00')
+192.168.0.197 - - [21/Apr/2026 12:18:16] "\x00\x1e\x00\x06\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07version\x04bind\x00\x00\x10\x00\x03" HTTPStatus.BAD_REQUEST -
+100.79.216.111 - - [21/Apr/2026 12:18:19] "GET /api/devices HTTP/1.1" 200 -
+192.168.0.197 - - [21/Apr/2026 12:18:21] code 400, message Bad request version ('0.12\x00')
+192.168.0.197 - - [21/Apr/2026 12:18:21] "\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:18:26] code 400, message Bad request version ('GetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00')
+192.168.0.197 - - [21/Apr/2026 12:18:26] "\x00\x00\x00\x1f\x00\x00\x00\x00\x00\x00\x00\x0cGetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:18:26] "OPTIONS / HTTP/1.0" 200 -
+192.168.0.197 - - [21/Apr/2026 12:18:31] code 400, message Bad request version ('\x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+192.168.0.197 - - [21/Apr/2026 12:18:31] "\x80\x00\x00(rþ\x1d\x13\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:18:36] code 400, message Bad HTTP/0.9 request type ('\x00')
+192.168.0.197 - - [21/Apr/2026 12:18:36] "\x00\x0c\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:18:36] code 400, message Bad request syntax ('EHLO')
+192.168.0.197 - - [21/Apr/2026 12:18:36] "EHLO" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:18:36] code 400, message Bad request syntax ('HELP')
+192.168.0.197 - - [21/Apr/2026 12:18:36] "HELP" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:18:36] code 400, message Bad request syntax ('\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00')
+192.168.0.197 - - [21/Apr/2026 12:18:36] "\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:18:36] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie:')
+192.168.0.197 - - [21/Apr/2026 12:18:36] "\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie: mstshash=nmap" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:18:36] code 400, message Bad request version ('\x00/\x00')
+192.168.0.197 - - [21/Apr/2026 12:18:36] "\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:18:36] code 400, message Bad HTTP/0.9 request type ('\x80\x9e\x01\x03\x01\x00u\x00\x00\x00')
+192.168.0.197 - - [21/Apr/2026 12:18:36] "\x80\x9e\x01\x03\x01\x00u\x00\x00\x00 \x00\x00f\x00\x00e\x00\x00d\x00\x00c\x00\x00b\x00\x00:\x00\x009\x00\x008\x00\x005\x00\x004\x00\x003\x00\x002\x00\x00/\x00\x00\x1b\x00\x00\x1a\x00\x00\x19\x00\x00\x18\x00\x00\x17\x00\x00\x16\x00\x00\x15\x00\x00\x14\x00\x00\x13\x00\x00\x12\x00\x00\x11\x00\x00" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:18:36] code 400, message Bad request syntax ('\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01')
+192.168.0.197 - - [21/Apr/2026 12:18:36] "\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:18:40] code 400, message Bad HTTP/0.9 request type ('l\x00')
+192.168.0.197 - - [21/Apr/2026 12:18:40] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
+100.79.216.111 - - [21/Apr/2026 12:18:44] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:19:09] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:19:34] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:19:59] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:20:24] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:20:49] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:21:14] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:21:39] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:22:04] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:22:29] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:22:54] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:23:19] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:23:44] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:24:09] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:24:34] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:24:59] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:25:25] "GET /api/devices HTTP/1.1" 200 -
+192.168.0.197 - - [21/Apr/2026 12:26:02] "GET / HTTP/1.0" 200 -
+192.168.0.197 - - [21/Apr/2026 12:26:02] code 400, message Bad request version ('RTSP/1.0')
+192.168.0.197 - - [21/Apr/2026 12:26:02] "OPTIONS / RTSP/1.0" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:26:07] code 400, message Bad HTTP/0.9 request type ('\x00')
+192.168.0.197 - - [21/Apr/2026 12:26:07] "\x00\x1e\x00\x06\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07version\x04bind\x00\x00\x10\x00\x03" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:26:12] code 400, message Bad request version ('0.12\x00')
+192.168.0.197 - - [21/Apr/2026 12:26:12] "\x00\x00\x00¤ÿSMBr\x00\x00\x00\x00\x08\x01@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x06\x00\x00\x01\x00\x00\x81\x00\x02PC NETWORK PROGRAM 1.0\x00\x02MICROSOFT NETWORKS 1.03\x00\x02MICROSOFT NETWORKS 3.0\x00\x02LANMAN1.0\x00\x02LM1.2X002\x00\x02Samba\x00\x02NT LANMAN 1.0\x00\x02NT LM 0.12\x00" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:26:17] code 400, message Bad request version ('GetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00')
+192.168.0.197 - - [21/Apr/2026 12:26:17] "\x00\x00\x00\x1f\x00\x00\x00\x00\x00\x00\x00\x0cGetClassName\x00\x00\x00\x02\x04\x00\x00\x00\x00\x01\x00" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:26:17] "OPTIONS / HTTP/1.0" 200 -
+192.168.0.197 - - [21/Apr/2026 12:26:22] code 400, message Bad request version ('\x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+192.168.0.197 - - [21/Apr/2026 12:26:22] "\x80\x00\x00(rþ\x1d\x13\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01\x86 \x00\x01\x97|\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
+100.79.216.111 - - [21/Apr/2026 12:26:25] "GET /api/devices HTTP/1.1" 200 -
+192.168.0.197 - - [21/Apr/2026 12:26:27] code 400, message Bad HTTP/0.9 request type ('\x00')
+192.168.0.197 - - [21/Apr/2026 12:26:27] "\x00\x0c\x00\x00\x10\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:26:27] code 400, message Bad request syntax ('EHLO')
+192.168.0.197 - - [21/Apr/2026 12:26:27] "EHLO" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:26:27] code 400, message Bad request syntax ('HELP')
+192.168.0.197 - - [21/Apr/2026 12:26:27] "HELP" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:26:27] code 400, message Bad request syntax ('\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00')
+192.168.0.197 - - [21/Apr/2026 12:26:27] "\x16\x03\x00\x00S\x01\x00\x00O\x03\x00?G×÷º,îê²`~ó\x00ý\x82{¹Õ\x96Èw\x9bæÄÛ<=Ûoï\x10n\x00\x00(\x00\x16\x00\x13\x00" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:26:27] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie:')
+192.168.0.197 - - [21/Apr/2026 12:26:27] "\x03\x00\x00*%à\x00\x00\x00\x00\x00Cookie: mstshash=nmap" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:26:27] code 400, message Bad request version ('\x00/\x00')
+192.168.0.197 - - [21/Apr/2026 12:26:27] "\x16\x03\x00\x00i\x01\x00\x00e\x03\x03U\x1c§ärandom1random2random3random4\x00\x00\x0c\x00/\x00" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:26:27] code 400, message Bad HTTP/0.9 request type ('\x80\x9e\x01\x03\x01\x00u\x00\x00\x00')
+192.168.0.197 - - [21/Apr/2026 12:26:27] "\x80\x9e\x01\x03\x01\x00u\x00\x00\x00 \x00\x00f\x00\x00e\x00\x00d\x00\x00c\x00\x00b\x00\x00:\x00\x009\x00\x008\x00\x005\x00\x004\x00\x003\x00\x002\x00\x00/\x00\x00\x1b\x00\x00\x1a\x00\x00\x19\x00\x00\x18\x00\x00\x17\x00\x00\x16\x00\x00\x15\x00\x00\x14\x00\x00\x13\x00\x00\x12\x00\x00\x11\x00\x00" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:26:27] code 400, message Bad request syntax ('\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01')
+192.168.0.197 - - [21/Apr/2026 12:26:27] "\x00\x00\x00qj\x81n0\x81k¡\x03\x02\x01\x05¢\x03\x02\x01" HTTPStatus.BAD_REQUEST -
+192.168.0.197 - - [21/Apr/2026 12:26:30] code 400, message Bad HTTP/0.9 request type ('l\x00')
+192.168.0.197 - - [21/Apr/2026 12:26:30] "l\x00\x0b\x00\x00\x00\x00\x00\x00\x00\x00\x00" HTTPStatus.BAD_REQUEST -
+100.79.216.111 - - [21/Apr/2026 12:27:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:28:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:29:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:30:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:31:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:32:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:33:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:34:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:35:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:36:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:37:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:38:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:39:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:40:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:41:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:42:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:43:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:44:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:45:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:46:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:47:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:48:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:49:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:50:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:51:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:52:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:53:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:54:25] "GET /api/devices HTTP/1.1" 200 -
+127.0.0.1 - - [21/Apr/2026 12:54:31] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:55:26] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:56:25] "GET /api/devices HTTP/1.1" 200 -
+100.79.216.111 - - [21/Apr/2026 12:57:25] "GET /api/devices HTTP/1.1" 200 -
