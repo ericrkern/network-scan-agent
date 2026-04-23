@@ -778,6 +778,49 @@ def fetch_roku_device_info(ip: str):
         return {}
 
 
+def fetch_roku_playback_info(ip: str):
+    """
+    Fetch best-effort Roku playback context.
+    Returns active app/screensaver, plus limited-mode hint when media-player is blocked.
+    """
+    result = {}
+
+    # Active app is usually available even when richer media-player data is blocked.
+    active_app_url = f"http://{ip}:8060/query/active-app"
+    try:
+        req = urllib.request.Request(active_app_url, headers={"User-Agent": "NetworkPulse/1.0"})
+        with urllib.request.urlopen(req, timeout=2.5) as resp:
+            payload = resp.read()
+        root = ET.fromstring(payload)
+
+        app_node = root.find("app")
+        if app_node is not None:
+            result["active_app_name"] = (app_node.text or "").strip()
+            result["active_app_id"] = app_node.get("id", "")
+            result["active_app_type"] = app_node.get("type", "")
+            result["active_app_ui_location"] = app_node.get("ui-location", "")
+
+        screensaver_node = root.find("screensaver")
+        if screensaver_node is not None:
+            result["screensaver_name"] = (screensaver_node.text or "").strip()
+    except Exception:
+        pass
+
+    # Probe media-player once to detect limited-mode restrictions for display context.
+    media_player_url = f"http://{ip}:8060/query/media-player"
+    try:
+        req = urllib.request.Request(media_player_url, headers={"User-Agent": "NetworkPulse/1.0"})
+        with urllib.request.urlopen(req, timeout=2.5):
+            result["media_player_access"] = "available"
+    except urllib.error.HTTPError as e:
+        if e.code == 403:
+            result["media_player_access"] = "limited_mode_blocked"
+    except Exception:
+        pass
+
+    return result
+
+
 def check_online_status():
     """Quick outbound connectivity probe for dashboard online/offline indicator."""
     probe_urls = [
@@ -880,9 +923,10 @@ def api_device_detail(ip):
 
     # Try live Roku ECP device-info enrichment (fast timeout).
     roku_info = fetch_roku_device_info(ip)
+    roku_live_lines = []
     if roku_info:
         extra["roku_device_info"] = roku_info
-        details.extend([
+        roku_live_lines.extend([
             f"Roku Name: {roku_info.get('friendly-device-name', '—')}",
             f"Location: {roku_info.get('user-device-location', '—')}",
             f"Model: {roku_info.get('model-name', '—')} ({roku_info.get('model-number', '—')})",
@@ -895,15 +939,44 @@ def api_device_detail(ip):
             f"Uptime (seconds): {roku_info.get('uptime', '—')}",
         ])
 
+    # Add best-effort "what's playing" context from Roku active app data.
+    roku_playback = fetch_roku_playback_info(ip)
+    if roku_playback:
+        extra["roku_playback"] = roku_playback
+        playback_lines = []
+        active_name = roku_playback.get("active_app_name")
+        active_type = roku_playback.get("active_app_type")
+        active_ui = roku_playback.get("active_app_ui_location")
+        if active_name:
+            playback_lines.append(
+                f"Now Playing (Active App): {active_name}"
+                f"{f' [{active_type}]' if active_type else ''}"
+                f"{f' @ {active_ui}' if active_ui else ''}"
+            )
+        screensaver_name = roku_playback.get("screensaver_name")
+        if screensaver_name:
+            playback_lines.append(f"Screensaver: {screensaver_name}")
+        if roku_playback.get("media_player_access") == "limited_mode_blocked":
+            playback_lines.append("Playback metadata endpoint (/query/media-player) blocked in Roku Limited mode.")
+        roku_live_lines.extend(playback_lines)
+
+    # Normalize Roku detail formatting across devices while keeping data live.
+    if roku_live_lines:
+        details = roku_live_lines
+
     if details:
         extra["details"] = details
     if rich.get("details"):
         extra["details"] = details
-    if rich.get("access"):
+    if rich.get("access") and ip != "192.168.0.192":
         extra["access_methods"] = rich["access"]
     if rich.get("source"):
         extra["source"] = rich["source"]
     
+    response_access_methods = "See device documentation"
+    if ip != "192.168.0.192":
+        response_access_methods = rich.get("access", "See device documentation")
+
     return jsonify({
         "device": device,
         "rich_info": rich,
@@ -911,7 +984,7 @@ def api_device_detail(ip):
         "deep_scan": deep_scan_data,
         "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "ports": rich.get("ports", device.get("ports", "—")),
-        "access_methods": rich.get("access", "See device documentation"),
+        "access_methods": response_access_methods,
         "mac": device.get("mac", "—"),
         "manufacturer": device.get("manufacturer", "—"),
         **extra

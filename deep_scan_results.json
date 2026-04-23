@@ -1,5 +1,5 @@
 {
-  "scan_time": "2026-04-23T22:53:14.397768",
+  "scan_time": "2026-04-24T13:32:51.076033",
   "devices_scanned": 21,
   "results": {
     "100.70.174.39": {
@@ -90,7 +90,7 @@
       "udp_ports": [],
       "services": {},
       "host_up": true,
-      "scan_time": "2026-04-23T11:52:44.768535",
+      "scan_time": "2026-04-24T13:31:42.796225",
       "raw_output_length": 691,
       "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
       "status": "success"
@@ -132,7 +132,7 @@
       "udp_ports": [],
       "services": {},
       "host_up": true,
-      "scan_time": "2026-04-23T20:59:42.797017",
+      "scan_time": "2026-04-24T10:05:35.002535",
       "raw_output_length": 691,
       "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
       "status": "success"
@@ -143,23 +143,20 @@
       "os": "Unknown",
       "ports": [
         22,
-        5900,
-        47490
+        5900
       ],
       "tcp_ports": [
         22,
-        5900,
-        47490
+        5900
       ],
       "udp_ports": [],
       "services": {
         "22/tcp": "ssh     syn-ack",
-        "5900/tcp": "vnc     syn-ack",
-        "47490/tcp": "unknown syn-ack"
+        "5900/tcp": "vnc     syn-ack"
       },
       "host_up": true,
-      "scan_time": "2026-04-23T22:51:42.813735",
-      "raw_output_length": 4916,
+      "scan_time": "2026-04-24T11:23:42.849439",
+      "raw_output_length": 4628,
       "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
       "status": "success"
     },

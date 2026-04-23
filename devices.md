@@ -73,9 +73,9 @@ This table tracks when devices were first seen (came online), their last known a
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
 <<<<<<< HEAD
-*Last updated: 2026-04-24 03:07:42*
+*Last updated: 2026-04-24 13:32:51*
 =======
-*Last updated: 2026-04-24 03:07:42*
+*Last updated: 2026-04-24 13:32:51*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -146,6 +146,15 @@ This table shows only devices that changed state (came online or went offline) b
 - Protocol: Roku ECP (External Control Protocol)
 - Port: 8060 (not scanned, standard Roku port)
 - Access: HTTP API, mobile app control
+
+**Roku Streaming Stick Plus: 192.168.0.192**
+- Protocol: Roku ECP + UPnP device descriptor
+- Base endpoint: http://192.168.0.192:8060 (returns XML, not a browser UI page)
+- Device details: `/query/device-info` (HTTP 200, model/software/network/power metadata)
+- Current app visibility: `/query/active-app` (HTTP 200, shows active app/screensaver)
+- Now-playing detail: `/query/media-player` is blocked (`403 ECP command not allowed in Limited mode`)
+- App list endpoint: `/query/apps` currently blocked in Limited mode (HTTP 403)
+- Control endpoints (for example `/keypress/Home`, `/launch/<id>`) currently unavailable from this interface
 
 **ESP32-S3: 192.168.0.246**
 - Protocol: ESP32 native/MQTT/Web
@@ -1461,6 +1470,45 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-24 13:32:51 | 0 | 16 | 43 |
+| 2026-04-24 13:15:42 | 0 | 16 | 43 |
+| 2026-04-24 12:59:42 | 0 | 16 | 43 |
+| 2026-04-24 12:43:42 | 0 | 16 | 43 |
+| 2026-04-24 12:27:42 | 0 | 16 | 43 |
+| 2026-04-24 12:11:42 | 0 | 16 | 43 |
+| 2026-04-24 11:55:42 | 0 | 16 | 43 |
+| 2026-04-24 11:39:42 | 0 | 16 | 43 |
+| 2026-04-24 11:25:24 | 0 | 17 | 43 |
+| 2026-04-24 11:08:51 | 0 | 16 | 43 |
+| 2026-04-24 10:51:42 | 0 | 16 | 43 |
+| 2026-04-24 10:35:42 | 0 | 16 | 43 |
+| 2026-04-24 10:20:51 | 0 | 16 | 43 |
+| 2026-04-24 10:06:43 | 0 | 17 | 43 |
+| 2026-04-24 09:47:42 | 0 | 15 | 43 |
+| 2026-04-24 09:31:42 | 0 | 15 | 43 |
+| 2026-04-24 09:16:51 | 0 | 16 | 43 |
+| 2026-04-24 08:59:42 | 0 | 15 | 43 |
+| 2026-04-24 08:43:42 | 0 | 16 | 43 |
+| 2026-04-24 08:28:51 | 0 | 16 | 43 |
+| 2026-04-24 08:11:42 | 0 | 15 | 43 |
+| 2026-04-24 07:55:42 | 0 | 15 | 43 |
+| 2026-04-24 07:39:42 | 0 | 15 | 43 |
+| 2026-04-24 07:23:42 | 0 | 16 | 43 |
+| 2026-04-24 07:07:42 | 0 | 16 | 43 |
+| 2026-04-24 06:51:42 | 0 | 16 | 43 |
+| 2026-04-24 06:36:51 | 0 | 16 | 43 |
+| 2026-04-24 06:19:42 | 0 | 15 | 43 |
+| 2026-04-24 06:03:42 | 0 | 16 | 43 |
+| 2026-04-24 05:47:42 | 0 | 16 | 43 |
+| 2026-04-24 05:31:42 | 0 | 16 | 43 |
+| 2026-04-24 05:15:42 | 0 | 16 | 43 |
+| 2026-04-24 04:59:42 | 0 | 16 | 43 |
+| 2026-04-24 04:43:42 | 0 | 16 | 43 |
+| 2026-04-24 04:27:42 | 0 | 16 | 43 |
+| 2026-04-24 04:11:42 | 0 | 16 | 43 |
+| 2026-04-24 03:55:42 | 0 | 16 | 43 |
+| 2026-04-24 03:39:42 | 0 | 17 | 43 |
+| 2026-04-24 03:23:42 | 0 | 17 | 43 |
 | 2026-04-24 03:07:42 | 0 | 17 | 43 |
 | 2026-04-24 02:51:42 | 0 | 17 | 43 |
 | 2026-04-24 02:35:42 | 0 | 17 | 43 |
@@ -1651,9 +1699,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 
 <<<<<<< HEAD
-*Last updated: 2026-04-24 03:07:42*
+*Last updated: 2026-04-24 13:32:51*
 =======
-*Last updated: 2026-04-24 03:07:42*
+*Last updated: 2026-04-24 13:32:51*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -1918,8 +1966,8 @@ This table shows only devices that changed state (came online or went offline) b
 
 ## ⚡ Online Detector Enrichment
 
-Updated: 2026-04-23 22:53:14
+Updated: 2026-04-24 13:32:51
 
 | IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
 |-----|----------|-----|--------|------------|---------------|----------|
-| 100.71.191.72 | emergingtechs-mac-mini.tail2a3b45.ts.net | — | Online | 22, 5900, 47490 | SSH (`ssh user@100.71.191.72`), VNC | VNC/Remote Desktop |
+| 192.168.50.106 | iPhone.MG8702 | — | Online | None | No known access | Mobile Phone |

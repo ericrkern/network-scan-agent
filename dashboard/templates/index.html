@@ -218,12 +218,23 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="scan-online-devices-panel" class="mt-5 hidden border-t border-zinc-800 pt-4">
-                        <div class="flex items-center justify-between mb-3">
-                            <div id="selected-scan-title" class="text-sm font-semibold text-emerald-300"></div>
-                            <div id="selected-scan-count" class="text-xs font-mono text-zinc-500"></div>
+                    <div id="scan-online-devices-panel" class="mt-5 border-t border-zinc-800 pt-4">
+                        <button id="scan-online-toggle"
+                                onclick="toggleScanOnlinePanel()"
+                                class="w-full flex items-center justify-between rounded-2xl border border-zinc-700 bg-zinc-950/70 px-4 py-3 hover:border-zinc-500 transition-colors">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-signal text-emerald-300 text-xs"></i>
+                                <span class="text-sm font-semibold text-emerald-300">Online State Details</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span id="selected-scan-count" class="text-xs font-mono text-zinc-500">No scan selected</span>
+                                <i id="scan-online-toggle-icon" class="fa-solid fa-chevron-down text-zinc-400 text-xs"></i>
+                            </div>
+                        </button>
+                        <div id="scan-online-devices-content" class="hidden mt-3">
+                            <div id="selected-scan-title" class="text-sm font-semibold text-emerald-300 mb-3"></div>
+                            <div id="selected-scan-devices" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2"></div>
                         </div>
-                        <div id="selected-scan-devices" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2"></div>
                     </div>
                 </div>
             </div>
@@ -669,6 +680,8 @@
                 const data = await response.json();
 
                 const panel = document.getElementById('scan-online-devices-panel');
+                const content = document.getElementById('scan-online-devices-content');
+                const toggleIcon = document.getElementById('scan-online-toggle-icon');
                 const title = document.getElementById('selected-scan-title');
                 const count = document.getElementById('selected-scan-count');
                 const list = document.getElementById('selected-scan-devices');
@@ -689,8 +702,26 @@
                 }
 
                 panel.classList.remove('hidden');
+                content.classList.remove('hidden');
+                toggleIcon.classList.remove('fa-chevron-down');
+                toggleIcon.classList.add('fa-chevron-up');
             } catch (e) {
                 console.error('Failed to load selected scan devices', e);
+            }
+        }
+
+        function toggleScanOnlinePanel() {
+            const content = document.getElementById('scan-online-devices-content');
+            const toggleIcon = document.getElementById('scan-online-toggle-icon');
+            const isHidden = content.classList.contains('hidden');
+            if (isHidden) {
+                content.classList.remove('hidden');
+                toggleIcon.classList.remove('fa-chevron-down');
+                toggleIcon.classList.add('fa-chevron-up');
+            } else {
+                content.classList.add('hidden');
+                toggleIcon.classList.remove('fa-chevron-up');
+                toggleIcon.classList.add('fa-chevron-down');
             }
         }
         
