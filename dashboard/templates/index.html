@@ -63,6 +63,8 @@
                         <p class="text-sm font-mono -mt-1">
                             <span id="connectivity-badge" class="text-emerald-400">ONLINE</span>
                             <span class="text-zinc-500">• 192.168.0.197</span>
+                            <span class="text-zinc-500">• WAN</span>
+                            <span id="public-ip" class="text-yellow-400">Loading...</span>
                         </p>
                     </div>
                 </div>
@@ -422,7 +424,8 @@
                 'Adjacent Subnet (192.168.100.0/24)',
                 'Docker Network (172.17.0.0/16)',
                 'Other Networks',
-                'Tailscale Mesh VPN'
+                'Tailscale Mesh VPN',
+                'External/Public Internet'
             ];
 
             const grouped = {};
@@ -478,7 +481,8 @@
                 'Adjacent Subnet (192.168.100.0/24)': '#60a5fa',
                 'Docker Network (172.17.0.0/16)': '#f59e0b',
                 'Other Networks': '#a78bfa',
-                'Tailscale Mesh VPN': '#14b8a6'
+                'Tailscale Mesh VPN': '#14b8a6',
+                'External/Public Internet': '#f97316'
             };
 
             const orderedGroups = Object.keys(groups)
@@ -740,6 +744,7 @@
                 
                 allDevices = data.devices;
                 document.getElementById('last-updated').textContent = `UPDATED ${data.last_updated.split(' ')[1]}`;
+                document.getElementById('public-ip').textContent = data.public_ip || 'Unavailable';
                 const connectivityEl = document.getElementById('connectivity-badge');
                 const isOnline = Boolean(data.connectivity && data.connectivity.online);
                 connectivityEl.textContent = isOnline ? 'ONLINE' : 'OFFLINE';
@@ -867,6 +872,12 @@
                 // MAC Address
                 if (device.mac && device.mac !== '—') {
                     infoHTML += `<div class="flex justify-between py-1 border-b border-zinc-800"><span class="text-zinc-400">MAC Address</span><span class="font-mono text-amber-300">${device.mac}</span></div>`;
+                }
+                
+                // Manufacturer
+                const manufacturer = device.manufacturer || data.manufacturer || '—';
+                if (manufacturer && manufacturer !== '—') {
+                    infoHTML += `<div class="flex justify-between py-1 border-b border-zinc-800"><span class="text-zinc-400">Manufacturer</span><span class="text-emerald-300">${manufacturer}</span></div>`;
                 }
                 
                 // Access Methods (from Access Details section)

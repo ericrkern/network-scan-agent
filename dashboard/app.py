@@ -61,6 +61,7 @@ def parse_markdown_devices():
                         mac = "—"
                         ports = "—"
                         access = ""
+                        manufacturer = "—"
                         
                         for j, cell in enumerate(row_cells):
                             if j < len(headers):
@@ -77,6 +78,8 @@ def parse_markdown_devices():
                                     ports = clean_cell(cell)
                                 elif any(x in header for x in ['access', 'method']):
                                     access = clean_cell(cell)
+                                elif any(x in header for x in ['manufacturer', 'vendor']):
+                                    manufacturer = clean_cell(cell)
                         
                         if ip:
                             existing = device_info.get(ip, {})
@@ -85,6 +88,7 @@ def parse_markdown_devices():
                             existing_mac = existing.get("mac")
                             existing_ports = existing.get("ports")
                             existing_access = existing.get("access")
+                            existing_manufacturer = existing.get("manufacturer")
 
                             # Keep richer/known values if a later table row is sparse.
                             merged = {
@@ -93,6 +97,7 @@ def parse_markdown_devices():
                                 "mac": mac,
                                 "ports": ports,
                                 "access": access,
+                                "manufacturer": manufacturer,
                                 "source": "table"
                             }
                             if existing:
@@ -106,6 +111,8 @@ def parse_markdown_devices():
                                     merged["ports"] = existing_ports
                                 if merged["access"] in ("—", "", "None", None) and existing_access not in ("—", "", "None", None):
                                     merged["access"] = existing_access
+                                if merged["manufacturer"] in ("—", "", "None", None) and existing_manufacturer not in ("—", "", "None", None):
+                                    merged["manufacturer"] = existing_manufacturer
                                 if existing.get("details"):
                                     merged["details"] = existing["details"]
 
@@ -141,6 +148,7 @@ def parse_markdown_devices():
                             "mac": "—",
                             "ports": "—",
                             "access": " | ".join([d for d in details if any(k in d for k in ["Access", "Web", "SSH", "HTTP"])]),
+                            "manufacturer": "—",
                             "details": details,
                             "source": "access_section"
                         }
@@ -571,6 +579,8 @@ def load_device_data():
     md_info = parse_markdown_devices()
 
     def get_subnet_group(ip: str) -> str:
+        if ip == "24.192.17.178":
+            return "External/Public Internet"
         if ip.startswith("192.168.0."):
             return "Local LAN (192.168.0.0/24)"
         if ip.startswith("192.168.50."):
@@ -605,7 +615,18 @@ def load_device_data():
                 rich_identity = rich.get("identity")
                 identity = rich_identity if rich_identity not in ["Unknown Device", "Unknown", "—", "None", None, ""] else data.get("type", "Unknown Device")
                 mac = rich.get("mac", data.get("mac", "—"))
-                ports = rich.get("ports", "—")
+                rich_manufacturer = rich.get("manufacturer")
+                if rich_manufacturer in (None, "", "—", "None"):
+                    manufacturer = data.get("manufacturer", "—")
+                else:
+                    manufacturer = rich_manufacturer
+                rich_ports = rich.get("ports")
+                if rich_ports in (None, "", "—", "None"):
+                    rich_ports = data.get("ports", "—")
+                if isinstance(rich_ports, list):
+                    ports = ", ".join(str(p) for p in rich_ports) if rich_ports else "—"
+                else:
+                    ports = rich_ports
                 
                 # Drop legacy stealth-tagged devices from previous network installs.
                 if "stealth" in str(identity).lower():
@@ -632,6 +653,7 @@ def load_device_data():
                     "last_seen": last_seen,
                     "type": identity.split('/')[0].strip() if '/' in identity else identity,
                     "mac": mac,
+                    "manufacturer": manufacturer,
                     "first_seen": data.get("first_seen", "—"),
                     "ports": ports,
                     "events": data.get("events", []),
@@ -648,6 +670,7 @@ def load_device_data():
         "Docker Network (172.17.0.0/16)": 3,
         "Other Networks": 4,
         "Tailscale Mesh VPN": 5,
+        "External/Public Internet": 6,
     }
 
     def status_priority(d):
@@ -737,6 +760,24 @@ def check_online_status():
     }
 
 
+def get_public_ip():
+    """Fetch current public/WAN egress IP for dashboard header."""
+    urls = [
+        "https://ifconfig.me/ip",
+        "https://api.ipify.org",
+    ]
+    for url in urls:
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "NetworkPulse/1.0"})
+            with urllib.request.urlopen(req, timeout=2.5) as resp:
+                ip = resp.read().decode("utf-8").strip()
+            if ip:
+                return ip
+        except Exception:
+            continue
+    return "Unavailable"
+
+
 @app.route('/')
 def index():
     """Main dashboard page"""
@@ -763,6 +804,7 @@ def api_devices():
         "total": len(devices),
         "online": len([d for d in devices if is_active_status(d.get('status', ''))]),
         "connectivity": connectivity,
+        "public_ip": get_public_ip(),
     })
 
 
@@ -829,6 +871,7 @@ def api_device_detail(ip):
         "ports": rich.get("ports", device.get("ports", "—")),
         "access_methods": rich.get("access", "See device documentation"),
         "mac": device.get("mac", "—"),
+        "manufacturer": device.get("manufacturer", "—"),
         **extra
     })
 

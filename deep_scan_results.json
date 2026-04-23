@@ -1,6 +1,6 @@
 {
-  "scan_time": "2026-04-22T14:32:14.007475",
-  "devices_scanned": 31,
+  "scan_time": "2026-04-23T06:55:41.108574",
+  "devices_scanned": 32,
   "results": {
     "10.122.11.69": {
       "ip": "10.122.11.69",
@@ -52,8 +52,26 @@
     },
     "100.79.216.111": {
       "ip": "100.79.216.111",
-      "status": "timeout",
-      "error": "Scan timed out"
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [
+        5000,
+        7000
+      ],
+      "tcp_ports": [
+        5000,
+        7000
+      ],
+      "udp_ports": [],
+      "services": {
+        "5000/tcp": "upnp            syn-ack",
+        "7000/tcp": "afs3-fileserver syn-ack"
+      },
+      "host_up": true,
+      "scan_time": "2026-04-23T06:30:42.703397",
+      "raw_output_length": 4325,
+      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
+      "status": "success"
     },
     "100.92.6.101": {
       "ip": "100.92.6.101",
@@ -233,17 +251,17 @@
     },
     "192.168.0.59": {
       "ip": "192.168.0.59",
-      "hostname": "\u2014",
+      "hostname": "samsung-attic",
       "os": "Unknown",
       "ports": [],
       "tcp_ports": [],
       "udp_ports": [],
       "services": {},
-      "host_up": false,
-      "scan_time": "2026-04-22T14:29:11.653094",
-      "raw_output_length": 331,
-      "stderr_tail": "",
-      "status": "no_response"
+      "host_up": true,
+      "scan_time": "2026-04-23T00:06:42.712919",
+      "raw_output_length": 437,
+      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
+      "status": "success"
     },
     "192.168.0.67": {
       "ip": "192.168.0.67",
@@ -291,6 +309,41 @@
       "ip": "192.168.50.1",
       "status": "timeout",
       "error": "Scan timed out"
+    },
+    "24.192.17.178": {
+      "ip": "24.192.17.178",
+      "hostname": "d192-24-178-17.try.wideopenwest.com",
+      "os": "Unknown",
+      "ports": [
+        53,
+        5000
+      ],
+      "tcp_ports": [
+        53,
+        5000
+      ],
+      "udp_ports": [],
+      "services": {
+        "47/tcp": "ni-ftp filtered",
+        "53/tcp": "domain ISC BIND 9.14.3 open",
+        "80/tcp": "http filtered",
+        "137/tcp": "netbios-ns filtered",
+        "138/tcp": "netbios-dgm filtered",
+        "139/tcp": "netbios-ssn filtered",
+        "443/tcp": "https filtered",
+        "1723/tcp": "pptp filtered",
+        "1990/tcp": "stun-p1 filtered",
+        "2601/tcp": "zebra filtered",
+        "2602/tcp": "ripd filtered",
+        "2603/tcp": "ripngd filtered",
+        "5000/tcp": "rtsp open",
+        "12345/tcp": "netbus filtered",
+        "12346/tcp": "netbus filtered",
+        "20034/tcp": "nburn_id filtered"
+      },
+      "host_up": true,
+      "scan_time": "2026-04-23T06:55:41.108549",
+      "status": "success"
     }
   }
 }
