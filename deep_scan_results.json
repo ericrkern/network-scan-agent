@@ -1,0 +1,296 @@
+{
+  "scan_time": "2026-04-22T14:32:14.007475",
+  "devices_scanned": 31,
+  "results": {
+    "10.122.11.69": {
+      "ip": "10.122.11.69",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": true,
+      "scan_time": "2026-04-22T14:00:01.892107",
+      "raw_output_length": 683,
+      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
+      "status": "success"
+    },
+    "100.100.100.100": {
+      "ip": "100.100.100.100",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "100.70.174.39": {
+      "ip": "100.70.174.39",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "100.71.191.72": {
+      "ip": "100.71.191.72",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "100.76.245.26": {
+      "ip": "100.76.245.26",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": true,
+      "scan_time": "2026-04-22T14:06:20.412542",
+      "raw_output_length": 687,
+      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
+      "status": "success"
+    },
+    "100.78.64.7": {
+      "ip": "100.78.64.7",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "100.79.216.111": {
+      "ip": "100.79.216.111",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "100.92.6.101": {
+      "ip": "100.92.6.101",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "100.93.92.44": {
+      "ip": "100.93.92.44",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": true,
+      "scan_time": "2026-04-22T14:12:50.971874",
+      "raw_output_length": 683,
+      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
+      "status": "success"
+    },
+    "100.95.15.82": {
+      "ip": "100.95.15.82",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "149.154.167.99": {
+      "ip": "149.154.167.99",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "172.17.0.1": {
+      "ip": "172.17.0.1",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "192.168.0.1": {
+      "ip": "192.168.0.1",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "192.168.0.127": {
+      "ip": "192.168.0.127",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "192.168.0.131": {
+      "ip": "192.168.0.131",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": false,
+      "scan_time": "2026-04-22T14:21:47.111736",
+      "raw_output_length": 331,
+      "stderr_tail": "",
+      "status": "no_response"
+    },
+    "192.168.0.135": {
+      "ip": "192.168.0.135",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": true,
+      "scan_time": "2026-04-22T14:21:54.362982",
+      "raw_output_length": 438,
+      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
+      "status": "success"
+    },
+    "192.168.0.142": {
+      "ip": "192.168.0.142",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": false,
+      "scan_time": "2026-04-22T14:22:02.461391",
+      "raw_output_length": 331,
+      "stderr_tail": "",
+      "status": "no_response"
+    },
+    "192.168.0.143": {
+      "ip": "192.168.0.143",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": false,
+      "scan_time": "2026-04-22T14:22:09.561608",
+      "raw_output_length": 331,
+      "stderr_tail": "",
+      "status": "no_response"
+    },
+    "192.168.0.15": {
+      "ip": "192.168.0.15",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "192.168.0.158": {
+      "ip": "192.168.0.158",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": false,
+      "scan_time": "2026-04-22T14:24:22.493303",
+      "raw_output_length": 331,
+      "stderr_tail": "",
+      "status": "no_response"
+    },
+    "192.168.0.182": {
+      "ip": "192.168.0.182",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": false,
+      "scan_time": "2026-04-22T14:24:29.756873",
+      "raw_output_length": 331,
+      "stderr_tail": "",
+      "status": "no_response"
+    },
+    "192.168.0.192": {
+      "ip": "192.168.0.192",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": false,
+      "scan_time": "2026-04-22T14:24:37.019555",
+      "raw_output_length": 331,
+      "stderr_tail": "",
+      "status": "no_response"
+    },
+    "192.168.0.197": {
+      "ip": "192.168.0.197",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "192.168.0.233": {
+      "ip": "192.168.0.233",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "192.168.0.246": {
+      "ip": "192.168.0.246",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "192.168.0.49": {
+      "ip": "192.168.0.49",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": false,
+      "scan_time": "2026-04-22T14:29:04.110199",
+      "raw_output_length": 331,
+      "stderr_tail": "",
+      "status": "no_response"
+    },
+    "192.168.0.59": {
+      "ip": "192.168.0.59",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": false,
+      "scan_time": "2026-04-22T14:29:11.653094",
+      "raw_output_length": 331,
+      "stderr_tail": "",
+      "status": "no_response"
+    },
+    "192.168.0.67": {
+      "ip": "192.168.0.67",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": true,
+      "scan_time": "2026-04-22T14:29:18.907827",
+      "raw_output_length": 683,
+      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
+      "status": "success"
+    },
+    "192.168.0.81": {
+      "ip": "192.168.0.81",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": false,
+      "scan_time": "2026-04-22T14:30:27.276563",
+      "raw_output_length": 331,
+      "stderr_tail": "",
+      "status": "no_response"
+    },
+    "192.168.100.1": {
+      "ip": "192.168.100.1",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": true,
+      "scan_time": "2026-04-22T14:30:34.523241",
+      "raw_output_length": 441,
+      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
+      "status": "success"
+    },
+    "192.168.50.1": {
+      "ip": "192.168.50.1",
+      "status": "timeout",
+      "error": "Scan timed out"
+    }
+  }
+}

@@ -60,7 +60,10 @@
                     <div class="w-9 h-9 bg-yellow-500 rounded-2xl flex items-center justify-center text-zinc-950 font-bold text-xl">📡</div>
                     <div>
                         <h1 class="logo-font text-4xl font-semibold tracking-tighter text-white">NETWORK PULSE</h1>
-                        <p class="text-emerald-400 text-sm font-mono -mt-1">LIVE • 192.168.0.197</p>
+                        <p class="text-sm font-mono -mt-1">
+                            <span id="connectivity-badge" class="text-emerald-400">ONLINE</span>
+                            <span class="text-zinc-500">• 192.168.0.197</span>
+                        </p>
                     </div>
                 </div>
                 
@@ -374,15 +377,15 @@
             return `
                 <div onclick="showDeviceHistory('${device.ip}')" 
                      class="device-card bg-zinc-900 border ${isOnline ? 'border-emerald-500/30' : 'border-zinc-700'} rounded-3xl p-6 group cursor-pointer hover:border-yellow-500/50 active:scale-[0.985] transition-all">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
+                    <div class="flex justify-between items-start gap-3 mb-4">
+                        <div class="min-w-0 flex-1">
                             <div class="font-mono text-sm text-yellow-400">${device.ip}</div>
-                            <div class="text-xl font-semibold text-white mt-0.5 leading-tight">${device.hostname}</div>
+                            <div class="text-xl font-semibold text-white mt-0.5 leading-tight truncate" title="${device.hostname}">${device.hostname}</div>
                             <div class="text-emerald-300/70 text-sm line-clamp-2 mt-1">${device.identity}</div>
                         </div>
                         
                         <div onclick="event.stopImmediatePropagation(); toggleDeviceDetail(this)" 
-                             class="cursor-pointer px-3 py-1 text-[10px] font-mono rounded-2xl ${isOnline ? 
+                             class="flex-shrink-0 cursor-pointer px-3 py-1 text-[10px] font-mono rounded-2xl ${isOnline ? 
                                 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : 
                                 'bg-red-500/10 text-red-400 border border-red-500/30'}">
                             ${device.status}
@@ -531,9 +534,9 @@
                     <div class="text-sm font-semibold mb-3" style="color:${n.color}">${n.key}</div>
                     <div class="flex flex-wrap gap-2">
                         ${n.list.map(d => `
-                            <button onclick="showDeviceHistory('${d.ip}')" class="px-3 py-1.5 rounded-xl bg-zinc-950 border border-zinc-800 hover:bg-zinc-800 text-left">
-                                <span class="text-xs text-white">${d.hostname}</span>
-                                <span class="text-[10px] text-yellow-400 font-mono ml-2">${d.ip}</span>
+                            <button onclick="showDeviceHistory('${d.ip}')" class="px-3 py-1.5 rounded-xl bg-zinc-950 border border-zinc-800 hover:bg-zinc-800 text-left w-full">
+                                <span class="text-xs text-white block whitespace-normal break-words leading-snug">${d.hostname}</span>
+                                <span class="text-[10px] text-yellow-400 font-mono mt-1 block break-all">${d.ip}</span>
                             </button>
                         `).join('')}
                     </div>
@@ -674,9 +677,9 @@
                 } else {
                     list.innerHTML = data.online_devices.map(d => `
                         <button onclick="showDeviceHistory('${d.ip}')" class="text-left rounded-xl px-3 py-2 bg-zinc-950 border border-zinc-800 hover:bg-zinc-800 transition-colors">
-                            <div class="text-sm text-white truncate">${d.hostname}</div>
-                            <div class="text-[11px] font-mono text-yellow-400">${d.ip}</div>
-                            <div class="text-[11px] text-zinc-400 truncate">${d.identity || 'Unknown device'}</div>
+                            <div class="text-sm text-white whitespace-normal break-words leading-snug">${d.hostname}</div>
+                            <div class="text-[11px] font-mono text-yellow-400 mt-1 break-all">${d.ip}</div>
+                            <div class="text-[11px] text-zinc-400 whitespace-normal break-words mt-1">${d.identity || 'Unknown device'}</div>
                         </button>
                     `).join('');
                 }
@@ -737,6 +740,10 @@
                 
                 allDevices = data.devices;
                 document.getElementById('last-updated').textContent = `UPDATED ${data.last_updated.split(' ')[1]}`;
+                const connectivityEl = document.getElementById('connectivity-badge');
+                const isOnline = Boolean(data.connectivity && data.connectivity.online);
+                connectivityEl.textContent = isOnline ? 'ONLINE' : 'OFFLINE';
+                connectivityEl.className = isOnline ? 'text-emerald-400' : 'text-red-400';
                 
                 renderDevices(allDevices);
                 renderTopology(allDevices);

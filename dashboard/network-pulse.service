@@ -8,7 +8,6 @@ WorkingDirectory=/home/jetson/Documents/Network/dashboard
 ExecStart=/usr/bin/python3 /home/jetson/Documents/Network/dashboard/app.py
 Restart=always
 RestartSec=5
-User=irene
 Environment=PYTHONUNBUFFERED=1
 
 # Security

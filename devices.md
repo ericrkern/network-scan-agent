@@ -11,7 +11,7 @@
 
 | IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
 |-----|----------|-----|--------|------------|---------------|----------|
-| 192.168.0.1 | verizon-5g-hotspot | c8:c7:50:f5:ca:1b | Online | 53, 80, 443, 5000 | Web UI (http/https), DNS | **Motorola MG8702 Router/Gateway** |
+| 192.168.0.1 | Motorola Router | c8:c7:50:f5:ca:1b | Online | 53, 80, 443, 5000 | Web UI (http/https), DNS | **Motorola MG8702 Router/Gateway** |
 | 192.168.0.59 | — | 8a:33:76:dd:0b:cb | Online | None | No known access | Unknown client device |
 | 192.168.0.67 | R7000.MG8702 | a0:04:60:31:85:a0 | Stealth (no ping) | UDP: 53,67,68,123,161,1900,5353,547,69,137,138,500,4500,5060 | SNMP, DHCP, VPN, VoIP | **Secondary Router/VPN Gateway** (Netgear R7000 or Lenovo) |
 | 192.168.0.127 | DESKTOP-HN6QL1F.MG8702 | 70:8b:cd:7c:f4:54 | Online | 139, 445 | SMB/CIFS | **Windows/Samba File Share** |
@@ -45,11 +45,11 @@
 | IP | Hostname | Status | Open Ports | Access Method | Identity |
 |-----|----------|--------|------------|---------------|----------|
 | 100.71.191.72 | apple-mac-mini-m4-pro | Online | 22, 5900 | SSH, VNC | **Mac Mini** |
-| 100.76.245.26 | — | Offline | — | — | **Offline/Unresponsive** |
+| 100.76.245.26 | Velas16s-macbookpro | Offline | — | — | **Offline/Unresponsive** |
 | 100.78.64.7 | apple-macbook-pro-m5-prime-radiant | Online | 22, 5900, **18789** | SSH, VNC, Custom | **MacBook Pro** |
 | 100.79.216.111 | erics-macbook-pro.tail2a3b45.ts.net | Online | 5000 | AirTunes | **MacBook Pro (AirPlay)** |
 | 100.92.6.101 | thinkstation-pgx-cindy-crawford | Online | 22, 80, 8080, **18789** | SSH, HTTP, Custom | **OpenClaw Server/Lenovo ThinkStation** |
-| 100.93.92.44 | — | Offline | — | — | **Offline/Unresponsive** |
+| 100.93.92.44 | irene-macbookair | Offline | — | — | **Offline/Unresponsive** |
 | 100.95.15.82 | iphone172.tail2a3b45.ts.net | Online | None | iOS protocol | **iPhone** |
 | 100.100.100.100 | magicdns.localhost-tailscale-daemon | Online | 53, 80, 8080 | DNS, HTTP | **Tailscale MagicDNS Service** |
 
@@ -61,18 +61,18 @@ This table tracks when devices were first seen (came online), their last known a
 
 | IP Address | Hostname | First Seen | Last Seen | On Network | Current Status |
 |------------|----------|------------|-----------|------------|----------------|
-| 192.168.0.1 | verizon-5g-hotspot | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Router) |
+| 192.168.0.1 | Motorola Router | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Router) |
 | 192.168.0.197 | yahboom | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (This Host) |
 | 192.168.0.143 | — | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Printer) |
 | 192.168.0.233 | RokuUltraB.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Streaming) |
 | 100.71.191.72 | apple-mac-mini-m4-pro | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Mac Mini) |
 | 100.78.64.7 | apple-macbook-pro-m5-prime-radiant | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (MacBook Pro) |
 | 100.92.6.101 | thinkstation-pgx-cindy-crawford | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (OpenClaw Server) |
-| 100.76.245.26 | — | 2026-04-20 | 2026-04-20 18:35 | ~14h | **Offline** |
+| 100.76.245.26 | Velas16s-macbookpro | 2026-04-20 | 2026-04-20 18:35 | ~14h | **Offline** |
 | 100.93.92.44 | — | 2026-04-20 | 2026-04-20 18:35 | ~14h | **Offline** |
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
-*Last updated: 2026-04-22 13:15:02*
+*Last updated: 2026-04-22 20:38:42*
 
 ---
 
@@ -1166,6 +1166,21 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-22 20:38:42 | 0 | 14 | 39 |
+| 2026-04-22 20:16:11 | 0 | 14 | 39 |
+| 2026-04-22 20:07:42 | 0 | 14 | 39 |
+| 2026-04-22 19:38:21 | 0 | 14 | 39 |
+| 2026-04-22 19:07:08 | 0 | 13 | 39 |
+| 2026-04-22 18:34:42 | 0 | 12 | 39 |
+| 2026-04-22 18:03:42 | 0 | 13 | 39 |
+| 2026-04-22 17:32:42 | 0 | 13 | 39 |
+| 2026-04-22 17:01:42 | 0 | 13 | 39 |
+| 2026-04-22 16:30:42 | 0 | 13 | 39 |
+| 2026-04-22 16:09:29 | 0 | 13 | 39 |
+| 2026-04-22 15:31:02 | 0 | 9 | 38 |
+| 2026-04-22 15:00:18 | 0 | 9 | 38 |
+| 2026-04-22 14:59:27 | 0 | 9 | 38 |
+| 2026-04-22 14:16:02 | 0 | 9 | 38 |
 | 2026-04-22 13:15:02 | 0 | 9 | 38 |
 | 2026-04-22 12:14:02 | 0 | 9 | 38 |
 | 2026-04-22 11:13:02 | 0 | 9 | 38 |
@@ -1221,7 +1236,7 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 | 2026-04-20 15:36:51 | 0 | 13 | 35 |
 
 
-*Last updated: 2026-04-22 13:15:02*
+*Last updated: 2026-04-22 20:38:42*
 
 ---
 
@@ -1352,10 +1367,18 @@ This table shows only devices that changed state (came online or went offline) b
 
 ---
 
-## 🔬 Deep Scan Results - 2026-04-22 12:31:42
+
+
+---
+
+## 🔬 Deep Scan Results - 2026-04-22 14:32:14
 
 **Scanned 31 devices with full Nmap service/OS detection.**
 
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-22 14:32:14. Full JSON results in `deep_scan_results.json`.*
 ### Key Findings:
 - No open ports discovered in this run (likely filtered/host firewalls).
 
@@ -1472,3 +1495,13 @@ This table shows only devices that changed state (came online or went offline) b
 ### Key Findings:
 
 *Deep scan completed at 2026-04-21 10:29:53. Full JSON results in `deep_scan_results.json`.*
+
+---
+
+## ⚡ Online Detector Enrichment
+
+Updated: 2026-04-22 19:38:21
+
+| IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
+|-----|----------|-----|--------|------------|---------------|----------|
+| 100.79.216.111 | erics-macbook-pro.tail2a3b45.ts.net | — | Online | None | No known access | Unknown |

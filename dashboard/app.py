@@ -713,6 +713,30 @@ def fetch_roku_device_info(ip: str):
         return {}
 
 
+def check_online_status():
+    """Quick outbound connectivity probe for dashboard online/offline indicator."""
+    probe_urls = [
+        "https://clients3.google.com/generate_204",
+        "https://1.1.1.1",
+    ]
+    for url in probe_urls:
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "NetworkPulse/1.0"})
+            with urllib.request.urlopen(req, timeout=2.5):
+                return {
+                    "online": True,
+                    "label": "ONLINE",
+                    "checked_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                }
+        except Exception:
+            continue
+    return {
+        "online": False,
+        "label": "OFFLINE",
+        "checked_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    }
+
+
 @app.route('/')
 def index():
     """Main dashboard page"""
@@ -731,12 +755,14 @@ def api_devices():
     """JSON API endpoint for live updates"""
     devices = load_device_data()
     scan_history = enrich_scan_history_with_state_changes(load_scan_history())
+    connectivity = check_online_status()
     return jsonify({
         "devices": devices,
         "scan_history": scan_history,
         "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "total": len(devices),
-        "online": len([d for d in devices if is_active_status(d.get('status', ''))])
+        "online": len([d for d in devices if is_active_status(d.get('status', ''))]),
+        "connectivity": connectivity,
     })
 
 

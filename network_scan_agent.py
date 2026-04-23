@@ -22,6 +22,7 @@ NETWORKS = ["192.168.0.0/24", "192.168.50.0/24", "192.168.100.0/24"]
 COMMON_PORTS = [22, 80, 443, 445, 631, 8080, 5900, 3000, 5000]
 SCAN_TIMEOUT = 2
 DEEP_SCAN_SCRIPT = "/home/jetson/Documents/Network/deep_scan.py"
+DEEP_SCAN_RESULTS_FILE = "/home/jetson/Documents/Network/deep_scan_results.json"
 
 
 def human_duration_since(first_seen_str: str) -> str:
@@ -172,6 +173,58 @@ def save_scan_snapshot(scan_time: str, online_ips, device_records):
         print(f"Warning: Could not save scan snapshot: {e}")
 
 
+def load_previous_online_ips_from_snapshot():
+    """
+    IPs reported online in the last saved scan snapshot (before this run overwrites it).
+    Used to deep-scan hosts that appear in the live set but were absent last cycle
+    (e.g. Tailscale-only online, or status/cache edge cases).
+    Returns None if no usable snapshot (avoid deep-scanning everyone on first use).
+    """
+    try:
+        if not os.path.exists(SCAN_SNAPSHOTS_FILE):
+            return None
+        with open(SCAN_SNAPSHOTS_FILE, "r") as f:
+            rows = json.load(f)
+        if not isinstance(rows, list) or not rows:
+            return None
+        last = rows[-1]
+        devs = last.get("online_devices") or []
+        if not devs:
+            return None
+        ips = {d["ip"] for d in devs if isinstance(d, dict) and d.get("ip")}
+        return ips if ips else None
+    except Exception:
+        return None
+
+
+def merge_deep_scan_results_json(results_by_ip: dict):
+    """Merge per-IP deep scan payloads into deep_scan_results.json for the dashboard."""
+    if not results_by_ip:
+        return
+    merged = {}
+    try:
+        if os.path.exists(DEEP_SCAN_RESULTS_FILE):
+            with open(DEEP_SCAN_RESULTS_FILE, "r") as f:
+                existing = json.load(f)
+            if isinstance(existing, dict) and isinstance(existing.get("results"), dict):
+                merged = dict(existing["results"])
+    except Exception as e:
+        print(f"   Warning: could not read {DEEP_SCAN_RESULTS_FILE}: {e}")
+
+    merged.update(results_by_ip)
+    payload = {
+        "scan_time": datetime.now().isoformat(),
+        "devices_scanned": len(merged),
+        "results": merged,
+    }
+    try:
+        with open(DEEP_SCAN_RESULTS_FILE, "w") as f:
+            json.dump(payload, f, indent=2)
+        print(f"   Deep scan JSON updated ({len(results_by_ip)} host(s) merged).")
+    except Exception as e:
+        print(f"   Warning: could not write {DEEP_SCAN_RESULTS_FILE}: {e}")
+
+
 def ping_host(ip):
     """Ping a single host to check if it's alive"""
     try:
@@ -184,6 +237,71 @@ def ping_host(ip):
         return ip if result.returncode == 0 else None
     except:
         return None
+
+
+def is_tailscale_ipv4(ip: str) -> bool:
+    """Return True when IP is in Tailscale CGNAT IPv4 range."""
+    return isinstance(ip, str) and ip.startswith("100.")
+
+
+def get_tailscale_peer_status():
+    """
+    Read Tailscale peer status from local daemon.
+    Returns:
+      {
+        "online_ips": set[str],
+        "known_ips": set[str],
+        "hostnames": dict[str, str]
+      }
+    """
+    result = {
+        "online_ips": set(),
+        "known_ips": set(),
+        "hostnames": {},
+    }
+    try:
+        proc = subprocess.run(
+            ["tailscale", "status", "--json"],
+            capture_output=True,
+            text=True,
+            timeout=8,
+        )
+        if proc.returncode != 0 or not proc.stdout.strip():
+            return result
+
+        payload = json.loads(proc.stdout)
+
+        # Include local node status if it has a Tailscale IPv4.
+        self_info = payload.get("Self", {}) if isinstance(payload, dict) else {}
+        for ip in self_info.get("TailscaleIPs", []) or []:
+            if not is_tailscale_ipv4(ip):
+                continue
+            result["known_ips"].add(ip)
+            if self_info.get("Online") is True:
+                result["online_ips"].add(ip)
+            self_host = self_info.get("HostName")
+            if self_host:
+                result["hostnames"][ip] = self_host
+
+        peers = payload.get("Peer", {}) if isinstance(payload, dict) else {}
+        for peer in peers.values():
+            if not isinstance(peer, dict):
+                continue
+            peer_host = peer.get("HostName")
+            peer_online = bool(peer.get("Online"))
+            for ip in peer.get("TailscaleIPs", []) or []:
+                if not is_tailscale_ipv4(ip):
+                    continue
+                result["known_ips"].add(ip)
+                if peer_online:
+                    result["online_ips"].add(ip)
+                if peer_host:
+                    result["hostnames"][ip] = peer_host
+    except Exception:
+        # If tailscaled is unavailable, just fall back to LAN-only scan behavior.
+        return result
+
+    return result
 
 
 def scan_ports(ip, ports):
@@ -406,6 +524,7 @@ def run_online_deep_scan_and_enrich(online_transition_ips, device_records):
 
     print("\n🧪 Online detector triggered deep scans:")
     enrichment_rows = []
+    results_by_ip = {}
     for ip in sorted(set(online_transition_ips)):
         print(f"   - Deep scanning {ip}...")
         try:
@@ -413,6 +532,9 @@ def run_online_deep_scan_and_enrich(online_transition_ips, device_records):
         except Exception as e:
             print(f"     ⚠️ deep scan failed for {ip}: {e}")
             continue
+
+        if isinstance(deep, dict) and deep.get("ip"):
+            results_by_ip[ip] = deep
 
         record = device_records.get(ip, {})
         hostname = get_hostname(ip) or record.get("hostname", "—")
@@ -445,6 +567,7 @@ def run_online_deep_scan_and_enrich(online_transition_ips, device_records):
             "identity": inferred_type,
         })
 
+    merge_deep_scan_results_json(results_by_ip)
     return enrichment_rows
 
 
@@ -675,12 +798,43 @@ def main():
         live = scan_network(network)
         print(f"   Found {len(live)} live hosts")
         all_live_hosts.extend(live)
+
+    # Tailscale peers don't reliably answer ICMP from this host; use daemon status.
+    ts_status = get_tailscale_peer_status()
+    ts_online_ips = sorted(ts_status.get("online_ips", set()))
+    if ts_online_ips:
+        print(f"\n🔐 Tailscale reports {len(ts_online_ips)} online peer(s)")
+        all_live_hosts.extend(ts_online_ips)
+    else:
+        print("\n🔐 Tailscale peers online: 0 (or daemon unavailable)")
+
+    # Keep cached hostnames aligned with Tailscale metadata (even when offline).
+    ts_hostnames = ts_status.get("hostnames", {})
+    for ip, ts_host in ts_hostnames.items():
+        if not ts_host:
+            continue
+        if ip not in device_records:
+            device_records[ip] = {
+                "first_seen": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "last_seen": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "hostname": ts_host,
+                "mac": "—",
+                "type": "Unknown",
+                "events": [],
+                "last_status": "offline",
+                "last_status_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            }
+            continue
+        current = device_records[ip].get("hostname", "—")
+        if current in ("—", "", None):
+            device_records[ip]["hostname"] = ts_host
     
     # Remove duplicates from live hosts
     all_live_hosts = list(set(all_live_hosts))
     print(f"\n📊 Total unique live hosts: {len(all_live_hosts)}")
     
     scan_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    prev_online_ips = load_previous_online_ips_from_snapshot()
 
     # Filter out known devices
     new_ips = [ip for ip in all_live_hosts if ip not in existing_ips]
@@ -721,7 +875,16 @@ def main():
         else:
             rec["last_status_time"] = now_str
 
-    enrichment_rows = run_online_deep_scan_and_enrich(online_transition_ips, device_records)
+    # Deep scan: offline→online / first-seen, plus any host live now but missing from last snapshot
+    # (covers Tailscale-only visibility and other edge cases).
+    deep_scan_targets = set(online_transition_ips)
+    if prev_online_ips is not None:
+        appeared_live = set(all_live_hosts) - prev_online_ips
+        if appeared_live:
+            print(f"\n📌 Newly live vs last snapshot: {len(appeared_live)} host(s) (deep scan queue)")
+        deep_scan_targets |= appeared_live
+
+    enrichment_rows = run_online_deep_scan_and_enrich(sorted(deep_scan_targets), device_records)
     if enrichment_rows:
         update_online_enrichment_table(enrichment_rows)
 
