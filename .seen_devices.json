@@ -1,55 +1,106 @@
 {
-  "192.168.0.246": {
+  "100.79.216.111": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
-    "hostname": "\u2014",
+    "last_seen": "2026-04-23 21:15:42",
+    "hostname": "erics-macbook-pro.tail2a3b45.ts.net",
     "mac": "\u2014",
     "type": "Unknown",
-    "events": [],
-    "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "ports": [
+      5000,
+      7000
+    ],
+    "services": {
+      "5000/tcp": "upnp            syn-ack",
+      "7000/tcp": "afs3-fileserver syn-ack"
+    },
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-23 02:46:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 03:18:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 03:50:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 06:30:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 14:51:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 15:23:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 15:39:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 16:11:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 16:59:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 17:31:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 20:11:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 20:27:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 20:59:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 21:31:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
   },
   "10.122.11.69": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
     "hostname": "\u2014",
     "mac": "\u2014",
     "type": "Unknown",
-    "events": [
-      {
-        "timestamp": "2026-04-21 11:42:48",
-        "event": "offline",
-        "reason": "scan"
-      }
-    ],
-    "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "192.168.0.182": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
-    "hostname": "\u2014",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [
-      {
-        "timestamp": "2026-04-21 11:42:48",
-        "event": "offline",
-        "reason": "scan"
-      }
-    ],
-    "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "100.70.174.39": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
-    "hostname": "yahboom.tail2a3b45.ts.net",
-    "mac": "\u2014",
-    "type": "Unknown",
+    "manufacturer": "Unknown",
     "events": [
       {
         "timestamp": "2026-04-21 11:42:48",
@@ -57,180 +108,62 @@
         "reason": "scan"
       },
       {
-        "timestamp": "2026-04-22 15:59:42",
-        "event": "online",
-        "reason": "scan"
-      }
-    ],
-    "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "ports": [],
-    "manufacturer": "Unknown"
-  },
-  "100.92.6.101": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
-    "hostname": "thinkstationpgx-9c48.tail2a3b45.ts.net",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [
-      {
-        "timestamp": "2026-04-21 11:42:48",
-        "event": "offline",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-22 15:59:42",
-        "event": "online",
-        "reason": "scan"
-      }
-    ],
-    "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "ports": [],
-    "manufacturer": "Unknown"
-  },
-  "192.168.0.59": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
-    "hostname": "samsung-attic",
-    "mac": "8a:33:76:dd:0b:cb",
-    "type": "Unknown",
-    "events": [
-      {
-        "timestamp": "2026-04-22 06:08:02",
-        "event": "offline",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-23 00:06:42",
-        "event": "online",
-        "reason": "scan"
-      }
-    ],
-    "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "ports": [],
-    "manufacturer": "Unknown"
-  },
-  "127.0.0.1": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
-    "hostname": "\u2014",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [
-      {
-        "timestamp": "2026-04-21 11:42:48",
+        "timestamp": "2026-04-23 11:34:42",
         "event": "offline",
         "reason": "scan"
       }
     ],
     "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "100.93.92.44": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
-    "hostname": "irene-macbookair",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [
-      {
-        "timestamp": "2026-04-21 11:42:48",
-        "event": "offline",
-        "reason": "scan"
-      }
-    ],
-    "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "192.168.0.142": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
-    "hostname": "\u2014",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [
-      {
-        "timestamp": "2026-04-21 11:42:48",
-        "event": "offline",
-        "reason": "scan"
-      }
-    ],
-    "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "192.168.50.1": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
-    "hostname": "\u2014",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [],
-    "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42"
   },
   "192.168.0.67": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
     "hostname": "\u2014",
     "mac": "\u2014",
     "type": "Unknown",
+    "manufacturer": "Unknown",
     "events": [
       {
         "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
         "event": "offline",
         "reason": "scan"
       }
     ],
     "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42"
   },
-  "192.168.0.192": {
+  "192.168.0.197": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
-    "hostname": "25RokuStreamingStickPlus.MG8702",
-    "mac": "d4:be:dc:ed:dd:90",
-    "type": "Streaming Device",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "yahboom.MG8702",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "ports": [],
+    "manufacturer": "Unknown",
     "events": [
       {
-        "timestamp": "2026-04-21 11:42:48",
-        "event": "offline",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-21 16:55:02",
-        "event": "online",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-21 20:59:02",
-        "event": "offline",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-22 15:59:42",
+        "timestamp": "2026-04-23 11:34:42",
         "event": "online",
         "reason": "scan"
       }
     ],
     "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "ports": [],
-    "manufacturer": "Roku, Inc"
+    "last_status_time": "2026-04-24 03:07:42"
   },
-  "100.78.64.7": {
+  "100.92.6.101": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
-    "hostname": "emergingtechs-macbook-pro.tail2a3b45.ts.net",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "thinkstationpgx-9c48.tail2a3b45.ts.net",
     "mac": "\u2014",
     "type": "Unknown",
+    "ports": [],
+    "manufacturer": "Unknown",
     "events": [
       {
         "timestamp": "2026-04-21 11:42:48",
@@ -241,64 +174,81 @@
         "timestamp": "2026-04-22 15:59:42",
         "event": "online",
         "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
+        "reason": "scan"
       }
     ],
     "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "ports": [],
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42"
   },
-  "192.168.0.49": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:57:44",
-    "hostname": "\u2014",
+  "24.192.17.178": {
+    "first_seen": "2026-04-23 06:55:41",
+    "last_seen": "2026-04-23 06:55:41",
+    "hostname": "public-wan",
     "mac": "\u2014",
-    "type": "Unknown",
+    "type": "External WAN IP",
+    "ports": [
+      53,
+      5000
+    ],
+    "services": {
+      "47/tcp": "ni-ftp filtered",
+      "53/tcp": "domain ISC BIND 9.14.3 open",
+      "80/tcp": "http filtered",
+      "137/tcp": "netbios-ns filtered",
+      "138/tcp": "netbios-dgm filtered",
+      "139/tcp": "netbios-ssn filtered",
+      "443/tcp": "https filtered",
+      "1723/tcp": "pptp filtered",
+      "1990/tcp": "stun-p1 filtered",
+      "2601/tcp": "zebra filtered",
+      "2602/tcp": "ripd filtered",
+      "2603/tcp": "ripngd filtered",
+      "5000/tcp": "rtsp open",
+      "12345/tcp": "netbus filtered",
+      "12346/tcp": "netbus filtered",
+      "20034/tcp": "nburn_id filtered"
+    },
+    "manufacturer": "Unknown",
     "events": [
       {
-        "timestamp": "2026-04-21 11:42:48",
+        "timestamp": "2026-04-23 07:02:42",
         "event": "offline",
         "reason": "scan"
       }
     ],
     "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42"
   },
   "192.168.100.1": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
+    "last_seen": "2026-04-24 03:07:42",
     "hostname": "\u2014",
     "mac": "\u2014",
     "type": "Unknown",
-    "events": [],
-    "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "192.168.100.0": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
-    "hostname": "\u2014",
-    "mac": "\u2014",
-    "type": "Unknown",
+    "ports": [],
+    "manufacturer": "Unknown",
     "events": [
       {
-        "timestamp": "2026-04-21 11:42:48",
-        "event": "offline",
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
         "reason": "scan"
       }
     ],
-    "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status": "online",
+    "last_status_time": "2026-04-24 03:07:42"
   },
   "192.168.0.15": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
+    "last_seen": "2026-04-23 19:39:42",
     "hostname": "INUNZIATA-5ZNHG.MG8702",
     "mac": "30:05:05:72:30:35",
-    "type": "Windows",
+    "type": "Unknown",
+    "ports": [],
+    "manufacturer": "Unknown",
     "events": [
       {
         "timestamp": "2026-04-21 23:01:02",
@@ -329,47 +279,179 @@
         "timestamp": "2026-04-22 23:34:42",
         "event": "online",
         "reason": "scan"
-      }
-    ],
-    "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "ports": [],
-    "manufacturer": "Unknown"
-  },
-  "192.168.0.127": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
-    "hostname": "DESKTOP-HN6QL1F.MG8702",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [],
-    "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "192.168.50.0": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
-    "hostname": "\u2014",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [
+      },
       {
-        "timestamp": "2026-04-21 11:42:48",
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 19:55:42",
         "event": "offline",
         "reason": "scan"
       }
     ],
     "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.50.1": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "\u2014",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "ports": [],
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "online",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "172.17.0.0": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
+    "hostname": "\u2014",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.0.182": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
+    "hostname": "\u2014",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.0.142": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
+    "hostname": "\u2014",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.0.143": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
+    "hostname": "\u2014",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.100.0": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
+    "hostname": "\u2014",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.0.49": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
+    "hostname": "\u2014",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
   },
   "192.168.0.233": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
+    "last_seen": "2026-04-24 03:07:42",
     "hostname": "RokuUltraB.MG8702",
     "mac": "d8:31:34:5f:40:b4",
     "type": "Streaming Device",
+    "ports": [],
+    "manufacturer": "Unknown",
     "events": [
       {
         "timestamp": "2026-04-22 18:34:42",
@@ -380,30 +462,23 @@
         "timestamp": "2026-04-22 19:05:42",
         "event": "online",
         "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
+        "reason": "scan"
       }
     ],
     "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "ports": [],
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42"
   },
-  "192.168.0.197": {
+  "100.100.100.100": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
+    "last_seen": "2026-04-23 11:34:08",
     "hostname": "\u2014",
     "mac": "\u2014",
     "type": "Unknown",
-    "events": [],
-    "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "100.95.15.82": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
-    "hostname": "iphone172.tail2a3b45.ts.net",
-    "mac": "\u2014",
-    "type": "Mobile Phone",
+    "manufacturer": "Unknown",
     "events": [
       {
         "timestamp": "2026-04-21 11:42:48",
@@ -411,22 +486,281 @@
         "reason": "scan"
       },
       {
-        "timestamp": "2026-04-22 15:59:42",
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.0.1": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "home.MG8702",
+    "mac": "d4:be:dc:ed:dd:90",
+    "type": "Unknown",
+    "ports": [],
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-23 11:34:42",
         "event": "online",
         "reason": "scan"
       }
     ],
     "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "172.16.0.0": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
+    "hostname": "\u2014",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.0.127": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "DESKTOP-HN6QL1F.MG8702",
+    "mac": "70:8b:cd:7c:f4:54",
+    "type": "Unknown",
     "ports": [],
-    "manufacturer": "Unknown"
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "online",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "127.0.0.1": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
+    "hostname": "\u2014",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
   },
   "100.71.191.72": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
+    "last_seen": "2026-04-23 22:51:42",
     "hostname": "emergingtechs-mac-mini.tail2a3b45.ts.net",
     "mac": "\u2014",
+    "type": "VNC/Remote Desktop",
+    "ports": [
+      22,
+      5900,
+      47490
+    ],
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 15:07:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 15:23:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 15:55:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 16:11:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 16:43:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 17:15:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 17:31:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 18:19:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 19:07:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 19:23:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 21:31:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 22:19:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 22:51:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 23:07:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42",
+    "services": {
+      "22/tcp": "ssh     syn-ack",
+      "5900/tcp": "vnc     syn-ack",
+      "47490/tcp": "unknown syn-ack"
+    }
+  },
+  "100.93.92.44": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
+    "hostname": "device-of-shared-to-user",
+    "mac": "\u2014",
     "type": "Unknown",
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.0.192": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "25RokuStreamingStickPlus.MG8702",
+    "mac": "d4:be:dc:ed:dd:90",
+    "type": "Streaming Device",
+    "ports": [],
+    "manufacturer": "Roku, Inc",
+    "events": [
+      {
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-21 16:55:02",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-21 20:59:02",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-22 15:59:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "online",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.0.81": {
+    "first_seen": "2026-04-21 20:59:02",
+    "last_seen": "2026-04-23 11:34:08",
+    "hostname": "\u2014",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-21 22:00:02",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "100.78.64.7": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "emergingtechs-macbook-pro.tail2a3b45.ts.net",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "ports": [],
+    "manufacturer": "Unknown",
     "events": [
       {
         "timestamp": "2026-04-21 11:42:48",
@@ -437,53 +771,73 @@
         "timestamp": "2026-04-22 15:59:42",
         "event": "online",
         "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
+        "reason": "scan"
       }
     ],
     "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "100.70.174.39": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "yahboom.tail2a3b45.ts.net",
+    "mac": "\u2014",
+    "type": "Unknown",
     "ports": [],
-    "manufacturer": "Unknown"
-  },
-  "192.168.0.143": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 10:49:02",
-    "hostname": "\u2014",
-    "mac": "\u2014",
-    "type": "Unknown",
+    "manufacturer": "Unknown",
     "events": [
       {
         "timestamp": "2026-04-21 11:42:48",
         "event": "offline",
         "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-22 15:59:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
+        "reason": "scan"
       }
     ],
-    "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status": "online",
+    "last_status_time": "2026-04-24 03:07:42"
   },
-  "10.0.0.0": {
+  "149.154.167.99": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
     "hostname": "\u2014",
     "mac": "\u2014",
     "type": "Unknown",
+    "manufacturer": "Unknown",
     "events": [
       {
         "timestamp": "2026-04-21 11:42:48",
         "event": "offline",
         "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
       }
     ],
     "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42"
   },
   "192.168.0.131": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-22 09:11:02",
-    "hostname": "\u2014",
-    "mac": "\u2014",
-    "type": "Unknown",
+    "last_seen": "2026-04-23 17:31:42",
+    "hostname": "iPhone.MG8702",
+    "mac": "06:4d:1c:2e:e9:ab",
+    "type": "Mobile Phone",
+    "manufacturer": "Unknown",
     "events": [
       {
         "timestamp": "2026-04-21 11:42:48",
@@ -529,336 +883,380 @@
         "timestamp": "2026-04-22 10:12:02",
         "event": "offline",
         "reason": "scan"
-      }
-    ],
-    "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "172.17.0.1": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
-    "hostname": "\u2014",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [
+      },
       {
-        "timestamp": "2026-04-21 11:42:48",
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 15:39:42",
+        "event": "online",
+        "reason": "scan",
+        "mac": "06:4d:1c:2e:e9:ab"
+      },
+      {
+        "timestamp": "2026-04-23 17:47:42",
         "event": "offline",
         "reason": "scan"
       }
     ],
     "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42",
+    "ports": []
+  },
+  "192.168.50.106": {
+    "first_seen": "2026-04-23 11:34:08",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "iPhone.MG8702",
+    "mac": "\u2014",
+    "type": "Mobile Phone",
+    "ports": [],
+    "detection_method": "reverse_dns",
+    "events": [
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "online",
+    "last_status_time": "2026-04-24 03:07:42"
   },
   "192.168.0.158": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 23:01:02",
+    "last_seen": "2026-04-23 11:34:08",
     "hostname": "\u2014",
     "mac": "\u2014",
     "type": "Unknown",
+    "manufacturer": "Unknown",
     "events": [
       {
         "timestamp": "2026-04-22 00:02:02",
         "event": "offline",
         "reason": "scan"
-      }
-    ],
-    "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "172.16.0.0": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
-    "hostname": "\u2014",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [
+      },
       {
-        "timestamp": "2026-04-21 11:42:48",
+        "timestamp": "2026-04-23 11:34:42",
         "event": "offline",
         "reason": "scan"
       }
     ],
     "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42"
   },
-  "192.168.0.0": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
-    "hostname": "\u2014",
+  "100.67.102.109": {
+    "first_seen": "2026-04-22 15:59:42",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "emergingtechs-x9-14-g1.tail0f0749.ts.net",
     "mac": "\u2014",
     "type": "Unknown",
+    "ports": [],
+    "manufacturer": "Unknown",
     "events": [
       {
-        "timestamp": "2026-04-21 11:42:48",
-        "event": "offline",
-        "reason": "scan"
-      }
-    ],
-    "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "100.100.100.100": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
-    "hostname": "\u2014",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [
-      {
-        "timestamp": "2026-04-21 11:42:48",
-        "event": "offline",
-        "reason": "scan"
-      }
-    ],
-    "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "100.76.245.26": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
-    "hostname": "Velas16s-macbookpro",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [
-      {
-        "timestamp": "2026-04-21 11:42:48",
-        "event": "offline",
-        "reason": "scan"
-      }
-    ],
-    "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "100.79.216.111": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
-    "hostname": "erics-macbook-pro.tail2a3b45.ts.net",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [
-      {
-        "timestamp": "2026-04-22 19:36:42",
-        "event": "online",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-22 21:10:42",
-        "event": "offline",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-22 21:26:42",
-        "event": "online",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-22 22:46:42",
-        "event": "offline",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-22 23:50:42",
-        "event": "online",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-23 00:38:42",
-        "event": "offline",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-23 00:54:42",
-        "event": "online",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-23 01:10:42",
-        "event": "offline",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-23 01:58:42",
-        "event": "online",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-23 02:14:42",
-        "event": "offline",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-23 02:30:42",
-        "event": "online",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-23 02:46:42",
-        "event": "offline",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-23 03:18:42",
-        "event": "online",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-23 03:50:42",
-        "event": "offline",
-        "reason": "scan"
-      },
-      {
-        "timestamp": "2026-04-23 06:30:42",
+        "timestamp": "2026-04-23 12:59:42",
         "event": "online",
         "reason": "scan"
       }
     ],
     "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "ports": [
-      5000,
-      7000
-    ],
-    "services": {
-      "5000/tcp": "upnp            syn-ack",
-      "7000/tcp": "afs3-fileserver syn-ack"
-    },
-    "manufacturer": "Unknown"
-  },
-  "192.168.0.1": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-23 07:50:42",
-    "hostname": "verizon-5g-hotspot",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [],
-    "last_status": "online",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "149.154.167.99": {
-    "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
-    "hostname": "\u2014",
-    "mac": "\u2014",
-    "type": "Unknown",
-    "events": [
-      {
-        "timestamp": "2026-04-21 11:42:48",
-        "event": "offline",
-        "reason": "scan"
-      }
-    ],
-    "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42"
   },
   "192.168.0.135": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-22 15:31:02",
+    "last_seen": "2026-04-23 11:34:08",
     "hostname": "\u2014",
     "mac": "\u2014",
     "type": "Unknown",
+    "manufacturer": "Unknown",
     "events": [
       {
         "timestamp": "2026-04-22 15:59:42",
         "event": "offline",
         "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
       }
     ],
     "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42"
   },
-  "172.17.0.0": {
+  "192.168.50.0": {
     "first_seen": "2026-04-21 06:46:27",
-    "last_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
     "hostname": "\u2014",
     "mac": "\u2014",
     "type": "Unknown",
+    "manufacturer": "Unknown",
     "events": [
       {
         "timestamp": "2026-04-21 11:42:48",
         "event": "offline",
         "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
       }
     ],
     "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42"
   },
-  "192.168.0.81": {
-    "first_seen": "2026-04-21 20:59:02",
-    "last_seen": "2026-04-21 20:59:02",
+  "10.0.0.0": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
     "hostname": "\u2014",
     "mac": "\u2014",
     "type": "Unknown",
+    "manufacturer": "Unknown",
     "events": [
       {
-        "timestamp": "2026-04-21 22:00:02",
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
         "event": "offline",
         "reason": "scan"
       }
     ],
     "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42"
   },
-  "100.67.102.109": {
-    "first_seen": "2026-04-22 15:59:42",
-    "last_seen": "2026-04-22 15:59:42",
-    "hostname": "X9-14-G1",
+  "192.168.50.3": {
+    "first_seen": "2026-04-23 11:34:08",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "Watch.MG8702",
+    "mac": "\u2014",
+    "type": "Smart Watch",
+    "ports": [],
+    "detection_method": "reverse_dns",
+    "events": [
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "online",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "172.17.0.1": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
+    "hostname": "\u2014",
     "mac": "\u2014",
     "type": "Unknown",
-    "events": [],
-    "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
-  },
-  "24.192.17.178": {
-    "first_seen": "2026-04-23 06:55:41",
-    "last_seen": "2026-04-23 06:55:41",
-    "hostname": "public-wan",
-    "mac": "\u2014",
-    "type": "External WAN IP",
-    "ports": [
-      53,
-      5000
-    ],
-    "services": {
-      "47/tcp": "ni-ftp filtered",
-      "53/tcp": "domain ISC BIND 9.14.3 open",
-      "80/tcp": "http filtered",
-      "137/tcp": "netbios-ns filtered",
-      "138/tcp": "netbios-dgm filtered",
-      "139/tcp": "netbios-ssn filtered",
-      "443/tcp": "https filtered",
-      "1723/tcp": "pptp filtered",
-      "1990/tcp": "stun-p1 filtered",
-      "2601/tcp": "zebra filtered",
-      "2602/tcp": "ripd filtered",
-      "2603/tcp": "ripngd filtered",
-      "5000/tcp": "rtsp open",
-      "12345/tcp": "netbus filtered",
-      "12346/tcp": "netbus filtered",
-      "20034/tcp": "nburn_id filtered"
-    },
+    "manufacturer": "Unknown",
     "events": [
       {
-        "timestamp": "2026-04-23 07:02:42",
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
         "event": "offline",
         "reason": "scan"
       }
     ],
     "last_status": "offline",
-    "last_status_time": "2026-04-23 07:50:42",
-    "manufacturer": "Unknown"
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.0.0": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
+    "hostname": "\u2014",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.0.59": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "samsung-attic",
+    "mac": "8a:33:76:dd:0b:cb",
+    "type": "Unknown",
+    "ports": [],
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-22 06:08:02",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 00:06:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 16:11:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 16:27:42",
+        "event": "online",
+        "reason": "scan",
+        "mac": "8a:33:76:dd:0b:cb"
+      },
+      {
+        "timestamp": "2026-04-23 19:23:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 19:39:42",
+        "event": "online",
+        "reason": "scan",
+        "mac": "8a:33:76:dd:0b:cb"
+      },
+      {
+        "timestamp": "2026-04-23 20:27:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 20:43:42",
+        "event": "online",
+        "reason": "scan",
+        "mac": "8a:33:76:dd:0b:cb"
+      },
+      {
+        "timestamp": "2026-04-23 22:03:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 22:19:42",
+        "event": "online",
+        "reason": "scan",
+        "mac": "8a:33:76:dd:0b:cb"
+      }
+    ],
+    "last_status": "online",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "100.76.245.26": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-23 11:34:08",
+    "hostname": "device-of-shared-to-user",
+    "mac": "\u2014",
+    "type": "Unknown",
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "offline",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "offline",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "100.95.15.82": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "iphone172.tail2a3b45.ts.net",
+    "mac": "\u2014",
+    "type": "Mobile Phone",
+    "ports": [],
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-21 11:42:48",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-22 15:59:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 19:23:42",
+        "event": "offline",
+        "reason": "scan"
+      },
+      {
+        "timestamp": "2026-04-23 20:11:42",
+        "event": "online",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "online",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.0.246": {
+    "first_seen": "2026-04-21 06:46:27",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "esp32s3-9F9FA0.MG8702",
+    "mac": "20:6e:f1:9f:9f:a0",
+    "type": "Unknown",
+    "ports": [],
+    "manufacturer": "Unknown",
+    "events": [
+      {
+        "timestamp": "2026-04-23 11:34:42",
+        "event": "online",
+        "reason": "scan"
+      }
+    ],
+    "last_status": "online",
+    "last_status_time": "2026-04-24 03:07:42"
+  },
+  "192.168.0.68": {
+    "first_seen": "2026-04-23 19:39:42",
+    "last_seen": "2026-04-24 03:07:42",
+    "hostname": "RokuStreamingStick.MG8702",
+    "mac": "10:59:32:80:76:fa",
+    "type": "Streaming Device",
+    "events": [
+      {
+        "timestamp": "2026-04-23 19:39:42",
+        "event": "online",
+        "reason": "scan",
+        "mac": "10:59:32:80:76:fa"
+      }
+    ],
+    "last_status": "online",
+    "last_status_time": "2026-04-24 03:07:42",
+    "ports": []
   }
 }

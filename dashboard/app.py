@@ -21,6 +21,42 @@ DEVICES_FILE = "/home/jetson/Documents/Network/devices.md"
 CACHE_FILE = "/home/jetson/Documents/Network/.seen_devices.json"
 SCAN_SNAPSHOTS_FILE = "/home/jetson/Documents/Network/.scan_snapshots.json"
 SCAN_SCRIPT = "/home/jetson/Documents/Network/network_scan_agent.py"
+LAN_LABELS_FILE = os.environ.get("LAN_LABELS_FILE", "/home/jetson/.config/lan-labels")
+
+
+def load_ip_labels():
+    """Load user-defined IP->label aliases from ~/.config/lan-labels."""
+    labels = {}
+    try:
+        if not os.path.exists(LAN_LABELS_FILE):
+            return labels
+        with open(LAN_LABELS_FILE, "r") as f:
+            for raw in f:
+                line = raw.strip()
+                if not line or line.startswith("#"):
+                    continue
+                parts = line.split()
+                if len(parts) >= 2:
+                    labels[parts[0]] = parts[1]
+    except Exception as e:
+        print(f"Warning: could not load LAN labels: {e}")
+    return labels
+
+
+def choose_device_name(ip: str, *candidates):
+    """Pick best display name: real hostname -> configured label -> IP."""
+    for value in candidates:
+        if value in (None, "", "—", "None"):
+            continue
+        if value == ip:
+            continue
+        return value
+
+    labels = load_ip_labels()
+    label = labels.get(ip)
+    if label not in (None, "", "—", "None"):
+        return label
+    return ip
 
 
 def is_active_status(status: str) -> bool:
@@ -310,6 +346,7 @@ def infer_online_devices_for_scan(scan_time_str: str):
 
     online_devices = []
     md_info = parse_markdown_devices()
+    labels = load_ip_labels()
 
     try:
         if not os.path.exists(CACHE_FILE):
@@ -373,9 +410,12 @@ def infer_online_devices_for_scan(scan_time_str: str):
 
         if status == "online":
             rich = md_info.get(ip, {})
-            hostname = rich.get("hostname", record.get("hostname", "—"))
-            if hostname in ("—", "", None):
-                hostname = ip
+            hostname = choose_device_name(
+                ip,
+                rich.get("hostname"),
+                record.get("hostname"),
+                labels.get(ip),
+            )
             online_devices.append({
                 "ip": ip,
                 "hostname": hostname,
@@ -397,6 +437,7 @@ def enrich_scan_history_with_state_changes(scan_history_rows):
     md_info = parse_markdown_devices()
     md_recent_changes = load_recent_change_hostnames_from_md()
     snapshots_by_time = load_scan_snapshots()
+    labels = load_ip_labels()
     try:
         with open(CACHE_FILE, "r") as f:
             cache_records = json.load(f)
@@ -412,11 +453,13 @@ def enrich_scan_history_with_state_changes(scan_history_rows):
 
     def host_for_ip(ip: str) -> str:
         rich = md_info.get(ip, {})
-        if rich.get("hostname") and rich.get("hostname") != "—":
-            return rich["hostname"]
         rec = cache_records.get(ip, {})
-        h = rec.get("hostname", "—")
-        return h if h not in ("—", "", None) else ip
+        return choose_device_name(
+            ip,
+            rich.get("hostname"),
+            rec.get("hostname"),
+            labels.get(ip),
+        )
 
     def event_hostnames_between(prev_time_str: str, curr_time_str: str):
         """Collect hostnames that had online/offline events between two scans."""
@@ -577,6 +620,7 @@ def load_device_data():
     """Load and enrich device data from cache + rich markdown details"""
     devices = []
     md_info = parse_markdown_devices()
+    labels = load_ip_labels()
 
     def get_subnet_group(ip: str) -> str:
         if ip == "24.192.17.178":
@@ -608,9 +652,7 @@ def load_device_data():
                 rich = md_info.get(ip, {})
                 
                 rich_hostname = rich.get("hostname")
-                hostname = rich_hostname if rich_hostname not in ["—", "None", None, ""] else cache_hostname
-                if hostname in ["—", "None", None, ""]:
-                    hostname = ip
+                hostname = choose_device_name(ip, rich_hostname, cache_hostname, labels.get(ip))
                 
                 rich_identity = rich.get("identity")
                 identity = rich_identity if rich_identity not in ["Unknown Device", "Unknown", "—", "None", None, ""] else data.get("type", "Unknown Device")

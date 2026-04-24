@@ -23,6 +23,16 @@ COMMON_PORTS = [22, 80, 443, 445, 631, 8080, 5900, 3000, 5000]
 SCAN_TIMEOUT = 2
 DEEP_SCAN_SCRIPT = "/home/jetson/Documents/Network/deep_scan.py"
 DEEP_SCAN_RESULTS_FILE = "/home/jetson/Documents/Network/deep_scan_results.json"
+SPECIAL_TRACKED_DEVICES = {
+    "192.168.50.3": {
+        "hostname": "Watch.MG8702",
+        "type": "Smart Watch",
+    },
+    "192.168.50.106": {
+        "hostname": "iPhone.MG8702",
+        "type": "Mobile Phone",
+    },
+}
 
 
 def human_duration_since(first_seen_str: str) -> str:
@@ -46,17 +56,21 @@ def human_duration_since(first_seen_str: str) -> str:
         return "—"
 
 
-def record_event(device_record, event_type: str, reason: str = "scan"):
+def record_event(device_record, event_type: str, reason: str = "scan", mac: str = None):
     """Record an online/offline event for a device (keep last 15 events)"""
     if "events" not in device_record:
         device_record["events"] = []
     
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    device_record["events"].append({
+    event_payload = {
         "timestamp": timestamp,
         "event": event_type,  # "online" or "offline"
         "reason": reason
-    })
+    }
+    # Keep a MAC snapshot when the device transitions online.
+    if event_type == "online" and mac not in (None, "", "—"):
+        event_payload["mac"] = mac
+    device_record["events"].append(event_payload)
     
     # Keep only the most recent 15 events
     if len(device_record["events"]) > 15:
@@ -372,6 +386,44 @@ def scan_network(network_cidr):
         live_hosts = [r for r in results if r]
     
     return live_hosts
+
+
+def detect_special_tracked_devices(device_records):
+    """
+    Track selected routed-subnet devices by reverse-DNS presence.
+    This is useful for VLAN/segmented clients that block ICMP from this host.
+    """
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    detected = []
+
+    for ip, meta in SPECIAL_TRACKED_DEVICES.items():
+        detected_hostname = get_hostname(ip)
+        if ip not in device_records:
+            device_records[ip] = {
+                "first_seen": now_str,
+                "last_seen": now_str,
+                "hostname": meta.get("hostname", "—"),
+                "mac": "—",
+                "type": meta.get("type", "Unknown"),
+                "events": [],
+                "last_status": "offline",
+                "last_status_time": now_str,
+                "detection_method": "reverse_dns",
+            }
+
+        rec = device_records[ip]
+        if rec.get("hostname") in ("", "—", None):
+            rec["hostname"] = meta.get("hostname", ip)
+        if rec.get("type") in ("", "—", "Unknown", None):
+            rec["type"] = meta.get("type", "Unknown")
+
+        if detected_hostname:
+            detected.append(ip)
+            rec["hostname"] = detected_hostname
+            rec["last_seen"] = now_str
+            rec["detection_method"] = "reverse_dns"
+
+    return detected, device_records
 
 
 def identify_device(ip, existing_records=None):
@@ -828,6 +880,12 @@ def main():
         current = device_records[ip].get("hostname", "—")
         if current in ("—", "", None):
             device_records[ip]["hostname"] = ts_host
+
+    # Track routed-subnet devices that are known to block ICMP.
+    special_live, device_records = detect_special_tracked_devices(device_records)
+    if special_live:
+        print(f"\n📍 Special tracked devices online (reverse DNS): {len(special_live)}")
+        all_live_hosts.extend(special_live)
     
     # Remove duplicates from live hosts
     all_live_hosts = list(set(all_live_hosts))
@@ -843,23 +901,29 @@ def main():
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     online_transition_ips = []
     for ip in all_live_hosts:
+        current_mac = get_mac(ip)
         if ip not in device_records:
             device_records[ip] = {
                 "first_seen": now_str,
                 "last_seen": now_str,
                 "hostname": "—",
-                "mac": "—",
+                "mac": current_mac or "—",
                 "type": "Unknown",
                 "events": [],
                 "last_status": "online",
                 "last_status_time": now_str,
             }
             online_transition_ips.append(ip)
+            if current_mac:
+                # Ensure first online record captures the MAC snapshot.
+                record_event(device_records[ip], "online", "scan", mac=current_mac)
         else:
+            if current_mac:
+                device_records[ip]["mac"] = current_mac
             previous_status = device_records[ip].get("last_status")
             device_records[ip]["last_seen"] = now_str
             if previous_status != "online":
-                record_event(device_records[ip], "online", "scan")
+                record_event(device_records[ip], "online", "scan", mac=current_mac)
                 online_transition_ips.append(ip)
             else:
                 device_records[ip]["last_status"] = "online"

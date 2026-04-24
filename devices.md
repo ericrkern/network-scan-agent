@@ -72,7 +72,11 @@ This table tracks when devices were first seen (came online), their last known a
 | 100.93.92.44 | — | 2026-04-20 | 2026-04-20 18:35 | ~14h | **Offline** |
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
-*Last updated: 2026-04-23 07:50:42*
+<<<<<<< HEAD
+*Last updated: 2026-04-24 03:07:42*
+=======
+*Last updated: 2026-04-24 03:07:42*
+>>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
 
@@ -583,6 +587,297 @@ openclaw gateway start
 
 ```bash
 # Check channel status
+
+## 🔔 Network Scan Alert - 2026-04-23 19:42:26
+
+**1 new device(s) discovered!**
+
+### New Device Discovered: 192.168.0.68
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.68 |
+| **Hostname** | RokuStreamingStick.MG8702 |
+| **MAC Address** | 10:59:32:80:76:fa |
+| **Open Ports** | None detected |
+| **Device Type** | Streaming Device |
+| **Discovered** | 2026-04-23 19:42:26 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+
+
+## 🔔 Network Scan Alert - 2026-04-23 11:55:40
+
+**16 new device(s) discovered!**
+
+### New Device Discovered: 192.168.0.233
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.233 |
+| **Hostname** | RokuUltraB.MG8702 |
+| **MAC Address** | d8:31:34:5f:40:b4 |
+| **Open Ports** | None detected |
+| **Device Type** | Streaming Device |
+| **Discovered** | 2026-04-23 11:55:01 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+### New Device Discovered: 192.168.50.3
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.50.3 |
+| **Hostname** | Watch.MG8702 |
+| **MAC Address** | — |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-04-23 11:55:10 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+### New Device Discovered: 192.168.0.1
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.1 |
+| **Hostname** | home.MG8702 |
+| **MAC Address** | d4:be:dc:ed:dd:90 |
+| **Open Ports** | 80, 443, 5000 |
+| **Device Type** | Web Device |
+| **Discovered** | 2026-04-23 11:55:10 |
+
+**Access Methods:**
+- HTTP: http://192.168.0.1
+- HTTPS: https://192.168.0.1
+
+---
+
+### New Device Discovered: 192.168.0.197
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.197 |
+| **Hostname** | yahboom.MG8702 |
+| **MAC Address** | — |
+| **Open Ports** | 22, 631, 5000 |
+| **Device Type** | Printer/Scanner |
+| **Discovered** | 2026-04-23 11:55:11 |
+
+**Access Methods:**
+- SSH: `ssh user@192.168.0.197`
+- CUPS: http://192.168.0.197:631
+
+---
+
+### New Device Discovered: 100.78.64.7
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 100.78.64.7 |
+| **Hostname** | emergingtechs-macbook-pro.tail2a3b45.ts.net |
+| **MAC Address** | — |
+| **Open Ports** | 22, 5900, 5000 |
+| **Device Type** | Linux/SSH Server |
+| **Discovered** | 2026-04-23 11:55:14 |
+
+**Access Methods:**
+- SSH: `ssh user@100.78.64.7`
+- VNC: `vncviewer 100.78.64.7:5900`
+
+---
+
+### New Device Discovered: 192.168.50.106
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.50.106 |
+| **Hostname** | iPhone.MG8702 |
+| **MAC Address** | — |
+| **Open Ports** | None detected |
+| **Device Type** | Mobile Phone |
+| **Discovered** | 2026-04-23 11:55:23 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+### New Device Discovered: 192.168.0.127
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.127 |
+| **Hostname** | DESKTOP-HN6QL1F.MG8702 |
+| **MAC Address** | 70:8b:cd:7c:f4:54 |
+| **Open Ports** | 445 |
+| **Device Type** | Windows/Samba Share |
+| **Discovered** | 2026-04-23 11:55:23 |
+
+**Access Methods:**
+- SMB: `smb://192.168.0.127`
+
+---
+
+### New Device Discovered: 192.168.0.59
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.59 |
+| **Hostname** | — |
+| **MAC Address** | 8a:33:76:dd:0b:cb |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-04-23 11:55:26 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+### New Device Discovered: 192.168.0.246
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.246 |
+| **Hostname** | esp32s3-9F9FA0.MG8702 |
+| **MAC Address** | 20:6e:f1:9f:9f:a0 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-04-23 11:55:27 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+### New Device Discovered: 100.70.174.39
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 100.70.174.39 |
+| **Hostname** | yahboom.tail2a3b45.ts.net |
+| **MAC Address** | — |
+| **Open Ports** | 22, 631, 5000 |
+| **Device Type** | Printer/Scanner |
+| **Discovered** | 2026-04-23 11:55:28 |
+
+**Access Methods:**
+- SSH: `ssh user@100.70.174.39`
+- CUPS: http://100.70.174.39:631
+
+---
+
+### New Device Discovered: 100.95.15.82
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 100.95.15.82 |
+| **Hostname** | iphone172.tail2a3b45.ts.net |
+| **MAC Address** | — |
+| **Open Ports** | None detected |
+| **Device Type** | Mobile Phone |
+| **Discovered** | 2026-04-23 11:55:29 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+### New Device Discovered: 192.168.0.15
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.15 |
+| **Hostname** | INUNZIATA-5ZNHG.MG8702 |
+| **MAC Address** | 30:05:05:72:30:35 |
+| **Open Ports** | 445 |
+| **Device Type** | Windows/Samba Share |
+| **Discovered** | 2026-04-23 11:55:37 |
+
+**Access Methods:**
+- SMB: `smb://192.168.0.15`
+
+---
+
+### New Device Discovered: 100.92.6.101
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 100.92.6.101 |
+| **Hostname** | thinkstationpgx-9c48.tail2a3b45.ts.net |
+| **MAC Address** | — |
+| **Open Ports** | 22, 80, 8080 |
+| **Device Type** | Linux/SSH Server |
+| **Discovered** | 2026-04-23 11:55:38 |
+
+**Access Methods:**
+- SSH: `ssh user@100.92.6.101`
+- HTTP: http://100.92.6.101
+- HTTP Alt: http://100.92.6.101:8080
+
+---
+
+### New Device Discovered: 192.168.0.192
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.192 |
+| **Hostname** | 25RokuStreamingStickPlus.MG8702 |
+| **MAC Address** | d4:be:dc:ed:dd:90 |
+| **Open Ports** | None detected |
+| **Device Type** | Streaming Device |
+| **Discovered** | 2026-04-23 11:55:39 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+### New Device Discovered: 192.168.100.1
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.100.1 |
+| **Hostname** | — |
+| **MAC Address** | — |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-04-23 11:55:40 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+### New Device Discovered: 192.168.50.1
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.50.1 |
+| **Hostname** | — |
+| **MAC Address** | — |
+| **Open Ports** | 80, 443, 5000 |
+| **Device Type** | Web Device |
+| **Discovered** | 2026-04-23 11:55:40 |
+
+**Access Methods:**
+- HTTP: http://192.168.50.1
+- HTTPS: https://192.168.50.1
+
+---
+
+
 
 ## 🔔 Network Scan Alert - 2026-04-21 20:59:09
 
@@ -1166,6 +1461,83 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-24 03:07:42 | 0 | 17 | 43 |
+| 2026-04-24 02:51:42 | 0 | 17 | 43 |
+| 2026-04-24 02:35:42 | 0 | 17 | 43 |
+| 2026-04-24 02:19:42 | 0 | 17 | 43 |
+| 2026-04-24 02:03:42 | 0 | 17 | 43 |
+| 2026-04-24 01:47:42 | 0 | 17 | 43 |
+| 2026-04-24 01:31:42 | 0 | 17 | 43 |
+| 2026-04-24 01:15:42 | 0 | 17 | 43 |
+| 2026-04-24 00:59:42 | 0 | 17 | 43 |
+| 2026-04-24 00:43:42 | 0 | 17 | 43 |
+| 2026-04-24 00:27:42 | 0 | 17 | 43 |
+| 2026-04-24 00:11:42 | 0 | 17 | 43 |
+| 2026-04-23 23:55:42 | 0 | 17 | 43 |
+| 2026-04-23 23:39:42 | 0 | 17 | 43 |
+| 2026-04-23 23:23:42 | 0 | 17 | 43 |
+| 2026-04-23 23:07:42 | 0 | 17 | 43 |
+| 2026-04-23 22:53:14 | 0 | 18 | 43 |
+| 2026-04-23 22:35:42 | 0 | 17 | 43 |
+| 2026-04-23 22:21:03 | 0 | 17 | 43 |
+| 2026-04-23 22:03:42 | 0 | 17 | 43 |
+| 2026-04-23 21:47:42 | 0 | 18 | 43 |
+| 2026-04-23 21:32:51 | 0 | 18 | 43 |
+| 2026-04-23 21:15:42 | 0 | 18 | 43 |
+| 2026-04-23 21:00:51 | 0 | 18 | 43 |
+| 2026-04-23 20:45:05 | 0 | 17 | 43 |
+| 2026-04-23 20:27:42 | 0 | 16 | 43 |
+| 2026-04-23 20:14:25 | 0 | 18 | 43 |
+| 2026-04-23 19:55:42 | 0 | 16 | 43 |
+| 2026-04-23 19:42:26 | 1 | 17 | 43 |
+| 2026-04-23 19:23:42 | 0 | 15 | 42 |
+| 2026-04-23 19:08:51 | 0 | 18 | 42 |
+| 2026-04-23 18:51:42 | 0 | 17 | 42 |
+| 2026-04-23 18:35:42 | 0 | 17 | 42 |
+| 2026-04-23 18:19:42 | 0 | 17 | 42 |
+| 2026-04-23 18:03:42 | 0 | 18 | 42 |
+| 2026-04-23 17:47:42 | 0 | 18 | 42 |
+| 2026-04-23 17:32:51 | 0 | 19 | 42 |
+| 2026-04-23 17:15:42 | 0 | 19 | 42 |
+| 2026-04-23 17:00:51 | 0 | 20 | 42 |
+| 2026-04-23 16:44:51 | 0 | 19 | 42 |
+| 2026-04-23 16:29:03 | 0 | 18 | 42 |
+| 2026-04-23 16:11:42 | 0 | 17 | 42 |
+| 2026-04-23 15:56:51 | 0 | 20 | 42 |
+| 2026-04-23 15:42:16 | 0 | 19 | 42 |
+| 2026-04-23 15:23:42 | 0 | 17 | 42 |
+| 2026-04-23 15:09:24 | 0 | 19 | 42 |
+| 2026-04-23 14:58:46 | 0 | 18 | 42 |
+| 2026-04-23 14:52:51 | 0 | 18 | 42 |
+| 2026-04-23 14:35:42 | 0 | 17 | 41 |
+| 2026-04-23 14:19:42 | 0 | 17 | 41 |
+| 2026-04-23 14:03:42 | 0 | 17 | 41 |
+| 2026-04-23 13:47:42 | 0 | 17 | 41 |
+| 2026-04-23 13:31:42 | 0 | 17 | 41 |
+| 2026-04-23 13:15:42 | 0 | 17 | 41 |
+| 2026-04-23 13:00:50 | 0 | 17 | 41 |
+| 2026-04-23 12:43:42 | 0 | 16 | 41 |
+| 2026-04-23 12:27:42 | 0 | 16 | 41 |
+| 2026-04-23 12:11:42 | 0 | 16 | 41 |
+| 2026-04-23 11:56:14 | 0 | 16 | 41 |
+| 2026-04-23 11:55:40 | 16 | 16 | 41 |
+<<<<<<< HEAD
+=======
+| 2026-04-23 11:18:42 | 0 | 16 | 42 |
+| 2026-04-23 11:12:43 | 0 | 17 | 42 |
+| 2026-04-23 11:02:42 | 0 | 16 | 40 |
+| 2026-04-23 10:46:42 | 0 | 16 | 40 |
+| 2026-04-23 10:31:51 | 0 | 16 | 40 |
+| 2026-04-23 10:14:42 | 0 | 15 | 40 |
+| 2026-04-23 09:58:42 | 0 | 15 | 40 |
+| 2026-04-23 09:42:42 | 0 | 15 | 40 |
+| 2026-04-23 09:26:42 | 0 | 15 | 40 |
+| 2026-04-23 09:10:42 | 0 | 15 | 40 |
+| 2026-04-23 08:54:42 | 0 | 16 | 40 |
+| 2026-04-23 08:38:42 | 0 | 16 | 40 |
+| 2026-04-23 08:22:42 | 0 | 16 | 40 |
+| 2026-04-23 08:06:42 | 0 | 16 | 40 |
+>>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 | 2026-04-23 07:50:42 | 0 | 16 | 40 |
 | 2026-04-23 07:34:42 | 0 | 16 | 40 |
 | 2026-04-23 07:18:42 | 0 | 16 | 40 |
@@ -1278,7 +1650,11 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 | 2026-04-20 15:36:51 | 0 | 13 | 35 |
 
 
-*Last updated: 2026-04-23 07:50:42*
+<<<<<<< HEAD
+*Last updated: 2026-04-24 03:07:42*
+=======
+*Last updated: 2026-04-24 03:07:42*
+>>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
 
@@ -1542,8 +1918,8 @@ This table shows only devices that changed state (came online or went offline) b
 
 ## ⚡ Online Detector Enrichment
 
-Updated: 2026-04-23 06:32:23
+Updated: 2026-04-23 22:53:14
 
 | IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
 |-----|----------|-----|--------|------------|---------------|----------|
-| 100.79.216.111 | erics-macbook-pro.tail2a3b45.ts.net | — | Online | 5000, 7000 | No known access | Unknown |
+| 100.71.191.72 | emergingtechs-mac-mini.tail2a3b45.ts.net | — | Online | 22, 5900, 47490 | SSH (`ssh user@100.71.191.72`), VNC | VNC/Remote Desktop |

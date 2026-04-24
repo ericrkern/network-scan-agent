@@ -1158,3 +1158,12 @@ Found 31 host IPs to scan
    Results saved to /home/jetson/Documents/Network/deep_scan_results.json
 
 💥 Error during deep scan: [Errno 28] No space left on device
+fatal: unable to access 'https://github.com/ericrkern/network-scan-agent.git/': Could not resolve host: github.com
+error: cannot pull with rebase: You have unstaged changes.
+error: please commit or stash them.
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+error: Pulling is not possible because you have unmerged files.
+hint: Fix them up in the work tree, and then use 'git add/rm <file>'
+hint: as appropriate to mark resolution and make a commit.
+fatal: Exiting because of an unresolved conflict.
