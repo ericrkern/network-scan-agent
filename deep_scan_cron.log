@@ -1161,23 +1161,15 @@ Found 31 host IPs to scan
 fatal: unable to access 'https://github.com/ericrkern/network-scan-agent.git/': Could not resolve host: github.com
 error: cannot pull with rebase: You have unstaged changes.
 error: please commit or stash them.
+[main 9d1f2b8] Auto-update daily website/network data snapshot.
+ 12 files changed, 4355 insertions(+), 89 deletions(-)
+ rewrite __pycache__/network_scan_agent.cpython-310.pyc (60%)
+ rewrite dashboard/__pycache__/app.cpython-310.pyc (66%)
+ create mode 100644 public_ip_nmap.xml
+ create mode 100755 scripts/daily_github_push.sh
+fatal: unable to access 'https://github.com/ericrkern/network-scan-agent.git/': Could not resolve host: github.com
 From https://github.com/ericrkern/network-scan-agent
  * branch            main       -> FETCH_HEAD
-error: Pulling is not possible because you have unmerged files.
-hint: Fix them up in the work tree, and then use 'git add/rm <file>'
-hint: as appropriate to mark resolution and make a commit.
-fatal: Exiting because of an unresolved conflict.
-[detached HEAD c7dd100] Auto-update daily website/network data snapshot.
- 11 files changed, 7520 insertions(+), 712 deletions(-)
- create mode 100644 .scan_snapshots.json.bak-20260423-144642
- create mode 100644 .seen_devices.json.bak-20260423-144642
- rewrite __pycache__/network_scan_agent.cpython-310.pyc (61%)
- rewrite deep_scan_results.json (60%)
- create mode 100755 scripts/daily_github_push.sh
-To https://github.com/ericrkern/network-scan-agent.git
- ! [rejected]        main -> main (non-fast-forward)
-error: failed to push some refs to 'https://github.com/ericrkern/network-scan-agent.git'
-hint: Updates were rejected because a pushed branch tip is behind its remote
-hint: counterpart. Check out this branch and integrate the remote changes
-hint: (e.g. 'git pull ...') before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+   02bc292..c2bd804  main       -> origin/main
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD

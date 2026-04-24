@@ -13,8 +13,9 @@ export GIT_COMMITTER_NAME="Eric Kern"
 export GIT_COMMITTER_EMAIL="eric@ericrkern.com"
 
 # Keep local main in sync before committing new scan artifacts.
-git fetch origin main >>"$LOG_FILE" 2>&1 || true
-git pull --rebase origin main >>"$LOG_FILE" 2>&1 || true
+# --autostash handles transient local modifications (e.g. log writes).
+git fetch origin main >>"$LOG_FILE" 2>&1
+git pull --rebase --autostash origin main >>"$LOG_FILE" 2>&1
 
 if [[ -z "$(git status --porcelain)" ]]; then
   echo "$(date '+%Y-%m-%d %H:%M:%S') [auto-push] no changes to commit" >>"$LOG_FILE"
