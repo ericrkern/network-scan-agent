@@ -73,9 +73,9 @@ This table tracks when devices were first seen (came online), their last known a
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
 <<<<<<< HEAD
-*Last updated: 2026-04-24 13:32:51*
+*Last updated: 2026-04-25 03:07:42*
 =======
-*Last updated: 2026-04-24 13:32:51*
+*Last updated: 2026-04-25 03:07:42*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -102,6 +102,7 @@ This table shows only devices that changed state (came online or went offline) b
 - Access: Web UI at http://192.168.0.1 or https://192.168.0.1:443
 - Management port: 5000
 - Services: DNS (53), Web Admin (80/443)
+- IPv6 (link-local): `fe80::cac7:50ff:fef5:ca1b`
 - Credentials: Unknown (would require testing or admin knowledge)
 
 **Secondary Gateway: 192.168.0.67 (R7000)**
@@ -146,6 +147,7 @@ This table shows only devices that changed state (came online or went offline) b
 - Protocol: Roku ECP (External Control Protocol)
 - Port: 8060 (not scanned, standard Roku port)
 - Access: HTTP API, mobile app control
+- IPv6 (link-local): `fe80::da31:34ff:fe5f:40b4`
 
 **Roku Streaming Stick Plus: 192.168.0.192**
 - Protocol: Roku ECP + UPnP device descriptor
@@ -155,6 +157,12 @@ This table shows only devices that changed state (came online or went offline) b
 - Now-playing detail: `/query/media-player` is blocked (`403 ECP command not allowed in Limited mode`)
 - App list endpoint: `/query/apps` currently blocked in Limited mode (HTTP 403)
 - Control endpoints (for example `/keypress/Home`, `/launch/<id>`) currently unavailable from this interface
+- IPv6 (link-local): `fe80::d6be:dcff:feed:dd90`
+
+**Roku Streaming Stick: 192.168.0.68**
+- Protocol: Roku ECP (External Control Protocol)
+- Port: 8060 (standard Roku control port)
+- IPv6 (link-local): `fe80::1259:32ff:fe80:76fa`
 
 **ESP32-S3: 192.168.0.246**
 - Protocol: ESP32 native/MQTT/Web
@@ -1470,6 +1478,57 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-25 03:07:42 | 0 | 16 | 43 |
+| 2026-04-25 02:51:42 | 0 | 16 | 43 |
+| 2026-04-25 02:35:42 | 0 | 16 | 43 |
+| 2026-04-25 02:19:42 | 0 | 16 | 43 |
+| 2026-04-25 02:03:42 | 0 | 16 | 43 |
+| 2026-04-25 01:49:03 | 0 | 16 | 43 |
+| 2026-04-25 01:34:13 | 0 | 16 | 43 |
+| 2026-04-25 01:15:42 | 0 | 14 | 43 |
+| 2026-04-25 00:59:42 | 0 | 15 | 43 |
+| 2026-04-25 00:43:42 | 0 | 15 | 43 |
+| 2026-04-25 00:27:42 | 0 | 15 | 43 |
+| 2026-04-25 00:11:42 | 0 | 15 | 43 |
+| 2026-04-24 23:57:05 | 0 | 15 | 43 |
+| 2026-04-24 23:39:42 | 0 | 14 | 43 |
+| 2026-04-24 23:24:51 | 0 | 15 | 43 |
+| 2026-04-24 23:07:42 | 0 | 14 | 43 |
+| 2026-04-24 22:51:42 | 0 | 14 | 43 |
+| 2026-04-24 22:38:19 | 0 | 16 | 43 |
+| 2026-04-24 22:19:42 | 0 | 15 | 43 |
+| 2026-04-24 22:03:42 | 0 | 16 | 43 |
+| 2026-04-24 21:47:42 | 0 | 16 | 43 |
+| 2026-04-24 21:31:42 | 0 | 16 | 43 |
+| 2026-04-24 21:15:42 | 0 | 16 | 43 |
+| 2026-04-24 21:00:51 | 0 | 16 | 43 |
+| 2026-04-24 20:43:42 | 0 | 15 | 43 |
+| 2026-04-24 20:27:42 | 0 | 16 | 43 |
+| 2026-04-24 20:12:51 | 0 | 16 | 43 |
+| 2026-04-24 19:55:42 | 0 | 15 | 43 |
+| 2026-04-24 19:39:42 | 0 | 15 | 43 |
+| 2026-04-24 19:23:42 | 0 | 15 | 43 |
+| 2026-04-24 19:07:42 | 0 | 15 | 43 |
+| 2026-04-24 18:51:42 | 0 | 15 | 43 |
+| 2026-04-24 18:35:42 | 0 | 15 | 43 |
+| 2026-04-24 18:19:42 | 0 | 15 | 43 |
+| 2026-04-24 18:03:42 | 0 | 15 | 43 |
+| 2026-04-24 17:47:42 | 0 | 15 | 43 |
+| 2026-04-24 17:32:51 | 0 | 17 | 43 |
+| 2026-04-24 17:15:42 | 0 | 16 | 43 |
+| 2026-04-24 17:01:04 | 0 | 16 | 43 |
+| 2026-04-24 16:43:42 | 0 | 16 | 43 |
+| 2026-04-24 16:29:59 | 0 | 17 | 43 |
+| 2026-04-24 16:12:51 | 0 | 17 | 43 |
+| 2026-04-24 15:57:18 | 0 | 16 | 43 |
+| 2026-04-24 15:39:42 | 0 | 16 | 43 |
+| 2026-04-24 15:23:42 | 0 | 16 | 43 |
+| 2026-04-24 15:07:42 | 0 | 16 | 43 |
+| 2026-04-24 14:51:42 | 0 | 16 | 43 |
+| 2026-04-24 14:35:42 | 0 | 16 | 43 |
+| 2026-04-24 14:19:42 | 0 | 16 | 43 |
+| 2026-04-24 14:03:42 | 0 | 16 | 43 |
+| 2026-04-24 13:47:42 | 0 | 16 | 43 |
 | 2026-04-24 13:32:51 | 0 | 16 | 43 |
 | 2026-04-24 13:15:42 | 0 | 16 | 43 |
 | 2026-04-24 12:59:42 | 0 | 16 | 43 |
@@ -1699,9 +1758,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 
 <<<<<<< HEAD
-*Last updated: 2026-04-24 13:32:51*
+*Last updated: 2026-04-25 03:07:42*
 =======
-*Last updated: 2026-04-24 13:32:51*
+*Last updated: 2026-04-25 03:07:42*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -1966,8 +2025,8 @@ This table shows only devices that changed state (came online or went offline) b
 
 ## ⚡ Online Detector Enrichment
 
-Updated: 2026-04-24 13:32:51
+Updated: 2026-04-25 01:49:02
 
 | IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
 |-----|----------|-----|--------|------------|---------------|----------|
-| 192.168.50.106 | iPhone.MG8702 | — | Online | None | No known access | Mobile Phone |
+| 192.168.0.59 | samsung-attic | 8a:33:76:dd:0b:cb | Online | None | No known access | Unknown |
