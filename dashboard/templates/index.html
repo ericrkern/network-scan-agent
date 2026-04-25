@@ -395,6 +395,7 @@
                         <div class="min-w-0 flex-1">
                             <div class="font-mono text-sm text-yellow-400">${device.ip_display || device.ip}</div>
                             <div class="text-xl font-semibold text-white mt-0.5 leading-tight truncate" title="${device.hostname}">${device.hostname}</div>
+                            ${device.label && device.label !== device.hostname ? `<div class="text-xs text-sky-300/90 mt-1 truncate" title="${device.label}">${device.label}</div>` : ''}
                             <div class="text-emerald-300/70 text-sm line-clamp-2 mt-1">${device.identity}</div>
                         </div>
                         

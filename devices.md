@@ -81,9 +81,9 @@ This table tracks when devices were first seen (came online), their last known a
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
 <<<<<<< HEAD
-*Last updated: 2026-04-25 10:50:42*
+*Last updated: 2026-04-25 11:38:42*
 =======
-*Last updated: 2026-04-25 10:50:42*
+*Last updated: 2026-04-25 11:38:42*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -1486,6 +1486,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-25 11:38:42 | 0 | 16 | 43 |
+| 2026-04-25 11:22:42 | 0 | 17 | 43 |
+| 2026-04-25 11:08:59 | 0 | 17 | 43 |
 | 2026-04-25 10:50:42 | 0 | 15 | 43 |
 | 2026-04-25 10:35:51 | 0 | 16 | 43 |
 | 2026-04-25 10:18:42 | 0 | 15 | 43 |
@@ -1795,9 +1798,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 
 <<<<<<< HEAD
-*Last updated: 2026-04-25 10:50:42*
+*Last updated: 2026-04-25 11:38:42*
 =======
-*Last updated: 2026-04-25 10:50:42*
+*Last updated: 2026-04-25 11:38:42*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -2062,14 +2065,15 @@ This table shows only devices that changed state (came online or went offline) b
 
 ## ⚡ Online Detector Enrichment
 
-Updated: 2026-04-25 10:35:51
+Updated: 2026-04-25 11:08:59
 
 | IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
 |-----|----------|-----|--------|------------|---------------|----------|
+| 100.71.191.72 | emergingtechs-mac-mini.tail2a3b45.ts.net | — | Online | 22, 5900, 47490 | SSH (`ssh user@100.71.191.72`), VNC | VNC/Remote Desktop |
 | 100.79.216.111 | erics-macbook-pro.tail2a3b45.ts.net | — | Online | 5000, 7000 | No known access | Unknown |
 ## 📱 iPhone Identity Correlation
 
-Updated: 2026-04-25 11:06:42
+Updated: 2026-04-25 11:38:42
 
 | Reference IP | Candidate IP | Ref Hostname | Candidate Hostname | Ref MAC | Candidate MAC | Result | Confidence | Evidence |
 |--------------|--------------|--------------|--------------------|---------|---------------|--------|------------|----------|

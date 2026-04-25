@@ -35,9 +35,9 @@ def load_ip_labels():
                 line = raw.strip()
                 if not line or line.startswith("#"):
                     continue
-                parts = line.split()
-                if len(parts) >= 2:
-                    labels[parts[0]] = parts[1]
+                parts = line.split(maxsplit=1)
+                if len(parts) == 2:
+                    labels[parts[0]] = parts[1].strip()
     except Exception as e:
         print(f"Warning: could not load LAN labels: {e}")
     return labels
@@ -130,6 +130,7 @@ def collapse_duplicate_devices(devices):
                 "subnet_group": m.get("subnet_group", "Other Networks"),
             })
 
+        member_labels = [m.get("label") for m in members if m.get("label") not in (None, "", "—", "None")]
         merged = dict(primary)
         merged["ip"] = primary.get("ip")
         merged["ip_addresses"] = ip_addresses
@@ -161,6 +162,9 @@ def collapse_duplicate_devices(devices):
             key=lambda ev: ev.get("timestamp", ""),
             reverse=True,
         )[:50]
+        if member_labels:
+            merged["label"] = member_labels[0]
+            merged["labels"] = sorted(set(member_labels))
         # Keep a stable MAC if any member has one.
         for m in members:
             mac = m.get("mac")
@@ -181,6 +185,7 @@ def collapse_duplicate_devices(devices):
                 "last_status_time": d.get("last_status_time", d.get("last_seen", "—")),
                 "subnet_group": d.get("subnet_group", "Other Networks"),
             }]
+            d["labels"] = [d["label"]] if d.get("label") not in (None, "", "—", "None") else []
             merged_devices.append(d)
 
     return merged_devices
@@ -810,6 +815,7 @@ def load_device_data():
                 devices.append({
                     "ip": ip,
                     "hostname": hostname,
+                    "label": labels.get(ip, ""),
                     "identity": identity,
                     "subnet_group": get_subnet_group(ip),
                     "status": status_text,

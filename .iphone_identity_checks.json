@@ -208,5 +208,35 @@
       "Matching hostname: iPhone.MG8702",
       "Candidate MAC unavailable from ARP"
     ]
+  },
+  {
+    "timestamp": "2026-04-25 11:22:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 11:38:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
   }
 ]

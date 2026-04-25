@@ -1,5 +1,5 @@
 {
-  "scan_time": "2026-04-25T10:35:51.025045",
+  "scan_time": "2026-04-25T11:08:59.394949",
   "devices_scanned": 22,
   "results": {
     "100.70.174.39": {
@@ -132,7 +132,7 @@
       "udp_ports": [],
       "services": {},
       "host_up": true,
-      "scan_time": "2026-04-25T10:34:42.785649",
+      "scan_time": "2026-04-25T11:07:51.114048",
       "raw_output_length": 691,
       "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
       "status": "success"
@@ -146,7 +146,7 @@
       "udp_ports": [],
       "services": {},
       "host_up": true,
-      "scan_time": "2026-04-25T06:34:42.775464",
+      "scan_time": "2026-04-25T11:06:42.807408",
       "raw_output_length": 687,
       "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
       "status": "success"
