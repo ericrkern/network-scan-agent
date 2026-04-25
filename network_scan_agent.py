@@ -18,6 +18,7 @@ import importlib.util
 DEVICES_FILE = "/home/jetson/Documents/Network/devices.md"
 SEEN_DEVICES_CACHE = "/home/jetson/Documents/Network/.seen_devices.json"
 SCAN_SNAPSHOTS_FILE = "/home/jetson/Documents/Network/.scan_snapshots.json"
+IPHONE_IDENTITY_LOG_FILE = "/home/jetson/Documents/Network/.iphone_identity_checks.json"
 NETWORKS = ["192.168.0.0/24", "192.168.50.0/24", "192.168.100.0/24"]
 COMMON_PORTS = [22, 80, 443, 445, 631, 8080, 5900, 3000, 5000]
 SCAN_TIMEOUT = 2
@@ -33,6 +34,236 @@ SPECIAL_TRACKED_DEVICES = {
         "type": "Mobile Phone",
     },
 }
+IPHONE_IDENTITY_REFERENCE_IP = "192.168.0.49"
+IPHONE_IDENTITY_CANDIDATE_IP = "192.168.50.106"
+
+
+def normalize_mac(mac):
+    """Normalize a MAC string to lowercase colon format, else None."""
+    if not mac or mac == "—":
+        return None
+    cleaned = mac.strip().lower().replace("-", ":")
+    if re.match(r"^[0-9a-f]{2}(:[0-9a-f]{2}){5}$", cleaned):
+        return cleaned
+    return None
+
+
+def compare_iphone_identity(device_records):
+    """
+    Compare reference iPhone identity against routed-subnet candidate.
+    Returns a dictionary with status and evidence.
+    """
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    ref = device_records.get(IPHONE_IDENTITY_REFERENCE_IP, {})
+    cand = device_records.get(IPHONE_IDENTITY_CANDIDATE_IP, {})
+
+    ref_mac = normalize_mac(ref.get("mac"))
+    cand_mac = normalize_mac(cand.get("mac"))
+    ref_host = (ref.get("hostname") or "—")
+    cand_host = (cand.get("hostname") or "—")
+    host_match = (
+        ref_host not in ("—", "", None)
+        and cand_host not in ("—", "", None)
+        and ref_host.lower() == cand_host.lower()
+    )
+
+    status = "inconclusive"
+    confidence = "low"
+    evidence = []
+
+    if ref_mac and cand_mac:
+        if ref_mac == cand_mac:
+            status = "same_device_confirmed"
+            confidence = "high"
+            evidence.append(f"Matching MAC: {ref_mac}")
+        else:
+            status = "different_devices_confirmed"
+            confidence = "high"
+            evidence.append(f"Different MACs: ref={ref_mac}, candidate={cand_mac}")
+    elif host_match:
+        status = "likely_same_device"
+        confidence = "medium"
+        evidence.append(f"Matching hostname: {ref_host}")
+        if not cand_mac:
+            evidence.append("Candidate MAC unavailable from ARP")
+    else:
+        if not ref_mac:
+            evidence.append("Reference MAC unavailable")
+        if not cand_mac:
+            evidence.append("Candidate MAC unavailable")
+        if not host_match:
+            evidence.append("Hostnames do not match")
+
+    return {
+        "timestamp": now_str,
+        "reference_ip": IPHONE_IDENTITY_REFERENCE_IP,
+        "candidate_ip": IPHONE_IDENTITY_CANDIDATE_IP,
+        "reference_hostname": ref_host,
+        "candidate_hostname": cand_host,
+        "reference_mac": ref_mac or "—",
+        "candidate_mac": cand_mac or "—",
+        "status": status,
+        "confidence": confidence,
+        "evidence": evidence,
+    }
+
+
+def save_iphone_identity_result(result):
+    """Append iPhone identity check results to JSON log (keeps last 100)."""
+    if not result:
+        return
+    rows = []
+    try:
+        if os.path.exists(IPHONE_IDENTITY_LOG_FILE):
+            with open(IPHONE_IDENTITY_LOG_FILE, "r") as f:
+                loaded = json.load(f)
+                if isinstance(loaded, list):
+                    rows = loaded
+    except Exception:
+        rows = []
+    rows.append(result)
+    if len(rows) > 100:
+        rows = rows[-100:]
+    try:
+        with open(IPHONE_IDENTITY_LOG_FILE, "w") as f:
+            json.dump(rows, f, indent=2)
+    except Exception as e:
+        print(f"   Warning: could not write iPhone identity log: {e}")
+
+
+def update_iphone_identity_section(result):
+    """Write/replace a concise iPhone identity comparison section in devices.md."""
+    if not result:
+        return
+    try:
+        with open(DEVICES_FILE, "r") as f:
+            content = f.read()
+    except Exception as e:
+        print(f"   Warning: could not read {DEVICES_FILE} for iPhone section: {e}")
+        return
+
+    evidence = "; ".join(result.get("evidence", [])) or "No evidence captured"
+    section_lines = [
+        "## 📱 iPhone Identity Correlation",
+        "",
+        f"Updated: {result.get('timestamp', '—')}",
+        "",
+        "| Reference IP | Candidate IP | Ref Hostname | Candidate Hostname | Ref MAC | Candidate MAC | Result | Confidence | Evidence |",
+        "|--------------|--------------|--------------|--------------------|---------|---------------|--------|------------|----------|",
+        (
+            f"| {result.get('reference_ip', '—')} | {result.get('candidate_ip', '—')} | "
+            f"{result.get('reference_hostname', '—')} | {result.get('candidate_hostname', '—')} | "
+            f"{result.get('reference_mac', '—')} | {result.get('candidate_mac', '—')} | "
+            f"{result.get('status', 'inconclusive')} | {result.get('confidence', 'low')} | {evidence} |"
+        ),
+    ]
+    section = "\n".join(section_lines) + "\n"
+
+    if "## 📱 iPhone Identity Correlation" in content:
+        content = re.sub(
+            r"## 📱 iPhone Identity Correlation.*?(?=\n## |\Z)",
+            section.strip(),
+            content,
+            flags=re.DOTALL,
+        )
+    else:
+        content = content.rstrip() + "\n\n---\n\n" + section
+
+    try:
+        with open(DEVICES_FILE, "w") as f:
+            f.write(content)
+        print("   iPhone identity correlation section updated")
+    except Exception as e:
+        print(f"   Warning: could not write iPhone identity section: {e}")
+
+
+def update_mac_combined_devices_section(device_records):
+    """Write/replace section that consolidates duplicate identities across IPs."""
+    mac_to_ips = {}
+    for ip, rec in (device_records or {}).items():
+        mac = normalize_mac(rec.get("mac"))
+        if not mac:
+            continue
+        mac_to_ips.setdefault(mac, set()).add(ip)
+
+    combined_by_mac = {mac: sorted(ips) for mac, ips in mac_to_ips.items() if len(ips) > 1}
+
+    try:
+        with open(DEVICES_FILE, "r") as f:
+            content = f.read()
+    except Exception as e:
+        print(f"   Warning: could not read {DEVICES_FILE} for MAC combined section: {e}")
+        return
+
+    section_lines = [
+        "## MAC-Based Combined Devices",
+        "",
+        "Devices below are consolidated when identity evidence indicates one logical device on multiple IPs.",
+        "",
+        "| Combined Device | Match Basis | Identifier | IP Addresses | Status | Notes |",
+        "|-----------------|-------------|------------|--------------|--------|-------|",
+    ]
+    row_idx = 1
+    used_ips = set()
+
+    # First, strict MAC duplicates.
+    for mac, ips in sorted(combined_by_mac.items()):
+        statuses = [
+            (device_records.get(ip, {}).get("last_status") or "offline").lower()
+            for ip in ips
+        ]
+        combined_status = "online" if any(s == "online" for s in statuses) else "offline"
+        used_ips.update(ips)
+        section_lines.append(
+            f"| Combined Device {row_idx} | MAC | {mac} | {', '.join(ips)} | {combined_status} | Same MAC observed on multiple IPs; grouped as one logical device. |"
+        )
+        row_idx += 1
+
+    # Then, correlated iPhone pair (hostname + prior identity check evidence).
+    ref_ip = IPHONE_IDENTITY_REFERENCE_IP
+    cand_ip = IPHONE_IDENTITY_CANDIDATE_IP
+    ref_rec = device_records.get(ref_ip, {})
+    cand_rec = device_records.get(cand_ip, {})
+    ref_host = (ref_rec.get("hostname") or "").strip().lower()
+    cand_host = (cand_rec.get("hostname") or "").strip().lower()
+    iphone_correlated = (
+        ref_host != ""
+        and cand_host != ""
+        and ref_host == cand_host
+        and ref_host == "iphone.mg8702"
+    )
+    if iphone_correlated and not ({ref_ip, cand_ip} <= used_ips):
+        statuses = [
+            (ref_rec.get("last_status") or "offline").lower(),
+            (cand_rec.get("last_status") or "offline").lower(),
+        ]
+        combined_status = "online" if any(s == "online" for s in statuses) else "offline"
+        identifier = normalize_mac(ref_rec.get("mac")) or "iPhone.MG8702"
+        section_lines.append(
+            f"| Combined Device {row_idx} | Correlated iPhone | {identifier} | {ref_ip}, {cand_ip} | {combined_status} | Hostname correlation + prior identity check indicates one iPhone across two subnets. |"
+        )
+        row_idx += 1
+    else:
+        if row_idx == 1:
+            section_lines.append("| — | — | — | — | — | No duplicate identities detected in current cache. |")
+    section = "\n".join(section_lines) + "\n"
+
+    if "## MAC-Based Combined Devices" in content:
+        content = re.sub(
+            r"## MAC-Based Combined Devices.*?(?=\n## |\Z)",
+            section.strip(),
+            content,
+            flags=re.DOTALL,
+        )
+    else:
+        content = content.rstrip() + "\n\n---\n\n" + section
+
+    try:
+        with open(DEVICES_FILE, "w") as f:
+            f.write(content)
+        print("   MAC-based combined devices section updated")
+    except Exception as e:
+        print(f"   Warning: could not write MAC combined devices section: {e}")
 
 
 def human_duration_since(first_seen_str: str) -> str:
@@ -939,6 +1170,17 @@ def main():
         else:
             rec["last_status_time"] = now_str
 
+    # Correlate routed-subnet iPhone against baseline iPhone identity whenever candidate is online.
+    if IPHONE_IDENTITY_CANDIDATE_IP in live_set:
+        identity_result = compare_iphone_identity(device_records)
+        save_iphone_identity_result(identity_result)
+        update_iphone_identity_section(identity_result)
+        print(
+            "   iPhone identity check: "
+            f"{identity_result['status']} "
+            f"(confidence={identity_result['confidence']})"
+        )
+
     # Deep scan: offline→online / first-seen, plus any host live now but missing from last snapshot
     # (covers Tailscale-only visibility and other edge cases).
     deep_scan_targets = set(online_transition_ips)
@@ -953,6 +1195,7 @@ def main():
         update_online_enrichment_table(enrichment_rows)
 
     save_device_records(device_records)
+    update_mac_combined_devices_section(device_records)
     save_scan_snapshot(scan_timestamp, all_live_hosts, device_records)
     
     if not new_ips:

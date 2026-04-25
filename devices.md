@@ -55,6 +55,14 @@
 
 ---
 
+## MAC-Based Combined Devices
+
+Devices below are consolidated when identity evidence indicates one logical device on multiple IPs.
+
+| Combined Device | Match Basis | Identifier | IP Addresses | Status | Notes |
+|-----------------|-------------|------------|--------------|--------|-------|
+| Combined Device 1 | MAC | d4:be:dc:ed:dd:90 | 192.168.0.1, 192.168.0.192 | online | Same MAC observed on multiple IPs; grouped as one logical device. |
+| Combined Device 2 | Correlated iPhone | e6:40:e4:dc:e1:f0 | 192.168.0.49, 192.168.50.106 | online | Hostname correlation + prior identity check indicates one iPhone across two subnets. |
 ## Device Connectivity Log
 
 This table tracks when devices were first seen (came online), their last known activity, and current status. Updated by the hourly network scan agent.
@@ -73,9 +81,9 @@ This table tracks when devices were first seen (came online), their last known a
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
 <<<<<<< HEAD
-*Last updated: 2026-04-25 03:07:42*
+*Last updated: 2026-04-25 10:50:42*
 =======
-*Last updated: 2026-04-25 03:07:42*
+*Last updated: 2026-04-25 10:50:42*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -1478,6 +1486,35 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-25 10:50:42 | 0 | 15 | 43 |
+| 2026-04-25 10:35:51 | 0 | 16 | 43 |
+| 2026-04-25 10:18:42 | 0 | 15 | 43 |
+| 2026-04-25 10:04:03 | 0 | 15 | 43 |
+| 2026-04-25 09:46:42 | 0 | 15 | 43 |
+| 2026-04-25 09:31:51 | 0 | 15 | 43 |
+| 2026-04-25 09:14:42 | 0 | 14 | 43 |
+| 2026-04-25 08:59:51 | 0 | 16 | 43 |
+| 2026-04-25 08:42:42 | 0 | 15 | 43 |
+| 2026-04-25 08:26:42 | 0 | 15 | 43 |
+| 2026-04-25 08:10:42 | 0 | 15 | 43 |
+| 2026-04-25 07:54:42 | 0 | 16 | 43 |
+| 2026-04-25 07:39:51 | 0 | 16 | 43 |
+| 2026-04-25 07:22:47 | 0 | 15 | 43 |
+| 2026-04-25 07:06:42 | 0 | 15 | 43 |
+| 2026-04-25 06:50:42 | 0 | 16 | 43 |
+| 2026-04-25 06:35:51 | 0 | 16 | 43 |
+| 2026-04-25 06:19:22 | 0 | 15 | 43 |
+| 2026-04-25 06:03:42 | 0 | 16 | 43 |
+| 2026-04-25 05:47:42 | 0 | 17 | 43 |
+| 2026-04-25 05:32:51 | 0 | 17 | 43 |
+| 2026-04-25 05:15:42 | 0 | 16 | 43 |
+| 2026-04-25 05:00:51 | 0 | 17 | 43 |
+| 2026-04-25 04:43:42 | 0 | 16 | 43 |
+| 2026-04-25 04:27:42 | 0 | 16 | 43 |
+| 2026-04-25 04:11:42 | 0 | 16 | 43 |
+| 2026-04-25 03:55:42 | 0 | 16 | 43 |
+| 2026-04-25 03:39:42 | 0 | 16 | 43 |
+| 2026-04-25 03:23:42 | 0 | 16 | 43 |
 | 2026-04-25 03:07:42 | 0 | 16 | 43 |
 | 2026-04-25 02:51:42 | 0 | 16 | 43 |
 | 2026-04-25 02:35:42 | 0 | 16 | 43 |
@@ -1758,9 +1795,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 
 <<<<<<< HEAD
-*Last updated: 2026-04-25 03:07:42*
+*Last updated: 2026-04-25 10:50:42*
 =======
-*Last updated: 2026-04-25 03:07:42*
+*Last updated: 2026-04-25 10:50:42*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -2025,8 +2062,15 @@ This table shows only devices that changed state (came online or went offline) b
 
 ## ⚡ Online Detector Enrichment
 
-Updated: 2026-04-25 01:49:02
+Updated: 2026-04-25 10:35:51
 
 | IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
 |-----|----------|-----|--------|------------|---------------|----------|
-| 192.168.0.59 | samsung-attic | 8a:33:76:dd:0b:cb | Online | None | No known access | Unknown |
+| 100.79.216.111 | erics-macbook-pro.tail2a3b45.ts.net | — | Online | 5000, 7000 | No known access | Unknown |
+## 📱 iPhone Identity Correlation
+
+Updated: 2026-04-25 11:06:42
+
+| Reference IP | Candidate IP | Ref Hostname | Candidate Hostname | Ref MAC | Candidate MAC | Result | Confidence | Evidence |
+|--------------|--------------|--------------|--------------------|---------|---------------|--------|------------|----------|
+| 192.168.0.49 | 192.168.50.106 | iPhone.MG8702 | iPhone.MG8702 | e6:40:e4:dc:e1:f0 | — | likely_same_device | medium | Matching hostname: iPhone.MG8702; Candidate MAC unavailable from ARP |

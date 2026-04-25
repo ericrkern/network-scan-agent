@@ -64,6 +64,128 @@ def is_active_status(status: str) -> bool:
     return status == "Online"
 
 
+def normalize_mac(mac: str) -> str:
+    """Normalize MAC for grouping; return empty string when unavailable."""
+    if mac in (None, "", "—", "None"):
+        return ""
+    return str(mac).strip().lower().replace("-", ":")
+
+
+def collapse_duplicate_devices(devices):
+    """
+    Collapse duplicate logical devices so UI shows one card even with multiple IPs.
+    Priority:
+      1) Same normalized MAC across multiple IPs
+      2) Correlated iPhone pair (192.168.0.49 + 192.168.50.106)
+    """
+    if not devices:
+        return devices
+
+    by_ip = {d.get("ip"): d for d in devices if d.get("ip")}
+    groups = []
+    grouped_ips = set()
+
+    # Group by duplicate MAC first (high confidence).
+    mac_groups = {}
+    for d in devices:
+        mac = normalize_mac(d.get("mac"))
+        if not mac:
+            continue
+        mac_groups.setdefault(mac, []).append(d)
+    for _, members in mac_groups.items():
+        ips = sorted({m["ip"] for m in members if m.get("ip")})
+        if len(ips) > 1:
+            groups.append(ips)
+            grouped_ips.update(ips)
+
+    # Correlate the known iPhone pair when both records exist.
+    iphone_pair = ["192.168.0.49", "192.168.50.106"]
+    if all(ip in by_ip for ip in iphone_pair):
+        if not all(ip in grouped_ips for ip in iphone_pair):
+            hostnames = [str(by_ip[ip].get("hostname", "")).strip().lower() for ip in iphone_pair]
+            if hostnames[0] and hostnames[0] == hostnames[1]:
+                groups.append(iphone_pair)
+                grouped_ips.update(iphone_pair)
+
+    merged_devices = []
+    for ips in groups:
+        members = [by_ip[ip] for ip in ips if ip in by_ip]
+        if not members:
+            continue
+
+        online_members = [m for m in members if m.get("status") == "Online"]
+        primary = online_members[0] if online_members else members[0]
+
+        status = "Online" if online_members else ("Offline" if all(m.get("status") == "Offline" for m in members) else "Unknown")
+        status_color = "emerald" if status == "Online" else ("red" if status == "Offline" else "amber")
+
+        ip_addresses = sorted({m.get("ip") for m in members if m.get("ip")})
+        per_ip_status = []
+        for m in sorted(members, key=lambda item: item.get("ip", "")):
+            per_ip_status.append({
+                "ip": m.get("ip"),
+                "status": m.get("status", "Unknown"),
+                "last_seen": m.get("last_seen", "—"),
+                "last_status_time": m.get("last_status_time", m.get("last_seen", "—")),
+                "subnet_group": m.get("subnet_group", "Other Networks"),
+            })
+
+        merged = dict(primary)
+        merged["ip"] = primary.get("ip")
+        merged["ip_addresses"] = ip_addresses
+        merged["ip_display"] = ", ".join(ip_addresses)
+        merged["status"] = status
+        merged["status_color"] = status_color
+        merged["subnet_group"] = primary.get("subnet_group")
+        merged["per_ip_status"] = per_ip_status
+        # Merge timestamps across all correlated IPs.
+        first_seen_candidates = [m.get("first_seen") for m in members if m.get("first_seen") not in (None, "", "—")]
+        if first_seen_candidates:
+            merged["first_seen"] = min(first_seen_candidates)
+        last_seen_candidates = [m.get("last_seen") for m in members if m.get("last_seen") not in (None, "", "—")]
+        if last_seen_candidates:
+            merged["last_seen"] = max(last_seen_candidates)
+
+        # Make transition history explicit about source IP.
+        merged_events = []
+        for m in members:
+            src_ip = m.get("ip")
+            for ev in (m.get("events") or []):
+                if not isinstance(ev, dict) or not ev.get("timestamp"):
+                    continue
+                ev_copy = dict(ev)
+                ev_copy["ip"] = src_ip
+                merged_events.append(ev_copy)
+        merged["events"] = sorted(
+            merged_events,
+            key=lambda ev: ev.get("timestamp", ""),
+            reverse=True,
+        )[:50]
+        # Keep a stable MAC if any member has one.
+        for m in members:
+            mac = m.get("mac")
+            if mac not in (None, "", "—", "None"):
+                merged["mac"] = mac
+                break
+        merged_devices.append(merged)
+
+    # Keep non-grouped devices as-is.
+    for d in devices:
+        if d.get("ip") not in grouped_ips:
+            d["ip_addresses"] = [d.get("ip")]
+            d["ip_display"] = d.get("ip")
+            d["per_ip_status"] = [{
+                "ip": d.get("ip"),
+                "status": d.get("status", "Unknown"),
+                "last_seen": d.get("last_seen", "—"),
+                "last_status_time": d.get("last_status_time", d.get("last_seen", "—")),
+                "subnet_group": d.get("subnet_group", "Other Networks"),
+            }]
+            merged_devices.append(d)
+
+    return merged_devices
+
+
 def parse_markdown_devices():
     """Parse rich device information from devices.md including tables and Access Details section"""
     device_info = {}
@@ -729,6 +851,8 @@ def load_device_data():
             return 1  # no-name devices at bottom
         return 0  # named devices first
 
+    devices = collapse_duplicate_devices(devices)
+
     devices.sort(
         key=lambda x: (
             subnet_order.get(x.get("subnet_group", "Other Networks"), 99),
@@ -981,6 +1105,9 @@ def api_device_detail(ip):
         "device": device,
         "rich_info": rich,
         "history": device.get("events", []),
+        "per_ip_status": device.get("per_ip_status", []),
+        "ip_addresses": device.get("ip_addresses", [device.get("ip")]),
+        "ip_display": device.get("ip_display", device.get("ip")),
         "deep_scan": deep_scan_data,
         "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "ports": rich.get("ports", device.get("ports", "—")),

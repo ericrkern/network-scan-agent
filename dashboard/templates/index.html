@@ -325,13 +325,14 @@
                             <thead class="bg-zinc-950 text-zinc-400">
                                 <tr>
                                     <th class="text-left px-4 py-3 font-medium">Timestamp</th>
+                                    <th class="text-left px-4 py-3 font-medium">IP</th>
                                     <th class="text-left px-4 py-3 font-medium">Transition</th>
                                     <th class="text-left px-4 py-3 font-medium">Reason</th>
                                 </tr>
                             </thead>
                             <tbody id="transition-table-body" class="bg-black">
                                 <tr>
-                                    <td colspan="3" class="px-4 py-4 text-zinc-500">No transition data yet.</td>
+                                    <td colspan="4" class="px-4 py-4 text-zinc-500">No transition data yet.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -392,7 +393,7 @@
                      class="device-card bg-zinc-900 border ${isOnline ? 'border-emerald-500/30' : 'border-zinc-700'} rounded-3xl p-6 group cursor-pointer hover:border-yellow-500/50 active:scale-[0.985] transition-all">
                     <div class="flex justify-between items-start gap-3 mb-4">
                         <div class="min-w-0 flex-1">
-                            <div class="font-mono text-sm text-yellow-400">${device.ip}</div>
+                            <div class="font-mono text-sm text-yellow-400">${device.ip_display || device.ip}</div>
                             <div class="text-xl font-semibold text-white mt-0.5 leading-tight truncate" title="${device.hostname}">${device.hostname}</div>
                             <div class="text-emerald-300/70 text-sm line-clamp-2 mt-1">${device.identity}</div>
                         </div>
@@ -740,7 +741,8 @@
             
             if (searchTerm) {
                 filtered = filtered.filter(device => 
-                    device.ip.toLowerCase().includes(searchTerm) ||
+                    (device.ip && device.ip.toLowerCase().includes(searchTerm)) ||
+                    ((device.ip_display || '').toLowerCase().includes(searchTerm)) ||
                     (device.hostname && device.hostname.toLowerCase().includes(searchTerm)) ||
                     (device.type && device.type.toLowerCase().includes(searchTerm))
                 );
@@ -860,7 +862,7 @@
                 const events = device.events && device.events.length > 0 ? device.events : [];
                 
                 // Fill modal header
-                document.getElementById('modal-ip').textContent = device.ip;
+                document.getElementById('modal-ip').textContent = data.ip_display || device.ip;
                 document.getElementById('modal-hostname').textContent = device.hostname;
                 document.getElementById('modal-identity').textContent = device.identity || device.type || 'Network Device';
                 
@@ -943,6 +945,32 @@
                     });
                     infoHTML += `</div>`;
                 }
+
+                if (data.per_ip_status && data.per_ip_status.length > 1) {
+                    infoHTML += `<div class="mt-4 pt-4 border-t border-zinc-700">`;
+                    infoHTML += `<div class="text-[10px] text-zinc-400 mb-2">PER-IP STATUS (MERGED DEVICE)</div>`;
+                    data.per_ip_status.forEach((row) => {
+                        const isOnlineRow = row.status === 'Online';
+                        const badgeClass = isOnlineRow
+                            ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30'
+                            : (row.status === 'Offline'
+                                ? 'bg-red-500/10 text-red-300 border border-red-500/30'
+                                : 'bg-amber-500/10 text-amber-300 border border-amber-500/30');
+                        infoHTML += `
+                            <div class="flex items-center justify-between py-1.5 border-b border-zinc-800/70">
+                                <div>
+                                    <div class="font-mono text-amber-300">${row.ip}</div>
+                                    <div class="text-[10px] text-zinc-500">${row.subnet_group || ''}</div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="inline-flex px-2.5 py-0.5 rounded-xl text-[10px] ${badgeClass}">${row.status}</span>
+                                    <div class="text-[10px] text-zinc-500 mt-1">Last seen: ${row.last_seen || '—'}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    infoHTML += `</div>`;
+                }
                 
                 if (infoHTML === '') {
                     infoHTML = '<div class="text-zinc-500 italic text-xs py-8 text-center">No additional metadata available for this device yet.<br>Run more scans to enrich the database.</div>';
@@ -1005,6 +1033,7 @@
                         return `
                             <tr class="border-t border-zinc-800">
                                 <td class="px-4 py-3 font-mono text-zinc-300">${formattedTime}</td>
+                                <td class="px-4 py-3 font-mono text-yellow-400">${event.ip || device.ip}</td>
                                 <td class="px-4 py-3">
                                     <span class="inline-flex items-center rounded-xl px-2.5 py-1 ${isOnlineEvent ? 
                                         'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' : 
@@ -1035,7 +1064,7 @@
                     `;
                     transitionTableBody.innerHTML = `
                         <tr>
-                            <td colspan="3" class="px-4 py-4 text-zinc-500">No transitions recorded yet. Run additional scans to populate this table.</td>
+                            <td colspan="4" class="px-4 py-4 text-zinc-500">No transitions recorded yet. Run additional scans to populate this table.</td>
                         </tr>
                     `;
                 }
