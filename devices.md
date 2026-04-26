@@ -81,9 +81,9 @@ This table tracks when devices were first seen (came online), their last known a
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
 <<<<<<< HEAD
-*Last updated: 2026-04-25 11:38:42*
+*Last updated: 2026-04-26 03:06:42*
 =======
-*Last updated: 2026-04-25 11:38:42*
+*Last updated: 2026-04-26 03:06:42*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -612,6 +612,72 @@ openclaw gateway start
 
 ```bash
 # Check channel status
+
+## 🔔 Network Scan Alert - 2026-04-25 21:32:14
+
+**1 new device(s) discovered!**
+
+### New Device Discovered: 192.168.0.237
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.237 |
+| **Hostname** | iPad.MG8702 |
+| **MAC Address** | 9a:ca:86:b2:78:c6 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-04-25 21:32:14 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+
+
+## 🔔 Network Scan Alert - 2026-04-25 19:55:36
+
+**1 new device(s) discovered!**
+
+### New Device Discovered: 192.168.0.238
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.238 |
+| **Hostname** | — |
+| **MAC Address** | — |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-04-25 19:55:36 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+
+
+## 🔔 Network Scan Alert - 2026-04-25 19:39:41
+
+**1 new device(s) discovered!**
+
+### New Device Discovered: 192.168.0.98
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.98 |
+| **Hostname** | Watch.MG8702 |
+| **MAC Address** | 4e:0a:ec:36:fd:82 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-04-25 19:39:41 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+
 
 ## 🔔 Network Scan Alert - 2026-04-23 19:42:26
 
@@ -1486,6 +1552,64 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-26 03:06:42 | 0 | 14 | 46 |
+| 2026-04-26 02:50:42 | 0 | 14 | 46 |
+| 2026-04-26 02:34:42 | 0 | 14 | 46 |
+| 2026-04-26 02:18:42 | 0 | 14 | 46 |
+| 2026-04-26 02:02:42 | 0 | 15 | 46 |
+| 2026-04-26 01:46:42 | 0 | 15 | 46 |
+| 2026-04-26 01:30:42 | 0 | 15 | 46 |
+| 2026-04-26 01:14:42 | 0 | 15 | 46 |
+| 2026-04-26 00:59:51 | 0 | 16 | 46 |
+| 2026-04-26 00:42:42 | 0 | 15 | 46 |
+| 2026-04-26 00:26:42 | 0 | 15 | 46 |
+| 2026-04-26 00:10:42 | 0 | 15 | 46 |
+| 2026-04-25 23:54:42 | 0 | 15 | 46 |
+| 2026-04-25 23:38:42 | 0 | 15 | 46 |
+| 2026-04-25 23:22:42 | 0 | 15 | 46 |
+| 2026-04-25 23:08:29 | 0 | 16 | 46 |
+| 2026-04-25 22:50:42 | 0 | 15 | 46 |
+| 2026-04-25 22:34:42 | 0 | 15 | 46 |
+| 2026-04-25 22:18:42 | 0 | 15 | 46 |
+| 2026-04-25 22:02:42 | 0 | 15 | 46 |
+| 2026-04-25 21:46:42 | 0 | 15 | 46 |
+| 2026-04-25 21:32:14 | 1 | 18 | 46 |
+| 2026-04-25 21:16:59 | 0 | 17 | 45 |
+| 2026-04-25 20:58:42 | 0 | 15 | 45 |
+| 2026-04-25 20:44:05 | 0 | 15 | 45 |
+| 2026-04-25 20:26:42 | 0 | 14 | 45 |
+| 2026-04-25 20:10:42 | 0 | 15 | 45 |
+| 2026-04-25 19:55:36 | 1 | 16 | 45 |
+| 2026-04-25 19:39:41 | 1 | 16 | 44 |
+| 2026-04-25 19:22:42 | 0 | 15 | 43 |
+| 2026-04-25 19:06:43 | 0 | 15 | 43 |
+| 2026-04-25 18:50:42 | 0 | 15 | 43 |
+| 2026-04-25 18:34:42 | 0 | 15 | 43 |
+| 2026-04-25 18:18:42 | 0 | 15 | 43 |
+| 2026-04-25 18:02:42 | 0 | 15 | 43 |
+| 2026-04-25 17:46:42 | 0 | 15 | 43 |
+| 2026-04-25 17:30:42 | 0 | 15 | 43 |
+| 2026-04-25 17:14:42 | 0 | 15 | 43 |
+| 2026-04-25 16:58:42 | 0 | 15 | 43 |
+| 2026-04-25 16:42:42 | 0 | 16 | 43 |
+| 2026-04-25 16:26:42 | 0 | 16 | 43 |
+| 2026-04-25 16:12:25 | 0 | 16 | 43 |
+| 2026-04-25 15:54:42 | 0 | 15 | 43 |
+| 2026-04-25 15:38:42 | 0 | 15 | 43 |
+| 2026-04-25 15:22:42 | 0 | 15 | 43 |
+| 2026-04-25 15:06:42 | 0 | 15 | 43 |
+| 2026-04-25 14:50:42 | 0 | 15 | 43 |
+| 2026-04-25 14:35:51 | 0 | 16 | 43 |
+| 2026-04-25 14:18:42 | 0 | 15 | 43 |
+| 2026-04-25 14:02:42 | 0 | 15 | 43 |
+| 2026-04-25 13:47:51 | 0 | 16 | 43 |
+| 2026-04-25 13:30:42 | 0 | 15 | 43 |
+| 2026-04-25 13:15:51 | 0 | 16 | 43 |
+| 2026-04-25 12:59:51 | 0 | 16 | 43 |
+| 2026-04-25 12:42:42 | 0 | 15 | 43 |
+| 2026-04-25 12:27:51 | 0 | 16 | 43 |
+| 2026-04-25 12:10:42 | 0 | 15 | 43 |
+| 2026-04-25 11:54:42 | 0 | 16 | 43 |
 | 2026-04-25 11:38:42 | 0 | 16 | 43 |
 | 2026-04-25 11:22:42 | 0 | 17 | 43 |
 | 2026-04-25 11:08:59 | 0 | 17 | 43 |
@@ -1798,9 +1922,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 
 <<<<<<< HEAD
-*Last updated: 2026-04-25 11:38:42*
+*Last updated: 2026-04-26 03:06:42*
 =======
-*Last updated: 2026-04-25 11:38:42*
+*Last updated: 2026-04-26 03:06:42*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -2065,15 +2189,14 @@ This table shows only devices that changed state (came online or went offline) b
 
 ## ⚡ Online Detector Enrichment
 
-Updated: 2026-04-25 11:08:59
+Updated: 2026-04-26 00:59:50
 
 | IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
 |-----|----------|-----|--------|------------|---------------|----------|
-| 100.71.191.72 | emergingtechs-mac-mini.tail2a3b45.ts.net | — | Online | 22, 5900, 47490 | SSH (`ssh user@100.71.191.72`), VNC | VNC/Remote Desktop |
 | 100.79.216.111 | erics-macbook-pro.tail2a3b45.ts.net | — | Online | 5000, 7000 | No known access | Unknown |
 ## 📱 iPhone Identity Correlation
 
-Updated: 2026-04-25 11:38:42
+Updated: 2026-04-26 03:06:42
 
 | Reference IP | Candidate IP | Ref Hostname | Candidate Hostname | Ref MAC | Candidate MAC | Result | Confidence | Evidence |
 |--------------|--------------|--------------|--------------------|---------|---------------|--------|------------|----------|
