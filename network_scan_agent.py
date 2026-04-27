@@ -20,6 +20,7 @@ SEEN_DEVICES_CACHE = "/home/jetson/Documents/Network/.seen_devices.json"
 SCAN_SNAPSHOTS_FILE = "/home/jetson/Documents/Network/.scan_snapshots.json"
 IPHONE_IDENTITY_LOG_FILE = "/home/jetson/Documents/Network/.iphone_identity_checks.json"
 NETWORKS = ["192.168.0.0/24", "192.168.50.0/24", "192.168.100.0/24"]
+ADJACENT_SUBNET_PREFIX = "192.168.50."
 COMMON_PORTS = [22, 80, 443, 445, 631, 8080, 5900, 3000, 5000]
 SCAN_TIMEOUT = 2
 DEEP_SCAN_SCRIPT = "/home/jetson/Documents/Network/deep_scan.py"
@@ -484,6 +485,59 @@ def ping_host(ip):
         return None
 
 
+def host_reports_up_with_tcp_probe(ip):
+    """
+    Detect host-up status even when ICMP is blocked.
+    Uses TCP SYN ping host discovery (not -Pn) to avoid false positives.
+    """
+    try:
+        result = subprocess.run(
+            [
+                "nmap",
+                "-sn",
+                "-n",
+                "--max-retries", "1",
+                "--host-timeout", "4s",
+                "-PS53,80,443,62078",
+                ip,
+            ],
+            capture_output=True,
+            text=True,
+            timeout=8,
+        )
+        output = (result.stdout or "") + "\n" + (result.stderr or "")
+        return "Host is up" in output and "(0 hosts up)" not in output
+    except Exception:
+        return False
+
+
+def detect_adjacent_subnet_status(known_ips):
+    """
+    Additional online detection pass for 192.168.50.0/24.
+    This catches devices that block ICMP but still resolve/respond.
+    """
+    detected_live = set()
+    findings = {}
+    for ip in sorted(set(known_ips)):
+        reason = None
+
+        # 1) Fast ICMP check.
+        if ping_host(ip):
+            reason = "icmp_ping"
+        # 2) ARP/neighbor table has a MAC entry.
+        elif get_mac(ip):
+            reason = "arp_neighbor"
+        # 3) TCP-level host-up probe when ICMP is filtered.
+        elif host_reports_up_with_tcp_probe(ip):
+            reason = "tcp_host_probe"
+
+        if reason:
+            detected_live.add(ip)
+            findings[ip] = reason
+
+    return detected_live, findings
+
+
 def is_tailscale_ipv4(ip: str) -> bool:
     """Return True when IP is in Tailscale CGNAT IPv4 range."""
     return isinstance(ip, str) and ip.startswith("100.")
@@ -621,8 +675,8 @@ def scan_network(network_cidr):
 
 def detect_special_tracked_devices(device_records):
     """
-    Track selected routed-subnet devices by reverse-DNS presence.
-    This is useful for VLAN/segmented clients that block ICMP from this host.
+    Track selected routed-subnet devices and enrich metadata.
+    Reverse DNS is used for naming only; online status requires network evidence.
     """
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     detected = []
@@ -648,11 +702,24 @@ def detect_special_tracked_devices(device_records):
         if rec.get("type") in ("", "—", "Unknown", None):
             rec["type"] = meta.get("type", "Unknown")
 
+        # Reverse DNS is informative but not sufficient to mark host online.
         if detected_hostname:
-            detected.append(ip)
             rec["hostname"] = detected_hostname
-            rec["last_seen"] = now_str
             rec["detection_method"] = "reverse_dns"
+
+        # Only mark online with actual reachability evidence.
+        if ping_host(ip):
+            detected.append(ip)
+            rec["last_seen"] = now_str
+            rec["detection_method"] = "icmp_ping"
+        elif get_mac(ip):
+            detected.append(ip)
+            rec["last_seen"] = now_str
+            rec["detection_method"] = "arp_neighbor"
+        elif host_reports_up_with_tcp_probe(ip):
+            detected.append(ip)
+            rec["last_seen"] = now_str
+            rec["detection_method"] = "tcp_syn_ping"
 
     return detected, device_records
 
@@ -1118,6 +1185,19 @@ def main():
         print(f"\n📍 Special tracked devices online (reverse DNS): {len(special_live)}")
         all_live_hosts.extend(special_live)
     
+    # Additional verification pass for adjacent subnet devices that may block ICMP.
+    adjacent_known_ips = [ip for ip in device_records.keys() if ip.startswith(ADJACENT_SUBNET_PREFIX)]
+    adjacent_live = set()
+    adjacent_findings = {}
+    if adjacent_known_ips:
+        adjacent_live, adjacent_findings = detect_adjacent_subnet_status(adjacent_known_ips)
+        if adjacent_live:
+            print(
+                f"\n🛰️  Additional {ADJACENT_SUBNET_PREFIX}0/24 checks found "
+                f"{len(adjacent_live)} live host(s)"
+            )
+            all_live_hosts.extend(sorted(adjacent_live))
+
     # Remove duplicates from live hosts
     all_live_hosts = list(set(all_live_hosts))
     print(f"\n📊 Total unique live hosts: {len(all_live_hosts)}")
@@ -1133,6 +1213,7 @@ def main():
     online_transition_ips = []
     for ip in all_live_hosts:
         current_mac = get_mac(ip)
+        online_reason = "adjacent_subnet_checks" if ip in adjacent_live else "scan"
         if ip not in device_records:
             device_records[ip] = {
                 "first_seen": now_str,
@@ -1145,16 +1226,19 @@ def main():
                 "last_status_time": now_str,
             }
             online_transition_ips.append(ip)
+            device_records[ip]["detection_method"] = online_reason
             if current_mac:
                 # Ensure first online record captures the MAC snapshot.
-                record_event(device_records[ip], "online", "scan", mac=current_mac)
+                record_event(device_records[ip], "online", online_reason, mac=current_mac)
         else:
             if current_mac:
                 device_records[ip]["mac"] = current_mac
             previous_status = device_records[ip].get("last_status")
             device_records[ip]["last_seen"] = now_str
+            if ip in adjacent_findings:
+                device_records[ip]["detection_method"] = adjacent_findings[ip]
             if previous_status != "online":
-                record_event(device_records[ip], "online", "scan", mac=current_mac)
+                record_event(device_records[ip], "online", online_reason, mac=current_mac)
                 online_transition_ips.append(ip)
             else:
                 device_records[ip]["last_status"] = "online"

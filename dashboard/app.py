@@ -22,6 +22,15 @@ CACHE_FILE = "/home/jetson/Documents/Network/.seen_devices.json"
 SCAN_SNAPSHOTS_FILE = "/home/jetson/Documents/Network/.scan_snapshots.json"
 SCAN_SCRIPT = "/home/jetson/Documents/Network/network_scan_agent.py"
 LAN_LABELS_FILE = os.environ.get("LAN_LABELS_FILE", "/home/jetson/.config/lan-labels")
+KNOWN_HOSTNAME_OVERRIDES = {
+    "192.168.0.98": "Irene's Watch",
+    "192.168.50.3": "Irene's Watch",
+    "192.168.0.81": "Friends Watch",
+}
+KNOWN_MAC_OVERRIDES = {
+    "192.168.0.98": "4e:0a:ec:36:fd:82",
+    "192.168.0.81": "fa:5b:a6:ab:1a:7f",
+}
 
 
 def load_ip_labels():
@@ -106,6 +115,13 @@ def collapse_duplicate_devices(devices):
             if hostnames[0] and hostnames[0] == hostnames[1]:
                 groups.append(iphone_pair)
                 grouped_ips.update(iphone_pair)
+
+    # User-confirmed watch aliases across subnets.
+    watch_pair = ["192.168.0.98", "192.168.50.3"]
+    if all(ip in by_ip for ip in watch_pair):
+        if not all(ip in grouped_ips for ip in watch_pair):
+            groups.append(watch_pair)
+            grouped_ips.update(watch_pair)
 
     merged_devices = []
     for ips in groups:
@@ -780,10 +796,14 @@ def load_device_data():
                 
                 rich_hostname = rich.get("hostname")
                 hostname = choose_device_name(ip, rich_hostname, cache_hostname, labels.get(ip))
+                if ip in KNOWN_HOSTNAME_OVERRIDES and hostname in (None, "", "—", ip):
+                    hostname = KNOWN_HOSTNAME_OVERRIDES[ip]
                 
                 rich_identity = rich.get("identity")
                 identity = rich_identity if rich_identity not in ["Unknown Device", "Unknown", "—", "None", None, ""] else data.get("type", "Unknown Device")
                 mac = rich.get("mac", data.get("mac", "—"))
+                if ip in KNOWN_MAC_OVERRIDES and mac in (None, "", "—", "None"):
+                    mac = KNOWN_MAC_OVERRIDES[ip]
                 rich_manufacturer = rich.get("manufacturer")
                 if rich_manufacturer in (None, "", "—", "None"):
                     manufacturer = data.get("manufacturer", "—")
@@ -868,6 +888,42 @@ def load_device_data():
         )
     )
     return devices
+
+
+def build_watch_correlation_findings():
+    """Build concise watch-correlation findings for dashboard display."""
+    watches = [
+        {
+            "ip": "192.168.0.98 (alias: 192.168.50.3)",
+            "hostname": "Irene's Watch",
+            "mac": "4e:0a:ec:36:fd:82",
+            "discovered": "Merged alias across subnets",
+        },
+        {
+            "ip": "192.168.0.81",
+            "hostname": "Friends Watch",
+            "mac": "fa:5b:a6:ab:1a:7f",
+            "discovered": "2026-04-21 20:59:09",
+        },
+    ]
+
+    conclusion = (
+        "Dashboard now treats 192.168.0.98 and 192.168.50.3 as one logical device "
+        "labeled Irene's Watch."
+    )
+    source_url = "https://support.apple.com/en-us/HT211227"
+    source_summary = (
+        "Apple states Apple Watch can use private Wi-Fi addresses that differ per network "
+        "and can rotate over time."
+    )
+
+    return {
+        "updated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "watches": watches,
+        "conclusion": conclusion,
+        "source_url": source_url,
+        "source_summary": source_summary,
+    }
 
 
 def fetch_roku_device_info(ip: str):
@@ -998,12 +1054,14 @@ def index():
     """Main dashboard page"""
     devices = load_device_data()
     last_updated = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    watch_findings = build_watch_correlation_findings()
     
     return render_template('index.html', 
                          devices=devices, 
                          last_updated=last_updated,
                          total_devices=len(devices),
-                         online_count=len([d for d in devices if is_active_status(d.get('status', ''))]))
+                         online_count=len([d for d in devices if is_active_status(d.get('status', ''))]),
+                         watch_findings=watch_findings)
 
 
 @app.route('/api/devices')
@@ -1012,9 +1070,11 @@ def api_devices():
     devices = load_device_data()
     scan_history = enrich_scan_history_with_state_changes(load_scan_history())
     connectivity = check_online_status()
+    watch_findings = build_watch_correlation_findings()
     return jsonify({
         "devices": devices,
         "scan_history": scan_history,
+        "watch_findings": watch_findings,
         "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "total": len(devices),
         "online": len([d for d in devices if is_active_status(d.get('status', ''))]),

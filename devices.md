@@ -62,7 +62,7 @@ Devices below are consolidated when identity evidence indicates one logical devi
 | Combined Device | Match Basis | Identifier | IP Addresses | Status | Notes |
 |-----------------|-------------|------------|--------------|--------|-------|
 | Combined Device 1 | MAC | d4:be:dc:ed:dd:90 | 192.168.0.1, 192.168.0.192 | online | Same MAC observed on multiple IPs; grouped as one logical device. |
-| Combined Device 2 | Correlated iPhone | e6:40:e4:dc:e1:f0 | 192.168.0.49, 192.168.50.106 | online | Hostname correlation + prior identity check indicates one iPhone across two subnets. |
+| Combined Device 2 | Correlated iPhone | e6:40:e4:dc:e1:f0 | 192.168.0.49, 192.168.50.106 | offline | Hostname correlation + prior identity check indicates one iPhone across two subnets. |
 ## Device Connectivity Log
 
 This table tracks when devices were first seen (came online), their last known activity, and current status. Updated by the hourly network scan agent.
@@ -81,9 +81,9 @@ This table tracks when devices were first seen (came online), their last known a
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
 <<<<<<< HEAD
-*Last updated: 2026-04-26 03:06:42*
+*Last updated: 2026-04-27 03:09:24*
 =======
-*Last updated: 2026-04-26 03:06:42*
+*Last updated: 2026-04-27 03:09:24*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -613,6 +613,50 @@ openclaw gateway start
 ```bash
 # Check channel status
 
+## 🔔 Network Scan Alert - 2026-04-26 20:12:25
+
+**1 new device(s) discovered!**
+
+### New Device Discovered: 192.168.0.112
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.112 |
+| **Hostname** | Watch.MG8702 |
+| **MAC Address** | 9a:b7:d7:52:d1:43 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-04-26 20:12:25 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+
+
+## 🔔 Network Scan Alert - 2026-04-26 19:26:34
+
+**1 new device(s) discovered!**
+
+### New Device Discovered: 192.168.0.137
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.137 |
+| **Hostname** | Mac.MG8702 |
+| **MAC Address** | 9e:35:b5:e5:25:91 |
+| **Open Ports** | 445, 5000 |
+| **Device Type** | Windows/Samba Share |
+| **Discovered** | 2026-04-26 19:26:34 |
+
+**Access Methods:**
+- SMB: `smb://192.168.0.137`
+
+---
+
+
+
 ## 🔔 Network Scan Alert - 2026-04-25 21:32:14
 
 **1 new device(s) discovered!**
@@ -666,7 +710,7 @@ openclaw gateway start
 | Attribute | Value |
 |-----------|-------|
 | **IP Address** | 192.168.0.98 |
-| **Hostname** | Watch.MG8702 |
+| **Hostname** | Irene's Watch |
 | **MAC Address** | 4e:0a:ec:36:fd:82 |
 | **Open Ports** | None detected |
 | **Device Type** | Unknown |
@@ -726,7 +770,7 @@ openclaw gateway start
 | Attribute | Value |
 |-----------|-------|
 | **IP Address** | 192.168.50.3 |
-| **Hostname** | Watch.MG8702 |
+| **Hostname** | Irene's Watch |
 | **MAC Address** | — |
 | **Open Ports** | None detected |
 | **Device Type** | Unknown |
@@ -979,7 +1023,7 @@ openclaw gateway start
 | Attribute | Value |
 |-----------|-------|
 | **IP Address** | 192.168.0.81 |
-| **Hostname** | Watch.MG8702 |
+| **Hostname** | Friends Watch |
 | **MAC Address** | fa:5b:a6:ab:1a:7f |
 | **Open Ports** | None detected |
 | **Device Type** | Unknown |
@@ -1552,6 +1596,100 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-27 03:09:24 | 0 | 16 | 48 |
+| 2026-04-27 02:51:08 | 0 | 14 | 48 |
+| 2026-04-27 02:36:29 | 0 | 14 | 48 |
+| 2026-04-27 02:19:08 | 0 | 13 | 48 |
+| 2026-04-27 02:03:08 | 0 | 14 | 48 |
+| 2026-04-27 01:49:59 | 0 | 14 | 48 |
+| 2026-04-27 01:31:08 | 0 | 12 | 48 |
+| 2026-04-27 01:15:08 | 0 | 12 | 48 |
+| 2026-04-27 00:59:08 | 0 | 13 | 48 |
+| 2026-04-27 00:43:08 | 0 | 13 | 48 |
+| 2026-04-27 00:28:44 | 0 | 14 | 48 |
+| 2026-04-27 00:11:08 | 0 | 14 | 48 |
+| 2026-04-26 23:56:49 | 0 | 15 | 48 |
+| 2026-04-26 23:39:08 | 0 | 14 | 48 |
+| 2026-04-26 23:24:29 | 0 | 14 | 48 |
+| 2026-04-26 23:07:08 | 0 | 13 | 48 |
+| 2026-04-26 22:54:02 | 0 | 15 | 48 |
+| 2026-04-26 22:36:16 | 0 | 14 | 48 |
+| 2026-04-26 22:19:08 | 0 | 14 | 48 |
+| 2026-04-26 22:03:08 | 0 | 14 | 48 |
+| 2026-04-26 21:47:08 | 0 | 14 | 48 |
+| 2026-04-26 21:32:29 | 0 | 15 | 48 |
+| 2026-04-26 21:15:08 | 0 | 14 | 48 |
+| 2026-04-26 21:01:46 | 0 | 18 | 48 |
+| 2026-04-26 20:43:08 | 0 | 16 | 48 |
+| 2026-04-26 20:27:08 | 0 | 17 | 48 |
+| 2026-04-26 20:12:25 | 1 | 18 | 48 |
+| 2026-04-26 19:56:29 | 0 | 17 | 47 |
+| 2026-04-26 19:39:08 | 0 | 16 | 47 |
+| 2026-04-26 19:26:34 | 1 | 16 | 47 |
+| 2026-04-26 19:07:08 | 0 | 14 | 46 |
+| 2026-04-26 18:51:08 | 0 | 14 | 46 |
+| 2026-04-26 18:35:08 | 0 | 14 | 46 |
+| 2026-04-26 18:19:08 | 0 | 14 | 46 |
+| 2026-04-26 18:03:08 | 0 | 14 | 46 |
+| 2026-04-26 17:48:16 | 0 | 15 | 46 |
+| 2026-04-26 17:31:08 | 0 | 14 | 46 |
+| 2026-04-26 17:16:28 | 0 | 14 | 46 |
+| 2026-04-26 16:59:08 | 0 | 13 | 46 |
+| 2026-04-26 16:43:08 | 0 | 14 | 46 |
+| 2026-04-26 16:27:08 | 0 | 14 | 46 |
+| 2026-04-26 16:12:16 | 0 | 15 | 46 |
+| 2026-04-26 15:55:08 | 0 | 14 | 46 |
+| 2026-04-26 15:39:08 | 0 | 14 | 46 |
+| 2026-04-26 15:23:08 | 0 | 14 | 46 |
+| 2026-04-26 15:08:16 | 0 | 14 | 46 |
+| 2026-04-26 14:51:08 | 0 | 13 | 46 |
+| 2026-04-26 14:35:08 | 0 | 13 | 46 |
+| 2026-04-26 14:19:08 | 0 | 14 | 46 |
+| 2026-04-26 14:03:08 | 0 | 14 | 46 |
+| 2026-04-26 13:49:24 | 0 | 15 | 46 |
+| 2026-04-26 13:31:08 | 0 | 13 | 46 |
+| 2026-04-26 13:15:08 | 0 | 13 | 46 |
+| 2026-04-26 13:04:37 | 0 | 14 | 46 |
+| 2026-04-26 13:03:28 | 0 | 16 | 46 |
+| 2026-04-26 13:02:02 | 0 | 17 | 46 |
+| 2026-04-26 13:01:06 | 0 | 17 | 46 |
+| 2026-04-26 12:43:51 | 0 | 16 | 46 |
+| 2026-04-26 12:26:42 | 0 | 15 | 46 |
+| 2026-04-26 12:10:42 | 0 | 15 | 46 |
+| 2026-04-26 11:54:42 | 0 | 15 | 46 |
+| 2026-04-26 11:38:42 | 0 | 15 | 46 |
+| 2026-04-26 11:22:42 | 0 | 16 | 46 |
+| 2026-04-26 11:13:05 | 0 | 19 | 46 |
+| 2026-04-26 10:50:42 | 0 | 14 | 46 |
+| 2026-04-26 10:34:42 | 0 | 15 | 46 |
+| 2026-04-26 10:18:42 | 0 | 15 | 46 |
+| 2026-04-26 10:02:42 | 0 | 15 | 46 |
+| 2026-04-26 09:46:42 | 0 | 16 | 46 |
+| 2026-04-26 09:31:51 | 0 | 16 | 46 |
+| 2026-04-26 09:14:42 | 0 | 15 | 46 |
+| 2026-04-26 08:59:51 | 0 | 16 | 46 |
+| 2026-04-26 08:43:51 | 0 | 15 | 46 |
+| 2026-04-26 08:26:42 | 0 | 14 | 46 |
+| 2026-04-26 08:10:42 | 0 | 15 | 46 |
+| 2026-04-26 07:54:42 | 0 | 16 | 46 |
+| 2026-04-26 07:40:13 | 0 | 17 | 46 |
+| 2026-04-26 07:37:50 | 0 | 16 | 46 |
+| 2026-04-26 07:22:43 | 0 | 16 | 46 |
+| 2026-04-26 07:08:05 | 0 | 16 | 46 |
+| 2026-04-26 06:50:42 | 0 | 15 | 46 |
+| 2026-04-26 06:37:13 | 0 | 17 | 46 |
+| 2026-04-26 06:18:42 | 0 | 15 | 46 |
+| 2026-04-26 06:03:51 | 0 | 15 | 46 |
+| 2026-04-26 05:46:42 | 0 | 14 | 46 |
+| 2026-04-26 05:30:42 | 0 | 14 | 46 |
+| 2026-04-26 05:14:42 | 0 | 14 | 46 |
+| 2026-04-26 04:58:42 | 0 | 14 | 46 |
+| 2026-04-26 04:42:42 | 0 | 14 | 46 |
+| 2026-04-26 04:26:42 | 0 | 15 | 46 |
+| 2026-04-26 04:11:51 | 0 | 15 | 46 |
+| 2026-04-26 03:54:42 | 0 | 14 | 46 |
+| 2026-04-26 03:38:42 | 0 | 14 | 46 |
+| 2026-04-26 03:22:42 | 0 | 14 | 46 |
 | 2026-04-26 03:06:42 | 0 | 14 | 46 |
 | 2026-04-26 02:50:42 | 0 | 14 | 46 |
 | 2026-04-26 02:34:42 | 0 | 14 | 46 |
@@ -1922,9 +2060,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 
 <<<<<<< HEAD
-*Last updated: 2026-04-26 03:06:42*
+*Last updated: 2026-04-27 03:09:24*
 =======
-*Last updated: 2026-04-26 03:06:42*
+*Last updated: 2026-04-27 03:09:24*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -2060,10 +2198,18 @@ This table shows only devices that changed state (came online or went offline) b
 
 ---
 
-## 🔬 Deep Scan Results - 2026-04-22 14:32:14
 
-**Scanned 31 devices with full Nmap service/OS detection.**
 
+---
+
+## 🔬 Deep Scan Results - 2026-04-26 20:47:19
+
+**Scanned 40 devices with full Nmap service/OS detection.**
+
+### Key Findings:
+- No open ports discovered in this run (likely filtered/host firewalls).
+
+*Deep scan completed at 2026-04-26 20:47:19. Full JSON results in `deep_scan_results.json`.*
 ### Key Findings:
 - No open ports discovered in this run (likely filtered/host firewalls).
 
@@ -2189,14 +2335,15 @@ This table shows only devices that changed state (came online or went offline) b
 
 ## ⚡ Online Detector Enrichment
 
-Updated: 2026-04-26 00:59:50
+Updated: 2026-04-27 03:09:24
 
 | IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
 |-----|----------|-----|--------|------------|---------------|----------|
+| 100.71.191.72 | emergingtechs-mac-mini.tail2a3b45.ts.net | — | Online | 22, 5900, 47490, 49243 | SSH (`ssh user@100.71.191.72`), VNC | VNC/Remote Desktop |
 | 100.79.216.111 | erics-macbook-pro.tail2a3b45.ts.net | — | Online | 5000, 7000 | No known access | Unknown |
 ## 📱 iPhone Identity Correlation
 
-Updated: 2026-04-26 03:06:42
+Updated: 2026-04-26 13:03:28
 
 | Reference IP | Candidate IP | Ref Hostname | Candidate Hostname | Ref MAC | Candidate MAC | Result | Confidence | Evidence |
 |--------------|--------------|--------------|--------------------|---------|---------------|--------|------------|----------|
