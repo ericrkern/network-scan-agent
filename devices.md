@@ -81,9 +81,9 @@ This table tracks when devices were first seen (came online), their last known a
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
 <<<<<<< HEAD
-*Last updated: 2026-04-27 03:09:24*
+*Last updated: 2026-04-28 03:07:08*
 =======
-*Last updated: 2026-04-27 03:09:24*
+*Last updated: 2026-04-28 03:07:08*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -367,7 +367,7 @@ Comprehensive deep scan performed on suspected offline/powered-off devices. **Ma
 | IP | Hostname | MAC | Deep Scan Results | Identity |
 |-----|----------|-----|-------------------|----------|
 | **192.168.0.59** | — | `8a:33:76:dd:0b:cb` | **RECOVERED** - Now responding to ping (was temporarily offline). ARP status: DELAY. No TCP ports. UDP-responsive via router. | Unknown client (sleeping/mobile device) |
-| **192.168.0.131** | iPhone.MG8702 | `06:4d:1c:2e:e9:ab` | **IDENTIFIED: APPLE DNS-SD PROXY** - Port 853 (DNS-over-TLS) open. Certificate: `com.apple.dnssd-proxy` from Apple Inc. Bonjour/mDNS relay service active. Randomized MAC (privacy feature). | **Apple Device** - MacBook/iMac/Apple TV/Time Capsule acting as mesh relay |
+| **192.168.0.131** | Irenes-iPhone.local | `06:4d:1c:2e:e9:ab` | **IDENTIFIED: APPLE DNS-SD PROXY** - Port 853 (DNS-over-TLS) open. Certificate: `com.apple.dnssd-proxy` from Apple Inc. Bonjour/mDNS relay service active. Randomized MAC (privacy feature). | **Apple Device** - MacBook/iMac/Apple TV/Time Capsule acting as mesh relay |
 | **192.168.0.142** | — | FAILED ARP | **OFFLINE** - No ping response. Previously showed port 32. ARP FAILED. May be wake-on-demand device or powered-off VM. | Unknown (possibly powered off) |
 | **192.168.0.158** | device.MG8702 | `44:61:32:c8:42:f0` | **STALE ARP but pingable** - No open TCP ports. UDP-responsive. Hostname suggests Motorola device but no services exposed. | Unknown Motorola device (possibly IoT) |
 | **192.168.0.182** | — | FAILED ARP | **OFFLINE** - No ping response. ARP FAILED. No historical data. | Unknown (offline or moved) |
@@ -613,6 +613,28 @@ openclaw gateway start
 ```bash
 # Check channel status
 
+## 🔔 Network Scan Alert - 2026-04-27 11:41:25
+
+**1 new device(s) discovered!**
+
+### New Device Discovered: 100.87.84.95
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 100.87.84.95 |
+| **Hostname** | et-mini.tail2a3b45.ts.net |
+| **MAC Address** | — |
+| **Open Ports** | 445 |
+| **Device Type** | Windows/Samba Share |
+| **Discovered** | 2026-04-27 11:41:25 |
+
+**Access Methods:**
+- SMB: `smb://100.87.84.95`
+
+---
+
+
+
 ## 🔔 Network Scan Alert - 2026-04-26 20:12:25
 
 **1 new device(s) discovered!**
@@ -644,7 +666,7 @@ openclaw gateway start
 | Attribute | Value |
 |-----------|-------|
 | **IP Address** | 192.168.0.137 |
-| **Hostname** | Mac.MG8702 |
+| **Hostname** | Irene's macbook air |
 | **MAC Address** | 9e:35:b5:e5:25:91 |
 | **Open Ports** | 445, 5000 |
 | **Device Type** | Windows/Samba Share |
@@ -1154,7 +1176,7 @@ openclaw gateway start
 | Attribute | Value |
 |-----------|-------|
 | **IP Address** | 192.168.0.131 |
-| **Hostname** | iPhone.MG8702 |
+| **Hostname** | Irenes-iPhone.local |
 | **MAC Address** | 06:4d:1c:2e:e9:ab |
 | **Open Ports** | None detected |
 | **Device Type** | Mobile Phone |
@@ -1375,7 +1397,7 @@ openclaw gateway start
 | Attribute | Value |
 |-----------|-------|
 | **IP Address** | 192.168.0.131 |
-| **Hostname** | iPhone.MG8702 |
+| **Hostname** | Irenes-iPhone.local |
 | **MAC Address** | 06:4d:1c:2e:e9:ab |
 | **Open Ports** | None detected |
 | **Device Type** | Mobile Phone |
@@ -1596,6 +1618,96 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-28 03:07:08 | 0 | 14 | 49 |
+| 2026-04-28 02:51:08 | 0 | 14 | 49 |
+| 2026-04-28 02:35:08 | 0 | 14 | 49 |
+| 2026-04-28 02:20:16 | 0 | 14 | 49 |
+| 2026-04-28 02:03:08 | 0 | 13 | 49 |
+| 2026-04-28 01:47:08 | 0 | 14 | 49 |
+| 2026-04-28 01:31:08 | 0 | 14 | 49 |
+| 2026-04-28 01:15:08 | 0 | 14 | 49 |
+| 2026-04-28 00:59:08 | 0 | 14 | 49 |
+| 2026-04-28 00:43:08 | 0 | 15 | 49 |
+| 2026-04-28 00:28:16 | 0 | 15 | 49 |
+| 2026-04-28 00:11:08 | 0 | 14 | 49 |
+| 2026-04-27 23:55:08 | 0 | 14 | 49 |
+| 2026-04-27 23:39:08 | 0 | 14 | 49 |
+| 2026-04-27 23:24:16 | 0 | 14 | 49 |
+| 2026-04-27 23:07:08 | 0 | 13 | 49 |
+| 2026-04-27 22:51:08 | 0 | 13 | 49 |
+| 2026-04-27 22:36:16 | 0 | 14 | 49 |
+| 2026-04-27 22:19:08 | 0 | 13 | 49 |
+| 2026-04-27 22:05:38 | 0 | 15 | 49 |
+| 2026-04-27 21:47:08 | 0 | 13 | 49 |
+| 2026-04-27 21:31:08 | 0 | 13 | 49 |
+| 2026-04-27 21:15:08 | 0 | 13 | 49 |
+| 2026-04-27 21:02:02 | 0 | 15 | 49 |
+| 2026-04-27 20:43:08 | 0 | 13 | 49 |
+| 2026-04-27 20:27:08 | 0 | 13 | 49 |
+| 2026-04-27 20:11:08 | 0 | 13 | 49 |
+| 2026-04-27 19:56:16 | 0 | 14 | 49 |
+| 2026-04-27 19:39:08 | 0 | 13 | 49 |
+| 2026-04-27 19:23:08 | 0 | 13 | 49 |
+| 2026-04-27 19:07:08 | 0 | 13 | 49 |
+| 2026-04-27 18:51:08 | 0 | 13 | 49 |
+| 2026-04-27 18:35:08 | 0 | 13 | 49 |
+| 2026-04-27 18:19:08 | 0 | 14 | 49 |
+| 2026-04-27 18:03:08 | 0 | 14 | 49 |
+| 2026-04-27 17:47:08 | 0 | 14 | 49 |
+| 2026-04-27 17:31:08 | 0 | 14 | 49 |
+| 2026-04-27 17:16:53 | 0 | 15 | 49 |
+| 2026-04-27 16:59:08 | 0 | 14 | 49 |
+| 2026-04-27 16:43:08 | 0 | 14 | 49 |
+| 2026-04-27 16:27:08 | 0 | 14 | 49 |
+| 2026-04-27 16:12:16 | 0 | 14 | 49 |
+| 2026-04-27 15:55:08 | 0 | 14 | 49 |
+| 2026-04-27 15:40:16 | 0 | 14 | 49 |
+| 2026-04-27 15:23:08 | 0 | 14 | 49 |
+| 2026-04-27 15:08:16 | 0 | 15 | 49 |
+| 2026-04-27 14:51:08 | 0 | 14 | 49 |
+| 2026-04-27 14:35:08 | 0 | 14 | 49 |
+| 2026-04-27 14:23:09 | 0 | 16 | 49 |
+| 2026-04-27 14:03:08 | 0 | 14 | 49 |
+| 2026-04-27 13:47:08 | 0 | 15 | 49 |
+| 2026-04-27 13:31:08 | 0 | 15 | 49 |
+| 2026-04-27 13:17:19 | 0 | 15 | 49 |
+| 2026-04-27 13:00:16 | 0 | 14 | 49 |
+| 2026-04-27 12:43:08 | 0 | 14 | 49 |
+| 2026-04-27 12:28:28 | 0 | 15 | 49 |
+| 2026-04-27 12:12:51 | 0 | 15 | 49 |
+| 2026-04-27 11:55:08 | 0 | 15 | 49 |
+| 2026-04-27 11:41:25 | 1 | 15 | 49 |
+| 2026-04-27 11:23:08 | 0 | 16 | 48 |
+| 2026-04-27 11:09:37 | 0 | 16 | 48 |
+| 2026-04-27 10:51:08 | 0 | 14 | 48 |
+| 2026-04-27 10:36:43 | 0 | 15 | 48 |
+| 2026-04-27 10:20:16 | 0 | 14 | 48 |
+| 2026-04-27 10:03:08 | 0 | 13 | 48 |
+| 2026-04-27 09:49:47 | 0 | 15 | 48 |
+| 2026-04-27 09:31:08 | 0 | 13 | 48 |
+| 2026-04-27 09:15:08 | 0 | 14 | 48 |
+| 2026-04-27 09:00:16 | 0 | 16 | 48 |
+| 2026-04-27 08:45:40 | 0 | 15 | 48 |
+| 2026-04-27 08:27:08 | 0 | 13 | 48 |
+| 2026-04-27 08:11:08 | 0 | 13 | 48 |
+| 2026-04-27 07:55:08 | 0 | 14 | 48 |
+| 2026-04-27 07:39:08 | 0 | 14 | 48 |
+| 2026-04-27 07:23:08 | 0 | 14 | 48 |
+| 2026-04-27 07:07:08 | 0 | 15 | 48 |
+| 2026-04-27 06:53:58 | 0 | 16 | 48 |
+| 2026-04-27 06:35:20 | 0 | 15 | 48 |
+| 2026-04-27 06:20:43 | 0 | 14 | 48 |
+| 2026-04-27 06:03:08 | 0 | 14 | 48 |
+| 2026-04-27 05:47:08 | 0 | 14 | 48 |
+| 2026-04-27 05:33:24 | 0 | 15 | 48 |
+| 2026-04-27 05:15:08 | 0 | 13 | 48 |
+| 2026-04-27 04:59:08 | 0 | 13 | 48 |
+| 2026-04-27 04:43:08 | 0 | 13 | 48 |
+| 2026-04-27 04:27:08 | 0 | 13 | 48 |
+| 2026-04-27 04:12:37 | 0 | 14 | 48 |
+| 2026-04-27 03:55:08 | 0 | 13 | 48 |
+| 2026-04-27 03:39:08 | 0 | 13 | 48 |
+| 2026-04-27 03:23:08 | 0 | 15 | 48 |
 | 2026-04-27 03:09:24 | 0 | 16 | 48 |
 | 2026-04-27 02:51:08 | 0 | 14 | 48 |
 | 2026-04-27 02:36:29 | 0 | 14 | 48 |
@@ -2060,9 +2172,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 
 <<<<<<< HEAD
-*Last updated: 2026-04-27 03:09:24*
+*Last updated: 2026-04-28 03:07:08*
 =======
-*Last updated: 2026-04-27 03:09:24*
+*Last updated: 2026-04-28 03:07:08*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -2335,11 +2447,10 @@ This table shows only devices that changed state (came online or went offline) b
 
 ## ⚡ Online Detector Enrichment
 
-Updated: 2026-04-27 03:09:24
+Updated: 2026-04-28 02:20:16
 
 | IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
 |-----|----------|-----|--------|------------|---------------|----------|
-| 100.71.191.72 | emergingtechs-mac-mini.tail2a3b45.ts.net | — | Online | 22, 5900, 47490, 49243 | SSH (`ssh user@100.71.191.72`), VNC | VNC/Remote Desktop |
 | 100.79.216.111 | erics-macbook-pro.tail2a3b45.ts.net | — | Online | 5000, 7000 | No known access | Unknown |
 ## 📱 iPhone Identity Correlation
 

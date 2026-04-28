@@ -343,7 +343,6 @@
                             <tr id="transition-table-head-row">
                                 <th class="text-left px-4 py-3 font-medium">Timestamp</th>
                                 <th class="text-left px-4 py-3 font-medium">IP #1</th>
-                                <th class="text-left px-4 py-3 font-medium">IP #2</th>
                             </tr>
                         </thead>
                         <tbody id="transition-table-body" class="bg-black">
@@ -1040,21 +1039,15 @@
                 }
                 
                 const perIpRows = Array.isArray(data.per_ip_status) ? data.per_ip_status : [];
-                const transitionIps = perIpRows.slice(0, 2).map((r) => r.ip).filter(Boolean);
-                const ip1 = transitionIps[0] || 'IP #1';
-                const ip2 = transitionIps[1] || 'IP #2';
-                const hasSecondIp = Boolean(transitionIps[1]);
+                const trackedIps = perIpRows.map((r) => r.ip).filter(Boolean);
+                const displayIps = trackedIps.length > 0 ? trackedIps : [device.ip];
 
-                transitionHeadRow.innerHTML = hasSecondIp
-                    ? `
-                        <th class="text-left px-4 py-3 font-medium">Timestamp</th>
-                        <th class="text-left px-4 py-3 font-medium font-mono text-yellow-300">${ip1}</th>
-                        <th class="text-left px-4 py-3 font-medium font-mono text-yellow-300">${ip2}</th>
-                    `
-                    : `
-                        <th class="text-left px-4 py-3 font-medium">Timestamp</th>
-                        <th class="text-left px-4 py-3 font-medium font-mono text-yellow-300">${ip1}</th>
-                    `;
+                transitionHeadRow.innerHTML = `
+                    <th class="text-left px-4 py-3 font-medium">Timestamp</th>
+                    ${displayIps.map((ipAddr) => `
+                        <th class="text-left px-4 py-3 font-medium font-mono text-yellow-300">${ipAddr}</th>
+                    `).join('')}
+                `;
 
                 function stateBadge(state) {
                     if (state === 'Online') {
@@ -1085,8 +1078,7 @@
                         oldestFirst,
                         Array.isArray(data.per_ip_status) && data.per_ip_status.length > 1
                     );
-                    const trackedIps = [ip1, ip2].filter((x) => x && x !== 'IP #1' && x !== 'IP #2');
-                    const primaryIp = trackedIps[0] || device.ip;
+                    const primaryIp = displayIps[0] || device.ip;
                     const normalizedEvents = mergedTransitions.map((event) => {
                         if (event.event === 'network_switch') return { ...event };
                         if (event.ip) return { ...event };
@@ -1095,7 +1087,7 @@
 
                     // If no explicit online event exists for a tracked IP, add one at first_seen.
                     const hasOnlineForIp = {};
-                    trackedIps.forEach((ipAddr) => { hasOnlineForIp[ipAddr] = false; });
+                    displayIps.forEach((ipAddr) => { hasOnlineForIp[ipAddr] = false; });
                     normalizedEvents.forEach((event) => {
                         if (event.event === 'online' && event.ip && hasOnlineForIp[event.ip] !== undefined) {
                             hasOnlineForIp[event.ip] = true;
@@ -1110,7 +1102,7 @@
                     const firstSeenTs = device.first_seen && device.first_seen !== '—' ? device.first_seen : null;
                     const synthesized = [];
                     if (firstSeenTs) {
-                        trackedIps.forEach((ipAddr) => {
+                        displayIps.forEach((ipAddr) => {
                             if (!hasOnlineForIp[ipAddr]) {
                                 synthesized.push({
                                     timestamp: firstSeenTs,
@@ -1125,7 +1117,7 @@
                     const enrichedEvents = [...normalizedEvents, ...synthesized]
                         .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
                     const stateByIp = {};
-                    trackedIps.forEach((ipAddr) => {
+                    displayIps.forEach((ipAddr) => {
                         stateByIp[ipAddr] = 'Offline';
                     });
 
@@ -1146,10 +1138,9 @@
 
                         return {
                             ...event,
-                            states: {
-                                [ip1]: stateByIp[ip1] || 'Offline',
-                                [ip2]: stateByIp[ip2] || 'Offline'
-                            }
+                            states: Object.fromEntries(
+                                displayIps.map((ipAddr) => [ipAddr, stateByIp[ipAddr] || 'Offline'])
+                            )
                         };
                     });
 
@@ -1166,38 +1157,27 @@
                             minute: '2-digit',
                             second: '2-digit'
                         });
-                        const ip1State = (event.states && event.states[ip1]) ? event.states[ip1] : 'Offline';
-                        const ip2State = (event.states && event.states[ip2]) ? event.states[ip2] : 'Offline';
-                        const ip1Transition = isSwitchEvent
-                            ? (event.to_ip === ip1 ? 'online' : (event.from_ip === ip1 ? 'offline' : 'none'))
-                            : (event.ip === ip1
-                                ? (event.event === 'online' ? 'online' : (event.event === 'offline' ? 'offline' : 'none'))
-                                : 'none');
-                        const ip2Transition = isSwitchEvent
-                            ? (event.to_ip === ip2 ? 'online' : (event.from_ip === ip2 ? 'offline' : 'none'))
-                            : (event.ip === ip2
-                                ? (event.event === 'online' ? 'online' : (event.event === 'offline' ? 'offline' : 'none'))
-                                : 'none');
+                        const perIpCells = displayIps.map((ipAddr) => {
+                            const ipState = (event.states && event.states[ipAddr]) ? event.states[ipAddr] : 'Offline';
+                            const ipTransition = isSwitchEvent
+                                ? (event.to_ip === ipAddr ? 'online' : (event.from_ip === ipAddr ? 'offline' : 'none'))
+                                : (event.ip === ipAddr
+                                    ? (event.event === 'online' ? 'online' : (event.event === 'offline' ? 'offline' : 'none'))
+                                    : 'none');
+                            return `<td class="px-4 py-3">${stateBadgeWithTransition(ipState, ipTransition)}</td>`;
+                        }).join('');
 
-                        return hasSecondIp
-                            ? `
-                                <tr class="border-t border-zinc-800">
-                                    <td class="px-4 py-3 font-mono text-zinc-300">${formattedTime}</td>
-                                    <td class="px-4 py-3">${stateBadgeWithTransition(ip1State, ip1Transition)}</td>
-                                    <td class="px-4 py-3">${stateBadgeWithTransition(ip2State, ip2Transition)}</td>
-                                </tr>
-                            `
-                            : `
-                                <tr class="border-t border-zinc-800">
-                                    <td class="px-4 py-3 font-mono text-zinc-300">${formattedTime}</td>
-                                    <td class="px-4 py-3">${stateBadgeWithTransition(ip1State, ip1Transition)}</td>
-                                </tr>
-                            `;
+                        return `
+                            <tr class="border-t border-zinc-800">
+                                <td class="px-4 py-3 font-mono text-zinc-300">${formattedTime}</td>
+                                ${perIpCells}
+                            </tr>
+                        `;
                     }).join('');
                 } else {
                     transitionTableBody.innerHTML = `
                         <tr>
-                            <td colspan="${hasSecondIp ? 3 : 2}" class="px-4 py-4 text-zinc-500">No transitions recorded yet (Online / Offline / Network Switch).</td>
+                            <td colspan="${displayIps.length + 1}" class="px-4 py-4 text-zinc-500">No transitions recorded yet (Online / Offline / Network Switch).</td>
                         </tr>
                     `;
                 }

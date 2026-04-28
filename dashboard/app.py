@@ -107,21 +107,50 @@ def collapse_duplicate_devices(devices):
             groups.append(ips)
             grouped_ips.update(ips)
 
-    # Correlate the known iPhone pair when both records exist.
-    iphone_pair = ["192.168.0.49", "192.168.50.106"]
-    if all(ip in by_ip for ip in iphone_pair):
-        if not all(ip in grouped_ips for ip in iphone_pair):
-            hostnames = [str(by_ip[ip].get("hostname", "")).strip().lower() for ip in iphone_pair]
-            if hostnames[0] and hostnames[0] == hostnames[1]:
-                groups.append(iphone_pair)
-                grouped_ips.update(iphone_pair)
+    # Correlate known iPhone aliases (private-MAC rotation + routed-subnet alias).
+    iphone_cluster = ["192.168.0.49", "192.168.0.131", "192.168.50.106"]
+    iphone_present = [ip for ip in iphone_cluster if ip in by_ip]
+    if len(iphone_present) >= 2:
+        cluster_hostnames = [
+            str(by_ip[ip].get("hostname", "")).strip().lower()
+            for ip in iphone_present
+        ]
+        hostname_hints = [
+            name for name in cluster_hostnames
+            if name and ("iphone" in name or "irenes-iphone.local" in name)
+        ]
+        if hostname_hints:
+            # Remove overlapping groups first so this cluster is rendered as one card.
+            normalized_groups = []
+            for g in groups:
+                if set(g) & set(iphone_present):
+                    continue
+                normalized_groups.append(g)
+            groups = normalized_groups
+            grouped_ips = {ip for g in groups for ip in g}
+            groups.append(sorted(iphone_present))
+            grouped_ips.update(iphone_present)
 
-    # User-confirmed watch aliases across subnets.
-    watch_pair = ["192.168.0.98", "192.168.50.3"]
-    if all(ip in by_ip for ip in watch_pair):
-        if not all(ip in grouped_ips for ip in watch_pair):
-            groups.append(watch_pair)
-            grouped_ips.update(watch_pair)
+    # Correlate known watch aliases (private-MAC rotation + routed-subnet alias).
+    watch_cluster = ["192.168.0.98", "192.168.0.112", "192.168.50.3"]
+    watch_present = [ip for ip in watch_cluster if ip in by_ip]
+    if len(watch_present) >= 2:
+        cluster_hostnames = [
+            str(by_ip[ip].get("hostname", "")).strip().lower()
+            for ip in watch_present
+        ]
+        hostname_hints = [name for name in cluster_hostnames if name and "watch" in name]
+        if hostname_hints:
+            # Remove overlapping groups first so this cluster is rendered as one card.
+            normalized_groups = []
+            for g in groups:
+                if set(g) & set(watch_present):
+                    continue
+                normalized_groups.append(g)
+            groups = normalized_groups
+            grouped_ips = {ip for g in groups for ip in g}
+            groups.append(sorted(watch_present))
+            grouped_ips.update(watch_present)
 
     merged_devices = []
     for ips in groups:
@@ -894,21 +923,15 @@ def build_watch_correlation_findings():
     """Build concise watch-correlation findings for dashboard display."""
     watches = [
         {
-            "ip": "192.168.0.98 (alias: 192.168.50.3)",
+            "ip": "192.168.0.98, 192.168.0.112 (alias: 192.168.50.3)",
             "hostname": "Irene's Watch",
             "mac": "4e:0a:ec:36:fd:82",
             "discovered": "Merged alias across subnets",
         },
-        {
-            "ip": "192.168.0.81",
-            "hostname": "Friends Watch",
-            "mac": "fa:5b:a6:ab:1a:7f",
-            "discovered": "2026-04-21 20:59:09",
-        },
     ]
 
     conclusion = (
-        "Dashboard now treats 192.168.0.98 and 192.168.50.3 as one logical device "
+        "Dashboard now treats 192.168.0.98, 192.168.0.112, and 192.168.50.3 as one logical device "
         "labeled Irene's Watch."
     )
     source_url = "https://support.apple.com/en-us/HT211227"

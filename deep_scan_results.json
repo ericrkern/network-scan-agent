@@ -1,6 +1,6 @@
 {
-  "scan_time": "2026-04-27T03:09:24.621939",
-  "devices_scanned": 40,
+  "scan_time": "2026-04-28T02:20:16.265605",
+  "devices_scanned": 42,
   "results": {
     "10.122.11.69": {
       "ip": "10.122.11.69",
@@ -49,7 +49,7 @@
       "udp_ports": [],
       "services": {},
       "host_up": true,
-      "scan_time": "2026-04-27T03:07:08.103025",
+      "scan_time": "2026-04-28T00:27:08.039510",
       "raw_output_length": 687,
       "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
       "status": "success"
@@ -82,8 +82,8 @@
       "udp_ports": [],
       "services": {},
       "host_up": true,
-      "scan_time": "2026-04-27T03:08:16.359307",
-      "raw_output_length": 691,
+      "scan_time": "2026-04-28T02:19:08.046165",
+      "raw_output_length": 708,
       "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
       "status": "success"
     },
@@ -275,17 +275,8 @@
     },
     "192.168.0.49": {
       "ip": "192.168.0.49",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": false,
-      "scan_time": "2026-04-26T20:36:59.487351",
-      "raw_output_length": 331,
-      "stderr_tail": "",
-      "status": "no_response"
+      "status": "timeout",
+      "error": "Scan timed out"
     },
     "192.168.0.59": {
       "ip": "192.168.0.59",
@@ -397,6 +388,25 @@
     },
     "24.192.17.178": {
       "ip": "24.192.17.178",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "192.168.0.112": {
+      "ip": "192.168.0.112",
+      "hostname": "\u2014",
+      "os": "Unknown",
+      "ports": [],
+      "tcp_ports": [],
+      "udp_ports": [],
+      "services": {},
+      "host_up": true,
+      "scan_time": "2026-04-27T08:43:08.086433",
+      "raw_output_length": 703,
+      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
+      "status": "success"
+    },
+    "100.87.84.95": {
+      "ip": "100.87.84.95",
       "status": "timeout",
       "error": "Scan timed out"
     }
