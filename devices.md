@@ -81,9 +81,9 @@ This table tracks when devices were first seen (came online), their last known a
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
 <<<<<<< HEAD
-*Last updated: 2026-04-28 03:07:08*
+*Last updated: 2026-04-28 14:51:54*
 =======
-*Last updated: 2026-04-28 03:07:08*
+*Last updated: 2026-04-28 14:51:54*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -612,6 +612,28 @@ openclaw gateway start
 
 ```bash
 # Check channel status
+
+## 🔔 Network Scan Alert - 2026-04-28 14:03:56
+
+**1 new device(s) discovered!**
+
+### Device Identity Merged: 192.168.0.209 -> 192.168.0.98
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.0.209 (merged into 192.168.0.98) |
+| **Hostname** | Watch.MG8702 |
+| **MAC Address** | da:79:85:b5:b1:cc |
+| **Open Ports** | None detected |
+| **Device Type** | Apple Watch (correlated) |
+| **Discovered** | 2026-04-28 14:03:56 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+
 
 ## 🔔 Network Scan Alert - 2026-04-27 11:41:25
 
@@ -1618,6 +1640,50 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-28 14:51:54 | 0 | 17 | 50 |
+| 2026-04-28 14:36:16 | 0 | 16 | 50 |
+| 2026-04-28 14:19:08 | 0 | 16 | 50 |
+| 2026-04-28 14:03:56 | 1 | 17 | 50 |
+| 2026-04-28 13:47:08 | 0 | 16 | 49 |
+| 2026-04-28 13:32:16 | 0 | 16 | 49 |
+| 2026-04-28 13:16:31 | 0 | 15 | 49 |
+| 2026-04-28 12:59:08 | 0 | 14 | 49 |
+| 2026-04-28 12:44:16 | 0 | 15 | 49 |
+| 2026-04-28 12:27:08 | 0 | 14 | 49 |
+| 2026-04-28 12:12:34 | 0 | 16 | 49 |
+| 2026-04-28 11:56:16 | 0 | 15 | 49 |
+| 2026-04-28 11:39:08 | 0 | 14 | 49 |
+| 2026-04-28 11:23:08 | 0 | 14 | 49 |
+| 2026-04-28 11:08:16 | 0 | 15 | 49 |
+| 2026-04-28 10:51:08 | 0 | 14 | 49 |
+| 2026-04-28 10:37:13 | 0 | 14 | 49 |
+| 2026-04-28 10:19:08 | 0 | 13 | 49 |
+| 2026-04-28 10:03:08 | 0 | 14 | 49 |
+| 2026-04-28 09:47:08 | 0 | 14 | 49 |
+| 2026-04-28 09:31:08 | 0 | 14 | 49 |
+| 2026-04-28 09:18:23 | 0 | 15 | 49 |
+| 2026-04-28 08:59:08 | 0 | 13 | 49 |
+| 2026-04-28 08:44:16 | 0 | 14 | 49 |
+| 2026-04-28 08:27:08 | 0 | 13 | 49 |
+| 2026-04-28 08:11:08 | 0 | 13 | 49 |
+| 2026-04-28 07:57:36 | 0 | 14 | 49 |
+| 2026-04-28 07:39:08 | 0 | 12 | 49 |
+| 2026-04-28 07:23:08 | 0 | 13 | 49 |
+| 2026-04-28 07:08:16 | 0 | 14 | 49 |
+| 2026-04-28 06:51:08 | 0 | 13 | 49 |
+| 2026-04-28 06:35:08 | 0 | 15 | 49 |
+| 2026-04-28 06:23:13 | 0 | 17 | 49 |
+| 2026-04-28 06:04:16 | 0 | 14 | 49 |
+| 2026-04-28 05:49:34 | 0 | 14 | 49 |
+| 2026-04-28 05:31:08 | 0 | 12 | 49 |
+| 2026-04-28 05:15:08 | 0 | 14 | 49 |
+| 2026-04-28 04:59:08 | 0 | 14 | 49 |
+| 2026-04-28 04:43:08 | 0 | 14 | 49 |
+| 2026-04-28 04:27:08 | 0 | 15 | 49 |
+| 2026-04-28 04:11:08 | 0 | 15 | 49 |
+| 2026-04-28 03:57:24 | 0 | 15 | 49 |
+| 2026-04-28 03:39:08 | 0 | 13 | 49 |
+| 2026-04-28 03:23:08 | 0 | 14 | 49 |
 | 2026-04-28 03:07:08 | 0 | 14 | 49 |
 | 2026-04-28 02:51:08 | 0 | 14 | 49 |
 | 2026-04-28 02:35:08 | 0 | 14 | 49 |
@@ -2172,9 +2238,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 
 <<<<<<< HEAD
-*Last updated: 2026-04-28 03:07:08*
+*Last updated: 2026-04-28 14:51:54*
 =======
-*Last updated: 2026-04-28 03:07:08*
+*Last updated: 2026-04-28 14:51:54*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -2447,11 +2513,11 @@ This table shows only devices that changed state (came online or went offline) b
 
 ## ⚡ Online Detector Enrichment
 
-Updated: 2026-04-28 02:20:16
+Updated: 2026-04-28 14:54:00
 
 | IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
 |-----|----------|-----|--------|------------|---------------|----------|
-| 100.79.216.111 | erics-macbook-pro.tail2a3b45.ts.net | — | Online | 5000, 7000 | No known access | Unknown |
+| 192.168.0.98 (incl. 192.168.0.209) | Irene's Watch / Watch.MG8702 | 4e:0a:ec:36:fd:82 / da:79:85:b5:b1:cc | Online | 62078/tcp observed | No known access | Same Apple Watch (privacy IP rotation) |
 ## 📱 iPhone Identity Correlation
 
 Updated: 2026-04-26 13:03:28
@@ -2459,3 +2525,11 @@ Updated: 2026-04-26 13:03:28
 | Reference IP | Candidate IP | Ref Hostname | Candidate Hostname | Ref MAC | Candidate MAC | Result | Confidence | Evidence |
 |--------------|--------------|--------------|--------------------|---------|---------------|--------|------------|----------|
 | 192.168.0.49 | 192.168.50.106 | iPhone.MG8702 | iPhone.MG8702 | e6:40:e4:dc:e1:f0 | — | likely_same_device | medium | Matching hostname: iPhone.MG8702; Candidate MAC unavailable from ARP |
+
+## ⌚ Watch Identity Correlation
+
+Updated: 2026-04-28 14:13:00
+
+| Reference IP | Candidate IP | Ref Hostname | Candidate Hostname | Ref MAC | Candidate MAC | Result | Confidence | Evidence |
+|--------------|--------------|--------------|--------------------|---------|---------------|--------|------------|----------|
+| 192.168.0.98 | 192.168.0.209 | Irene's Watch | Watch.MG8702 | 4e:0a:ec:36:fd:82 | da:79:85:b5:b1:cc | likely_same_device | high | Watch hostname pattern match; Apple-style private MAC rotation; candidate exposed 62078/tcp typical of Apple watch/mobile ecosystem |
