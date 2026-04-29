@@ -1202,7 +1202,7 @@ def get_audit_activity(limit: int = 300, since: str = "today", user_filter: str 
     """
     helper_cmd = os.environ.get(
         "AUDIT_HELPER_CMD",
-        f"{BASE_DIR / 'dashboard' / 'bin' / 'read_cmd_exec_audit.sh'} {since}",
+        f"sudo -n {BASE_DIR / 'dashboard' / 'bin' / 'read_cmd_exec_audit.sh'} {since}",
     )
     cmd = shlex.split(helper_cmd)
     try:
