@@ -1,0 +1,1502 @@
+[
+  {
+    "timestamp": "2026-04-25 11:22:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 11:38:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 11:54:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 12:10:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 12:26:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 12:42:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 12:58:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 13:14:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 13:30:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 13:46:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 14:02:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 14:18:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 14:34:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 14:50:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 15:06:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 15:22:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 15:38:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 15:54:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 16:10:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 16:26:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 16:42:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 16:58:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 17:14:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 17:30:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 17:46:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 18:02:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 18:18:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 18:34:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 18:50:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 19:06:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 19:22:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 19:38:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 19:54:43",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 20:10:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 20:26:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 20:42:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 20:58:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 21:14:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 21:30:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 21:46:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 22:02:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 22:18:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 22:34:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 22:50:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 23:06:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 23:22:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 23:38:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-25 23:54:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 00:10:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 00:26:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 00:42:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 00:58:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 01:14:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 01:30:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 01:46:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 02:02:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 02:18:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 02:34:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 02:50:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 03:06:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 03:22:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 03:38:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 03:54:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 04:10:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 04:26:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 04:42:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 04:58:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 05:14:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 05:30:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 05:46:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 06:02:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 06:18:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 06:34:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 06:50:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 07:06:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 07:22:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 07:37:49",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 07:38:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 07:54:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 08:10:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 08:26:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 08:42:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 08:58:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 09:14:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 09:30:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 09:46:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 10:02:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 10:18:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 10:34:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 10:50:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 11:06:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 11:22:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 11:38:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 11:54:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 12:10:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 12:26:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 12:42:42",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 12:58:50",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 13:00:53",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  },
+  {
+    "timestamp": "2026-04-26 13:03:28",
+    "reference_ip": "192.168.0.49",
+    "candidate_ip": "192.168.50.106",
+    "reference_hostname": "iPhone.MG8702",
+    "candidate_hostname": "iPhone.MG8702",
+    "reference_mac": "e6:40:e4:dc:e1:f0",
+    "candidate_mac": "\u2014",
+    "status": "likely_same_device",
+    "confidence": "medium",
+    "evidence": [
+      "Matching hostname: iPhone.MG8702",
+      "Candidate MAC unavailable from ARP"
+    ]
+  }
+]

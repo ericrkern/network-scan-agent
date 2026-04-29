@@ -1,0 +1,7 @@
+# Allow the dashboard user to run the audit helper as root without a password.
+# Install (once):
+#   sudo install -m 440 network-pulse-audit.sudoers /etc/sudoers.d/network-pulse-audit
+#   sudo visudo -cf /etc/sudoers.d/network-pulse-audit
+#
+# The path must match read_cmd_exec_audit.sh on this system.
+yb ALL=(root) NOPASSWD: /usr/local/yb/.Network/dashboard/bin/read_cmd_exec_audit.sh *

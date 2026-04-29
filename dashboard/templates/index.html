@@ -86,7 +86,7 @@
                     </div>
                     
                     <div class="flex items-center gap-x-2 text-xs font-mono text-zinc-500">
-                        <div class="px-3 py-1 bg-zinc-800 rounded-xl">irene@yahboom</div>
+                        <div id="active-users" class="px-3 py-1 bg-zinc-800 rounded-xl">USERS: none</div>
                         <div id="last-updated" class="px-3 py-1 bg-zinc-800 rounded-xl"></div>
                     </div>
                 </div>
@@ -107,6 +107,14 @@
                 <button id="tab-topology" onclick="setMainTab('topology')"
                     class="px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white">
                     Network Topology Map
+                </button>
+                <button id="tab-matrix" onclick="setMainTab('matrix')"
+                    class="px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white">
+                    Status Matrix
+                </button>
+                <button id="tab-audit" onclick="setMainTab('audit')"
+                    class="px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white">
+                    Audit
                 </button>
             </div>
 
@@ -148,6 +156,31 @@
                         REFRESH
                     </div>
                 </div>
+            </div>
+
+            <!-- Watch Correlation Findings -->
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 mb-8">
+                <div class="flex items-start justify-between gap-4 mb-4">
+                    <div>
+                        <div class="text-sm font-semibold text-white">Watch Correlation Findings</div>
+                        <div class="text-xs text-zinc-500 font-mono">Updated {{ watch_findings.updated_at }}</div>
+                    </div>
+                    <a href="{{ watch_findings.source_url }}" target="_blank" class="text-xs text-sky-300 hover:text-sky-200 transition-colors">
+                        Apple Source
+                    </a>
+                </div>
+                <div class="text-sm text-zinc-300 mb-4">{{ watch_findings.conclusion }}</div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                    {% for w in watch_findings.watches %}
+                    <div class="rounded-2xl border border-zinc-800 bg-zinc-950 p-3">
+                        <div class="text-xs text-zinc-400 mb-1">{{ w.hostname }}</div>
+                        <div class="font-mono text-yellow-400 text-sm">{{ w.ip }}</div>
+                        <div class="text-xs text-zinc-400 mt-1">MAC: <span class="font-mono text-zinc-300">{{ w.mac }}</span></div>
+                        <div class="text-xs text-zinc-500 mt-1">Seen: {{ w.discovered }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="text-xs text-zinc-400">{{ watch_findings.source_summary }}</div>
             </div>
 
             <!-- Controls -->
@@ -204,11 +237,11 @@
                         <table class="w-full text-sm">
                             <thead>
                                 <tr class="text-zinc-400 border-b border-zinc-800">
-                                    <th class="text-left py-2 pr-4">Scan Time</th>
-                                    <th class="text-left py-2 pr-4">New</th>
-                                    <th class="text-left py-2 pr-4">Online</th>
-                                    <th class="text-left py-2 pr-4">Total Detected</th>
-                                    <th class="text-left py-2 pr-4">State Changes</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 pr-4">Scan Time</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 pr-4">New</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 pr-4">Online</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 pr-4">Total Detected</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 pr-4">State Changes</th>
                                 </tr>
                             </thead>
                             <tbody id="scan-history-body">
@@ -218,12 +251,72 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="scan-online-devices-panel" class="mt-5 hidden border-t border-zinc-800 pt-4">
-                        <div class="flex items-center justify-between mb-3">
-                            <div id="selected-scan-title" class="text-sm font-semibold text-emerald-300"></div>
-                            <div id="selected-scan-count" class="text-xs font-mono text-zinc-500"></div>
+                    <div id="scan-online-devices-panel" class="mt-5 border-t border-zinc-800 pt-4">
+                        <button id="scan-online-toggle"
+                                onclick="toggleScanOnlinePanel()"
+                                class="w-full flex items-center justify-between rounded-2xl border border-zinc-700 bg-zinc-950/70 px-4 py-3 hover:border-zinc-500 transition-colors">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-signal text-emerald-300 text-xs"></i>
+                                <span class="text-sm font-semibold text-emerald-300">Online State Details</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span id="selected-scan-count" class="text-xs font-mono text-zinc-500">No scan selected</span>
+                                <i id="scan-online-toggle-icon" class="fa-solid fa-chevron-down text-zinc-400 text-xs"></i>
+                            </div>
+                        </button>
+                        <div id="scan-online-devices-content" class="hidden mt-3">
+                            <div id="selected-scan-title" class="text-sm font-semibold text-emerald-300 mb-3"></div>
+                            <div id="selected-scan-devices" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2"></div>
                         </div>
-                        <div id="selected-scan-devices" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Matrix Tab Content -->
+            <div id="matrix-tab-content" class="hidden">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <div class="text-sm font-semibold text-white">Device Status Matrix</div>
+                            <div class="text-xs text-zinc-500 font-mono">Rows: scan timestamps (latest first) • Columns: device IPs</div>
+                        </div>
+                    </div>
+                    <div id="scan-matrix-container" class="overflow-x-auto">
+                        <div class="text-xs text-zinc-500">Loading matrix...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audit Tab Content -->
+            <div id="audit-tab-content" class="hidden">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <div class="text-sm font-semibold text-white">Command Audit (`cmd_exec`)</div>
+                            <div class="text-xs text-zinc-500 font-mono">Recent Linux audit events from `ausearch -k cmd_exec`</div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select id="audit-user-filter" onchange="loadAuditData()"
+                                class="bg-zinc-950 border border-zinc-700 text-zinc-300 text-xs rounded-xl px-2 py-1">
+                                <option value="">All users</option>
+                            </select>
+                            <div id="audit-message" class="text-xs text-zinc-500 font-mono"></div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto rounded-2xl border border-zinc-800">
+                        <table class="w-full text-xs">
+                            <thead>
+                                <tr class="text-zinc-400 border-b border-zinc-800">
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Timestamp</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">User</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Executable</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Command</th>
+                                </tr>
+                            </thead>
+                            <tbody id="audit-table-body">
+                                <tr><td colspan="4" class="px-3 py-3 text-zinc-500">Loading audit data...</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -295,36 +388,26 @@
                 </div>
             </div>
 
-            <!-- History Timeline -->
+            <!-- Transition History -->
             <div class="flex-1 p-8 overflow-auto bg-black">
-                <div class="text-xs uppercase tracking-widest text-zinc-500 mb-6 font-medium flex items-center gap-x-2">
-                    <i class="fa-solid fa-timeline"></i>
-                    CONNECTION HISTORY
+                <div class="text-xs uppercase tracking-widest text-zinc-500 mb-4 font-medium flex items-center gap-x-2">
+                    <i class="fa-solid fa-table-list"></i>
+                    NETWORK TRANSITIONS (ONLINE / OFFLINE / NETWORK SWITCH)
                 </div>
-                <div id="history-timeline" class="space-y-8">
-                    <!-- Populated by JS -->
-                </div>
-                <div class="mt-8 border-t border-zinc-800 pt-6">
-                    <div class="text-xs uppercase tracking-widest text-zinc-500 mb-4 font-medium flex items-center gap-x-2">
-                        <i class="fa-solid fa-table-list"></i>
-                        ONLINE/OFFLINE TRANSITIONS
-                    </div>
-                    <div class="overflow-x-auto rounded-2xl border border-zinc-800">
-                        <table class="w-full text-xs">
-                            <thead class="bg-zinc-950 text-zinc-400">
-                                <tr>
-                                    <th class="text-left px-4 py-3 font-medium">Timestamp</th>
-                                    <th class="text-left px-4 py-3 font-medium">Transition</th>
-                                    <th class="text-left px-4 py-3 font-medium">Reason</th>
-                                </tr>
-                            </thead>
-                            <tbody id="transition-table-body" class="bg-black">
-                                <tr>
-                                    <td colspan="3" class="px-4 py-4 text-zinc-500">No transition data yet.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="overflow-x-auto rounded-2xl border border-zinc-800">
+                    <table class="w-full text-xs">
+                        <thead class="bg-zinc-950 text-zinc-400">
+                            <tr id="transition-table-head-row">
+                                <th class="text-left px-4 py-3 font-medium">Timestamp</th>
+                                <th class="text-left px-4 py-3 font-medium">IP #1</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transition-table-body" class="bg-black">
+                            <tr>
+                                <td colspan="3" class="px-4 py-4 text-zinc-500">No transition data yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -381,8 +464,9 @@
                      class="device-card bg-zinc-900 border ${isOnline ? 'border-emerald-500/30' : 'border-zinc-700'} rounded-3xl p-6 group cursor-pointer hover:border-yellow-500/50 active:scale-[0.985] transition-all">
                     <div class="flex justify-between items-start gap-3 mb-4">
                         <div class="min-w-0 flex-1">
-                            <div class="font-mono text-sm text-yellow-400">${device.ip}</div>
+                            <div class="font-mono text-sm text-yellow-400">${device.ip_display || device.ip}</div>
                             <div class="text-xl font-semibold text-white mt-0.5 leading-tight truncate" title="${device.hostname}">${device.hostname}</div>
+                            ${device.label && device.label !== device.hostname ? `<div class="text-xs text-sky-300/90 mt-1 truncate" title="${device.label}">${device.label}</div>` : ''}
                             <div class="text-emerald-300/70 text-sm line-clamp-2 mt-1">${device.identity}</div>
                         </div>
                         
@@ -578,36 +662,195 @@
             const dashboardBtn = document.getElementById('tab-dashboard');
             const scansBtn = document.getElementById('tab-scans');
             const topologyBtn = document.getElementById('tab-topology');
+            const matrixBtn = document.getElementById('tab-matrix');
+            const auditBtn = document.getElementById('tab-audit');
             const dashboard = document.getElementById('dashboard-tab-content');
             const scans = document.getElementById('scans-tab-content');
             const topology = document.getElementById('topology-tab-content');
+            const matrix = document.getElementById('matrix-tab-content');
+            const audit = document.getElementById('audit-tab-content');
 
             if (tab === 'topology') {
                 dashboard.classList.add('hidden');
                 scans.classList.add('hidden');
+                matrix.classList.add('hidden');
+                audit.classList.add('hidden');
                 topology.classList.remove('hidden');
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
+            } else if (tab === 'matrix') {
+                dashboard.classList.add('hidden');
+                scans.classList.add('hidden');
+                topology.classList.add('hidden');
+                audit.classList.add('hidden');
+                matrix.classList.remove('hidden');
+                dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
+            } else if (tab === 'audit') {
+                dashboard.classList.add('hidden');
+                scans.classList.add('hidden');
+                topology.classList.add('hidden');
+                matrix.classList.add('hidden');
+                audit.classList.remove('hidden');
+                dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
             } else if (tab === 'scans') {
                 dashboard.classList.add('hidden');
                 topology.classList.add('hidden');
+                matrix.classList.add('hidden');
+                audit.classList.add('hidden');
                 scans.classList.remove('hidden');
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
             } else {
                 scans.classList.add('hidden');
                 topology.classList.add('hidden');
+                matrix.classList.add('hidden');
+                audit.classList.add('hidden');
                 dashboard.classList.remove('hidden');
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
             }
         }
 
+        async function loadAuditData() {
+            const body = document.getElementById('audit-table-body');
+            const msg = document.getElementById('audit-message');
+            const userFilterEl = document.getElementById('audit-user-filter');
+            try {
+                const userFilter = userFilterEl ? userFilterEl.value : '';
+                const response = await fetch(`/api/audit?since=today&user=${encodeURIComponent(userFilter)}`);
+                const data = await response.json();
+                msg.textContent = data.message || '';
+                const users = Array.isArray(data.users) ? data.users : [];
+                if (userFilterEl) {
+                    const selected = userFilterEl.value;
+                    userFilterEl.innerHTML = `<option value="">All users</option>` +
+                        users.map((u) => `<option value="${u}">${u}</option>`).join('');
+                    userFilterEl.value = users.includes(selected) ? selected : '';
+                }
+                if (!data.ok) {
+                    body.innerHTML = `<tr><td colspan="4" class="px-3 py-3 text-amber-300">${data.message || 'Audit data unavailable.'}</td></tr>`;
+                    return;
+                }
+                const events = Array.isArray(data.events) ? data.events : [];
+                if (!events.length) {
+                    body.innerHTML = `<tr><td colspan="4" class="px-3 py-3 text-zinc-500">No recent audit events.</td></tr>`;
+                    return;
+                }
+                body.innerHTML = events.map((e) => `
+                    <tr class="border-b border-zinc-800/70">
+                        <td class="px-3 py-2 text-zinc-300">${e.timestamp || '—'}</td>
+                        <td class="px-3 py-2 text-zinc-300">${e.user || '—'}</td>
+                        <td class="px-3 py-2 text-zinc-400 font-mono">${e.exe || '—'}</td>
+                        <td class="px-3 py-2 text-yellow-300 font-mono break-all">${e.command || '—'}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                msg.textContent = 'Failed to load audit data';
+                body.innerHTML = `<tr><td colspan="4" class="px-3 py-3 text-red-300">Error loading audit data.</td></tr>`;
+            }
+        }
+
+        function renderScanMatrix(matrix) {
+            const container = document.getElementById('scan-matrix-container');
+            const devices = (matrix && Array.isArray(matrix.devices)) ? matrix.devices : [];
+            const deviceMeta = (matrix && matrix.device_meta) ? matrix.device_meta : {};
+            const rows = (matrix && Array.isArray(matrix.rows)) ? matrix.rows : [];
+            function formatScanTimestamp(ts) {
+                const d = new Date((ts || '').replace(' ', 'T'));
+                if (Number.isNaN(d.getTime())) return ts;
+                return d.toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+            }
+
+            if (devices.length === 0 || rows.length === 0) {
+                container.innerHTML = '<div class="text-xs text-zinc-500">No matrix data available yet.</div>';
+                return;
+            }
+
+            const head = `
+                <tr class="text-zinc-400 border-b border-zinc-800">
+                    <th class="sticky top-0 left-0 z-30 bg-zinc-900 text-left py-2 px-3 font-medium text-xs">Scan Timestamp</th>
+                    ${devices.map((ip) => {
+                        const meta = deviceMeta[ip] || {};
+                        const hostname = meta.hostname || ip;
+                        const label = meta.label || '';
+                        return `
+                            <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3 font-medium min-w-[180px]">
+                                <div class="text-xs text-white whitespace-normal break-words leading-snug">${hostname}</div>
+                                ${label ? `<div class="text-[10px] text-sky-300 whitespace-normal break-words leading-snug mt-0.5">${label}</div>` : ''}
+                                <div class="text-[10px] font-mono text-yellow-300 mt-1 break-all">${ip}</div>
+                            </th>
+                        `;
+                    }).join('')}
+                </tr>
+            `;
+
+            function cellBadge(state, transition) {
+                if (state === 'Online') {
+                    if (transition === 'online') return '<span class="inline-flex px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-200 border border-emerald-400/40">Online ↑</span>';
+                    return '<span class="inline-flex px-2 py-1 rounded-lg bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">Online</span>';
+                }
+                if (state === 'Offline') {
+                    if (transition === 'offline') return '<span class="inline-flex px-2 py-1 rounded-lg bg-red-500/20 text-red-200 border border-red-400/40">Offline ↓</span>';
+                    return '<span class="inline-flex px-2 py-1 rounded-lg bg-red-500/10 text-red-300 border border-red-500/30">Offline</span>';
+                }
+                return '<span class="inline-flex px-2 py-1 rounded-lg bg-zinc-700/40 text-zinc-400 border border-zinc-600/50">—</span>';
+            }
+
+            const body = rows.map((row) => `
+                <tr class="border-b border-zinc-800/70 hover:bg-zinc-800/20">
+                    <td class="sticky left-0 z-10 bg-zinc-900 px-3 py-2 font-mono text-xs text-zinc-300">${formatScanTimestamp(row.scan_time)}</td>
+                    ${devices.map((ip) => `<td class="px-3 py-2 text-xs">${cellBadge((row.cells || {})[ip], (row.transitions || {})[ip])}</td>`).join('')}
+                </tr>
+            `).join('');
+
+            container.innerHTML = `
+                <table class="w-full text-sm">
+                    <thead>${head}</thead>
+                    <tbody>${body}</tbody>
+                </table>
+            `;
+        }
+
         function renderScanHistory(rows) {
             const body = document.getElementById('scan-history-body');
+            function formatScanTimestamp(ts) {
+                const d = new Date((ts || '').replace(' ', 'T'));
+                if (Number.isNaN(d.getTime())) return ts;
+                return d.toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+            }
             if (!rows || rows.length === 0) {
                 body.innerHTML = `
                     <tr>
@@ -653,7 +896,7 @@
 
             body.innerHTML = rows.map(r => `
                 <tr class="border-b border-zinc-800/60 hover:bg-zinc-800/30 cursor-pointer" onclick="loadScanOnlineDevices('${r.scan_time}')">
-                    <td class="py-2 pr-4 font-mono text-zinc-300">${r.scan_time}</td>
+                    <td class="py-2 pr-4 font-mono text-zinc-300">${formatScanTimestamp(r.scan_time)}</td>
                     <td class="py-2 pr-4 text-zinc-300">${r.new_devices}</td>
                     <td class="py-2 pr-4 text-emerald-300">${r.online}</td>
                     <td class="py-2 pr-4 text-sky-300">${r.total_known}</td>
@@ -669,6 +912,8 @@
                 const data = await response.json();
 
                 const panel = document.getElementById('scan-online-devices-panel');
+                const content = document.getElementById('scan-online-devices-content');
+                const toggleIcon = document.getElementById('scan-online-toggle-icon');
                 const title = document.getElementById('selected-scan-title');
                 const count = document.getElementById('selected-scan-count');
                 const list = document.getElementById('selected-scan-devices');
@@ -689,8 +934,26 @@
                 }
 
                 panel.classList.remove('hidden');
+                content.classList.remove('hidden');
+                toggleIcon.classList.remove('fa-chevron-down');
+                toggleIcon.classList.add('fa-chevron-up');
             } catch (e) {
                 console.error('Failed to load selected scan devices', e);
+            }
+        }
+
+        function toggleScanOnlinePanel() {
+            const content = document.getElementById('scan-online-devices-content');
+            const toggleIcon = document.getElementById('scan-online-toggle-icon');
+            const isHidden = content.classList.contains('hidden');
+            if (isHidden) {
+                content.classList.remove('hidden');
+                toggleIcon.classList.remove('fa-chevron-down');
+                toggleIcon.classList.add('fa-chevron-up');
+            } else {
+                content.classList.add('hidden');
+                toggleIcon.classList.remove('fa-chevron-up');
+                toggleIcon.classList.add('fa-chevron-down');
             }
         }
         
@@ -709,7 +972,8 @@
             
             if (searchTerm) {
                 filtered = filtered.filter(device => 
-                    device.ip.toLowerCase().includes(searchTerm) ||
+                    (device.ip && device.ip.toLowerCase().includes(searchTerm)) ||
+                    ((device.ip_display || '').toLowerCase().includes(searchTerm)) ||
                     (device.hostname && device.hostname.toLowerCase().includes(searchTerm)) ||
                     (device.type && device.type.toLowerCase().includes(searchTerm))
                 );
@@ -744,6 +1008,22 @@
                 
                 allDevices = data.devices;
                 document.getElementById('last-updated').textContent = `UPDATED ${data.last_updated.split(' ')[1]}`;
+                const users = Array.isArray(data.active_users) ? data.active_users : [];
+                const activeUsersText = users.length ? users.map((u) => {
+                    const sessions = Array.isArray(u.sessions) ? u.sessions : [];
+                    if (!sessions.length) return u.username;
+                    const sessionSummaries = sessions.map((s) => {
+                        if (s.type === 'local') {
+                            return `local ${s.terminal || ''}`.trim();
+                        }
+                        if (s.type === 'ssh') {
+                            return `ssh ${s.host || s.terminal || ''}`.trim();
+                        }
+                        return `${s.type || 'other'} ${s.terminal || ''}`.trim();
+                    });
+                    return `${u.username} (${sessionSummaries.join('; ')})`;
+                }).join(', ') : 'none';
+                document.getElementById('active-users').textContent = `USERS: ${activeUsersText}`;
                 document.getElementById('public-ip').textContent = data.public_ip || 'Unavailable';
                 const connectivityEl = document.getElementById('connectivity-badge');
                 const isOnline = Boolean(data.connectivity && data.connectivity.online);
@@ -753,6 +1033,8 @@
                 renderDevices(allDevices);
                 renderTopology(allDevices);
                 renderScanHistory(data.scan_history || []);
+                renderScanMatrix(data.scan_matrix || { devices: [], rows: [] });
+                loadAuditData();
             } catch (e) {
                 console.error("Failed to load devices", e);
             }
@@ -829,7 +1111,7 @@
                 const events = device.events && device.events.length > 0 ? device.events : [];
                 
                 // Fill modal header
-                document.getElementById('modal-ip').textContent = device.ip;
+                document.getElementById('modal-ip').textContent = data.ip_display || device.ip;
                 document.getElementById('modal-hostname').textContent = device.hostname;
                 document.getElementById('modal-identity').textContent = device.identity || device.type || 'Network Device';
                 
@@ -912,56 +1194,194 @@
                     });
                     infoHTML += `</div>`;
                 }
+
+                if (data.per_ip_status && data.per_ip_status.length > 1) {
+                    infoHTML += `<div class="mt-4 pt-4 border-t border-zinc-700">`;
+                    infoHTML += `<div class="text-[10px] text-zinc-400 mb-2">PER-IP STATUS (MERGED DEVICE)</div>`;
+                    data.per_ip_status.forEach((row) => {
+                        const isOnlineRow = row.status === 'Online';
+                        const badgeClass = isOnlineRow
+                            ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30'
+                            : (row.status === 'Offline'
+                                ? 'bg-red-500/10 text-red-300 border border-red-500/30'
+                                : 'bg-amber-500/10 text-amber-300 border border-amber-500/30');
+                        infoHTML += `
+                            <div class="flex items-center justify-between py-1.5 border-b border-zinc-800/70">
+                                <div>
+                                    <div class="font-mono text-amber-300">${row.ip}</div>
+                                    <div class="text-[10px] text-zinc-500">${row.subnet_group || ''}</div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="inline-flex px-2.5 py-0.5 rounded-xl text-[10px] ${badgeClass}">${row.status}</span>
+                                    <div class="text-[10px] text-zinc-500 mt-1">Last seen: ${row.last_seen || '—'}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    infoHTML += `</div>`;
+                }
                 
                 if (infoHTML === '') {
                     infoHTML = '<div class="text-zinc-500 italic text-xs py-8 text-center">No additional metadata available for this device yet.<br>Run more scans to enrich the database.</div>';
                 }
                 
                 infoContainer.innerHTML = infoHTML;
-                // Build timeline
-                const timelineEl = document.getElementById('history-timeline');
                 const transitionTableBody = document.getElementById('transition-table-body');
-                let html = '';
+                const transitionHeadRow = document.getElementById('transition-table-head-row');
+
+                function collapseNetworkSwitches(eventsList, isMergedDevice) {
+                    if (!Array.isArray(eventsList) || eventsList.length === 0) return [];
+                    if (!isMergedDevice) return [...eventsList];
+
+                    const switchWindowMs = 120 * 1000;
+                    const collapsed = [];
+
+                    for (let i = 0; i < eventsList.length; i++) {
+                        const current = eventsList[i];
+                        const next = eventsList[i + 1];
+
+                        if (
+                            next &&
+                            current.event === 'offline' &&
+                            next.event === 'online' &&
+                            current.ip &&
+                            next.ip &&
+                            current.ip !== next.ip
+                        ) {
+                            const currentTs = new Date(current.timestamp).getTime();
+                            const nextTs = new Date(next.timestamp).getTime();
+                            const delta = nextTs - currentTs;
+
+                            if (delta >= 0 && delta <= switchWindowMs) {
+                                collapsed.push({
+                                    event: 'network_switch',
+                                    timestamp: next.timestamp,
+                                    from_ip: current.ip,
+                                    to_ip: next.ip,
+                                    reason: `Switched network from ${current.ip} to ${next.ip}`,
+                                    switch_delta_ms: delta
+                                });
+                                i += 1;
+                                continue;
+                            }
+                        }
+
+                        collapsed.push(current);
+                    }
+
+                    return collapsed;
+                }
                 
+                const perIpRows = Array.isArray(data.per_ip_status) ? data.per_ip_status : [];
+                const trackedIps = perIpRows.map((r) => r.ip).filter(Boolean);
+                const displayIps = trackedIps.length > 0 ? trackedIps : [device.ip];
+
+                transitionHeadRow.innerHTML = `
+                    <th class="text-left px-4 py-3 font-medium">Timestamp</th>
+                    ${displayIps.map((ipAddr) => `
+                        <th class="text-left px-4 py-3 font-medium font-mono text-yellow-300">${ipAddr}</th>
+                    `).join('')}
+                `;
+
+                function stateBadge(state) {
+                    if (state === 'Online') {
+                        return '<span class="inline-flex items-center rounded-xl px-2.5 py-1 bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">Online</span>';
+                    }
+                    if (state === 'Offline') {
+                        return '<span class="inline-flex items-center rounded-xl px-2.5 py-1 bg-red-500/10 text-red-300 border border-red-500/30">Offline</span>';
+                    }
+                    return '<span class="inline-flex items-center rounded-xl px-2.5 py-1 bg-zinc-700/40 text-zinc-400 border border-zinc-600/50">—</span>';
+                }
+                function stateBadgeWithTransition(state, transitionKind) {
+                    if (transitionKind === 'online') {
+                        return '<span class="inline-flex items-center rounded-xl px-2.5 py-1 bg-emerald-500/20 text-emerald-200 border border-emerald-400/50">Online ↑</span>';
+                    }
+                    if (transitionKind === 'offline') {
+                        return '<span class="inline-flex items-center rounded-xl px-2.5 py-1 bg-red-500/20 text-red-200 border border-red-400/50">Offline ↓</span>';
+                    }
+                    return stateBadge(state);
+                }
+
                 if (events.length > 0) {
                     // Sort events newest first
                     const sortedEvents = [...events].sort((a, b) => 
                         new Date(b.timestamp) - new Date(a.timestamp)
                     );
-                    
-                    sortedEvents.forEach((event, index) => {
-                        const isOnlineEvent = event.event === 'online';
-                        const time = new Date(event.timestamp);
-                        const formattedTime = time.toLocaleString('en-US', {
-                            month: 'short', 
-                            day: 'numeric',
-                            hour: 'numeric',
-                            minute: '2-digit'
-                        });
-                        
-                        html += `
-                            <div class="flex gap-6">
-                                <div class="w-2 h-2 mt-2 rounded-full flex-shrink-0 ${isOnlineEvent ? 
-                                    'bg-emerald-400' : 'bg-red-400'}"></div>
-                                <div class="flex-1">
-                                    <div class="flex justify-between">
-                                        <div class="font-medium ${isOnlineEvent ? 'text-emerald-400' : 'text-red-400'}">
-                                            ${event.event.toUpperCase()}
-                                        </div>
-                                        <div class="font-mono text-xs text-zinc-500">${formattedTime}</div>
-                                    </div>
-                                    <div class="text-xs text-zinc-400 mt-1">
-                                        ${event.reason || 'Network scan detection'}
-                                    </div>
-                                </div>
-                            </div>
-                            ${index < sortedEvents.length - 1 ? 
-                                '<div class="ml-1 border-l border-dashed border-zinc-700 h-8"></div>' : ''}
-                        `;
+                    const oldestFirst = [...sortedEvents].reverse();
+                    const mergedTransitions = collapseNetworkSwitches(
+                        oldestFirst,
+                        Array.isArray(data.per_ip_status) && data.per_ip_status.length > 1
+                    );
+                    const primaryIp = displayIps[0] || device.ip;
+                    const normalizedEvents = mergedTransitions.map((event) => {
+                        if (event.event === 'network_switch') return { ...event };
+                        if (event.ip) return { ...event };
+                        return { ...event, ip: primaryIp };
                     });
 
-                    transitionTableBody.innerHTML = sortedEvents.map((event) => {
-                        const isOnlineEvent = event.event === 'online';
+                    // If no explicit online event exists for a tracked IP, add one at first_seen.
+                    const hasOnlineForIp = {};
+                    displayIps.forEach((ipAddr) => { hasOnlineForIp[ipAddr] = false; });
+                    normalizedEvents.forEach((event) => {
+                        if (event.event === 'online' && event.ip && hasOnlineForIp[event.ip] !== undefined) {
+                            hasOnlineForIp[event.ip] = true;
+                        }
+                        if (event.event === 'network_switch') {
+                            if (event.to_ip && hasOnlineForIp[event.to_ip] !== undefined) {
+                                hasOnlineForIp[event.to_ip] = true;
+                            }
+                        }
+                    });
+
+                    const firstSeenTs = device.first_seen && device.first_seen !== '—' ? device.first_seen : null;
+                    const synthesized = [];
+                    if (firstSeenTs) {
+                        displayIps.forEach((ipAddr) => {
+                            if (!hasOnlineForIp[ipAddr]) {
+                                synthesized.push({
+                                    timestamp: firstSeenTs,
+                                    event: 'online',
+                                    ip: ipAddr,
+                                    reason: 'discovered online'
+                                });
+                            }
+                        });
+                    }
+
+                    const enrichedEvents = [...normalizedEvents, ...synthesized]
+                        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                    const stateByIp = {};
+                    displayIps.forEach((ipAddr) => {
+                        stateByIp[ipAddr] = 'Offline';
+                    });
+
+                    const eventsWithState = enrichedEvents.map((event) => {
+                        if (event.event === 'network_switch') {
+                            if (event.from_ip && stateByIp[event.from_ip] !== undefined) {
+                                stateByIp[event.from_ip] = 'Offline';
+                            }
+                            if (event.to_ip && stateByIp[event.to_ip] !== undefined) {
+                                stateByIp[event.to_ip] = 'Online';
+                            }
+                        } else if (event.event === 'online' || event.event === 'offline') {
+                            const targetIp = event.ip;
+                            if (targetIp && stateByIp[targetIp] !== undefined) {
+                                stateByIp[targetIp] = event.event === 'online' ? 'Online' : 'Offline';
+                            }
+                        }
+
+                        return {
+                            ...event,
+                            states: Object.fromEntries(
+                                displayIps.map((ipAddr) => [ipAddr, stateByIp[ipAddr] || 'Offline'])
+                            )
+                        };
+                    });
+
+                    const displayEvents = eventsWithState.reverse();
+                    
+                    transitionTableBody.innerHTML = displayEvents.map((event) => {
+                        const isSwitchEvent = event.event === 'network_switch';
                         const time = new Date(event.timestamp);
                         const formattedTime = time.toLocaleString('en-US', {
                             year: 'numeric',
@@ -971,45 +1391,30 @@
                             minute: '2-digit',
                             second: '2-digit'
                         });
+                        const perIpCells = displayIps.map((ipAddr) => {
+                            const ipState = (event.states && event.states[ipAddr]) ? event.states[ipAddr] : 'Offline';
+                            const ipTransition = isSwitchEvent
+                                ? (event.to_ip === ipAddr ? 'online' : (event.from_ip === ipAddr ? 'offline' : 'none'))
+                                : (event.ip === ipAddr
+                                    ? (event.event === 'online' ? 'online' : (event.event === 'offline' ? 'offline' : 'none'))
+                                    : 'none');
+                            return `<td class="px-4 py-3">${stateBadgeWithTransition(ipState, ipTransition)}</td>`;
+                        }).join('');
+
                         return `
                             <tr class="border-t border-zinc-800">
                                 <td class="px-4 py-3 font-mono text-zinc-300">${formattedTime}</td>
-                                <td class="px-4 py-3">
-                                    <span class="inline-flex items-center rounded-xl px-2.5 py-1 ${isOnlineEvent ? 
-                                        'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' : 
-                                        'bg-red-500/10 text-red-300 border border-red-500/30'}">
-                                        ${event.event.toUpperCase()}
-                                    </span>
-                                </td>
-                                <td class="px-4 py-3 text-zinc-400">${event.reason || 'Network scan detection'}</td>
+                                ${perIpCells}
                             </tr>
                         `;
                     }).join('');
                 } else {
-                    // Fallback when no events recorded yet
-                    html = `
-                        <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-8 text-center">
-                            <div class="text-4xl mb-4">📡</div>
-                            <div class="text-white font-medium mb-2">No detailed event history yet</div>
-                            <div class="text-zinc-400 max-w-xs mx-auto">
-                                This device was first seen on <span class="font-mono text-yellow-300">${device.first_seen}</span>.<br><br>
-                                Run a few network scans to build a rich history of when this device comes online and goes offline.
-                            </div>
-                            <div onclick="triggerScan();hideHistoryModal()" 
-                                 class="mt-8 mx-auto inline-flex items-center gap-x-2 text-xs bg-yellow-500 text-zinc-950 px-6 py-3 rounded-2xl cursor-pointer hover:bg-yellow-400">
-                                <i class="fa-solid fa-satellite-dish"></i>
-                                RUN SCAN TO BUILD HISTORY
-                            </div>
-                        </div>
-                    `;
                     transitionTableBody.innerHTML = `
                         <tr>
-                            <td colspan="3" class="px-4 py-4 text-zinc-500">No transitions recorded yet. Run additional scans to populate this table.</td>
+                            <td colspan="${displayIps.length + 1}" class="px-4 py-4 text-zinc-500">No transitions recorded yet (Online / Offline / Network Switch).</td>
                         </tr>
                     `;
                 }
-                
-                timelineEl.innerHTML = html;
                 document.getElementById('history-modal').classList.remove('hidden');
                 document.getElementById('history-modal').classList.add('flex');
                 

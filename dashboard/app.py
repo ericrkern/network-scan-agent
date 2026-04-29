@@ -6,6 +6,8 @@ Built for the Jetson Network Scanner
 
 import json
 import os
+import shlex
+import re
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -23,6 +25,15 @@ CACHE_FILE = str(BASE_DIR / ".seen_devices.json")
 SCAN_SNAPSHOTS_FILE = str(BASE_DIR / ".scan_snapshots.json")
 SCAN_SCRIPT = str(BASE_DIR / "network_scan_agent.py")
 LAN_LABELS_FILE = os.environ.get("LAN_LABELS_FILE", "/home/yb/.config/lan-labels")
+KNOWN_HOSTNAME_OVERRIDES = {
+    "192.168.0.98": "Irene's Watch",
+    "192.168.50.3": "Irene's Watch",
+    "192.168.0.81": "Friends Watch",
+}
+KNOWN_MAC_OVERRIDES = {
+    "192.168.0.98": "4e:0a:ec:36:fd:82",
+    "192.168.0.81": "fa:5b:a6:ab:1a:7f",
+}
 
 
 def load_ip_labels():
@@ -36,9 +47,9 @@ def load_ip_labels():
                 line = raw.strip()
                 if not line or line.startswith("#"):
                     continue
-                parts = line.split()
-                if len(parts) >= 2:
-                    labels[parts[0]] = parts[1]
+                parts = line.split(maxsplit=1)
+                if len(parts) == 2:
+                    labels[parts[0]] = parts[1].strip()
     except Exception as e:
         print(f"Warning: could not load LAN labels: {e}")
     return labels
@@ -63,6 +74,169 @@ def choose_device_name(ip: str, *candidates):
 def is_active_status(status: str) -> bool:
     """Only treat explicitly online devices as active."""
     return status == "Online"
+
+
+def normalize_mac(mac: str) -> str:
+    """Normalize MAC for grouping; return empty string when unavailable."""
+    if mac in (None, "", "—", "None"):
+        return ""
+    return str(mac).strip().lower().replace("-", ":")
+
+
+def collapse_duplicate_devices(devices):
+    """
+    Collapse duplicate logical devices so UI shows one card even with multiple IPs.
+    Priority:
+      1) Same normalized MAC across multiple IPs
+      2) Correlated iPhone pair (192.168.0.49 + 192.168.50.106)
+    """
+    if not devices:
+        return devices
+
+    by_ip = {d.get("ip"): d for d in devices if d.get("ip")}
+    groups = []
+    grouped_ips = set()
+
+    # Group by duplicate MAC first (high confidence).
+    mac_groups = {}
+    for d in devices:
+        mac = normalize_mac(d.get("mac"))
+        if not mac:
+            continue
+        mac_groups.setdefault(mac, []).append(d)
+    for _, members in mac_groups.items():
+        ips = sorted({m["ip"] for m in members if m.get("ip")})
+        if len(ips) > 1:
+            groups.append(ips)
+            grouped_ips.update(ips)
+
+    # Correlate known iPhone aliases (private-MAC rotation + routed-subnet alias).
+    iphone_cluster = ["192.168.0.49", "192.168.0.131", "192.168.50.106"]
+    iphone_present = [ip for ip in iphone_cluster if ip in by_ip]
+    if len(iphone_present) >= 2:
+        cluster_hostnames = [
+            str(by_ip[ip].get("hostname", "")).strip().lower()
+            for ip in iphone_present
+        ]
+        hostname_hints = [
+            name for name in cluster_hostnames
+            if name and ("iphone" in name or "irenes-iphone.local" in name)
+        ]
+        if hostname_hints:
+            # Remove overlapping groups first so this cluster is rendered as one card.
+            normalized_groups = []
+            for g in groups:
+                if set(g) & set(iphone_present):
+                    continue
+                normalized_groups.append(g)
+            groups = normalized_groups
+            grouped_ips = {ip for g in groups for ip in g}
+            groups.append(sorted(iphone_present))
+            grouped_ips.update(iphone_present)
+
+    # Correlate known watch aliases (private-MAC rotation + routed-subnet alias).
+    watch_cluster = ["192.168.0.98", "192.168.0.112", "192.168.50.3"]
+    watch_present = [ip for ip in watch_cluster if ip in by_ip]
+    if len(watch_present) >= 2:
+        cluster_hostnames = [
+            str(by_ip[ip].get("hostname", "")).strip().lower()
+            for ip in watch_present
+        ]
+        hostname_hints = [name for name in cluster_hostnames if name and "watch" in name]
+        if hostname_hints:
+            # Remove overlapping groups first so this cluster is rendered as one card.
+            normalized_groups = []
+            for g in groups:
+                if set(g) & set(watch_present):
+                    continue
+                normalized_groups.append(g)
+            groups = normalized_groups
+            grouped_ips = {ip for g in groups for ip in g}
+            groups.append(sorted(watch_present))
+            grouped_ips.update(watch_present)
+
+    merged_devices = []
+    for ips in groups:
+        members = [by_ip[ip] for ip in ips if ip in by_ip]
+        if not members:
+            continue
+
+        online_members = [m for m in members if m.get("status") == "Online"]
+        primary = online_members[0] if online_members else members[0]
+
+        status = "Online" if online_members else ("Offline" if all(m.get("status") == "Offline" for m in members) else "Unknown")
+        status_color = "emerald" if status == "Online" else ("red" if status == "Offline" else "amber")
+
+        ip_addresses = sorted({m.get("ip") for m in members if m.get("ip")})
+        per_ip_status = []
+        for m in sorted(members, key=lambda item: item.get("ip", "")):
+            per_ip_status.append({
+                "ip": m.get("ip"),
+                "status": m.get("status", "Unknown"),
+                "last_seen": m.get("last_seen", "—"),
+                "last_status_time": m.get("last_status_time", m.get("last_seen", "—")),
+                "subnet_group": m.get("subnet_group", "Other Networks"),
+            })
+
+        member_labels = [m.get("label") for m in members if m.get("label") not in (None, "", "—", "None")]
+        merged = dict(primary)
+        merged["ip"] = primary.get("ip")
+        merged["ip_addresses"] = ip_addresses
+        merged["ip_display"] = ", ".join(ip_addresses)
+        merged["status"] = status
+        merged["status_color"] = status_color
+        merged["subnet_group"] = primary.get("subnet_group")
+        merged["per_ip_status"] = per_ip_status
+        # Merge timestamps across all correlated IPs.
+        first_seen_candidates = [m.get("first_seen") for m in members if m.get("first_seen") not in (None, "", "—")]
+        if first_seen_candidates:
+            merged["first_seen"] = min(first_seen_candidates)
+        last_seen_candidates = [m.get("last_seen") for m in members if m.get("last_seen") not in (None, "", "—")]
+        if last_seen_candidates:
+            merged["last_seen"] = max(last_seen_candidates)
+
+        # Make transition history explicit about source IP.
+        merged_events = []
+        for m in members:
+            src_ip = m.get("ip")
+            for ev in (m.get("events") or []):
+                if not isinstance(ev, dict) or not ev.get("timestamp"):
+                    continue
+                ev_copy = dict(ev)
+                ev_copy["ip"] = src_ip
+                merged_events.append(ev_copy)
+        merged["events"] = sorted(
+            merged_events,
+            key=lambda ev: ev.get("timestamp", ""),
+            reverse=True,
+        )[:50]
+        if member_labels:
+            merged["label"] = member_labels[0]
+            merged["labels"] = sorted(set(member_labels))
+        # Keep a stable MAC if any member has one.
+        for m in members:
+            mac = m.get("mac")
+            if mac not in (None, "", "—", "None"):
+                merged["mac"] = mac
+                break
+        merged_devices.append(merged)
+
+    # Keep non-grouped devices as-is.
+    for d in devices:
+        if d.get("ip") not in grouped_ips:
+            d["ip_addresses"] = [d.get("ip")]
+            d["ip_display"] = d.get("ip")
+            d["per_ip_status"] = [{
+                "ip": d.get("ip"),
+                "status": d.get("status", "Unknown"),
+                "last_seen": d.get("last_seen", "—"),
+                "last_status_time": d.get("last_status_time", d.get("last_seen", "—")),
+                "subnet_group": d.get("subnet_group", "Other Networks"),
+            }]
+            d["labels"] = [d["label"]] if d.get("label") not in (None, "", "—", "None") else []
+            merged_devices.append(d)
+
+    return merged_devices
 
 
 def parse_markdown_devices():
@@ -617,6 +791,93 @@ def enrich_scan_history_with_state_changes(scan_history_rows):
     return enriched
 
 
+def build_scan_status_matrix(scan_history_rows):
+    """
+    Build a scan/device matrix where each row is a scan time and each column is a device.
+    Status is carried forward until a change is detected at a later scan.
+    """
+    snapshots_by_time = load_scan_snapshots()
+    if not scan_history_rows:
+        # Fallback to snapshot timeline when markdown scan-history rows are unavailable.
+        fallback_rows = [
+            {"scan_time": ts}
+            for ts in sorted(snapshots_by_time.keys(), reverse=True)
+        ]
+        scan_history_rows = fallback_rows
+    if not scan_history_rows:
+        return {"devices": [], "rows": []}
+
+    # scan_history_rows are newest->oldest; process oldest->newest for state propagation.
+    chronological_rows = list(reversed(scan_history_rows))
+    online_sets_by_scan = {}
+    device_ips = set()
+
+    for row in chronological_rows:
+        scan_time = row.get("scan_time", "")
+        snapshot = snapshots_by_time.get(scan_time)
+        if snapshot:
+            online_map = snapshot
+        else:
+            inferred = infer_online_devices_for_scan(scan_time)
+            online_map = {d["ip"]: d for d in inferred if d.get("ip")}
+
+        online_ips = set(online_map.keys())
+        online_sets_by_scan[scan_time] = online_ips
+        device_ips.update(online_ips)
+
+    # Include currently known devices as columns even if they never appeared online in recent rows.
+    current_devices = load_device_data()
+    for d in current_devices:
+        ip = d.get("ip")
+        if ip:
+            device_ips.add(ip)
+
+    ordered_devices = sorted(device_ips)
+    device_meta = {}
+    current_state = {ip: "Unknown" for ip in ordered_devices}
+    matrix_rows = []
+
+    for d in current_devices:
+        ip = d.get("ip")
+        if not ip:
+            continue
+        device_meta[ip] = {
+            "hostname": d.get("hostname", ip),
+            "label": d.get("label", ""),
+        }
+
+    for row in chronological_rows:
+        scan_time = row.get("scan_time", "")
+        online_ips = online_sets_by_scan.get(scan_time, set())
+        cell_map = {}
+        transition_map = {}
+
+        for ip in ordered_devices:
+            next_state = "Online" if ip in online_ips else "Offline"
+            prev_state = current_state.get(ip, "Unknown")
+            transition = "none"
+            if prev_state != "Unknown" and next_state != prev_state:
+                transition = "online" if next_state == "Online" else "offline"
+
+            current_state[ip] = next_state
+            cell_map[ip] = next_state
+            transition_map[ip] = transition
+
+        matrix_rows.append({
+            "scan_time": scan_time,
+            "cells": cell_map,
+            "transitions": transition_map,
+        })
+
+    # Return newest scan at top.
+    matrix_rows.reverse()
+    return {
+        "devices": ordered_devices,
+        "device_meta": device_meta,
+        "rows": matrix_rows,
+    }
+
+
 def load_device_data():
     """Load and enrich device data from cache + rich markdown details"""
     devices = []
@@ -654,10 +915,14 @@ def load_device_data():
                 
                 rich_hostname = rich.get("hostname")
                 hostname = choose_device_name(ip, rich_hostname, cache_hostname, labels.get(ip))
+                if ip in KNOWN_HOSTNAME_OVERRIDES and hostname in (None, "", "—", ip):
+                    hostname = KNOWN_HOSTNAME_OVERRIDES[ip]
                 
                 rich_identity = rich.get("identity")
                 identity = rich_identity if rich_identity not in ["Unknown Device", "Unknown", "—", "None", None, ""] else data.get("type", "Unknown Device")
                 mac = rich.get("mac", data.get("mac", "—"))
+                if ip in KNOWN_MAC_OVERRIDES and mac in (None, "", "—", "None"):
+                    mac = KNOWN_MAC_OVERRIDES[ip]
                 rich_manufacturer = rich.get("manufacturer")
                 if rich_manufacturer in (None, "", "—", "None"):
                     manufacturer = data.get("manufacturer", "—")
@@ -689,6 +954,7 @@ def load_device_data():
                 devices.append({
                     "ip": ip,
                     "hostname": hostname,
+                    "label": labels.get(ip, ""),
                     "identity": identity,
                     "subnet_group": get_subnet_group(ip),
                     "status": status_text,
@@ -741,6 +1007,36 @@ def load_device_data():
     return devices
 
 
+def build_watch_correlation_findings():
+    """Build concise watch-correlation findings for dashboard display."""
+    watches = [
+        {
+            "ip": "192.168.0.98, 192.168.0.112 (alias: 192.168.50.3)",
+            "hostname": "Irene's Watch",
+            "mac": "4e:0a:ec:36:fd:82",
+            "discovered": "Merged alias across subnets",
+        },
+    ]
+
+    conclusion = (
+        "Dashboard now treats 192.168.0.98, 192.168.0.112, and 192.168.50.3 as one logical device "
+        "labeled Irene's Watch."
+    )
+    source_url = "https://support.apple.com/en-us/HT211227"
+    source_summary = (
+        "Apple states Apple Watch can use private Wi-Fi addresses that differ per network "
+        "and can rotate over time."
+    )
+
+    return {
+        "updated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "watches": watches,
+        "conclusion": conclusion,
+        "source_url": source_url,
+        "source_summary": source_summary,
+    }
+
+
 def fetch_roku_device_info(ip: str):
     """
     Fetch Roku ECP /query/device-info payload if available.
@@ -777,6 +1073,49 @@ def fetch_roku_device_info(ip: str):
         return {}
     except Exception:
         return {}
+
+
+def fetch_roku_playback_info(ip: str):
+    """
+    Fetch best-effort Roku playback context.
+    Returns active app/screensaver, plus limited-mode hint when media-player is blocked.
+    """
+    result = {}
+
+    # Active app is usually available even when richer media-player data is blocked.
+    active_app_url = f"http://{ip}:8060/query/active-app"
+    try:
+        req = urllib.request.Request(active_app_url, headers={"User-Agent": "NetworkPulse/1.0"})
+        with urllib.request.urlopen(req, timeout=2.5) as resp:
+            payload = resp.read()
+        root = ET.fromstring(payload)
+
+        app_node = root.find("app")
+        if app_node is not None:
+            result["active_app_name"] = (app_node.text or "").strip()
+            result["active_app_id"] = app_node.get("id", "")
+            result["active_app_type"] = app_node.get("type", "")
+            result["active_app_ui_location"] = app_node.get("ui-location", "")
+
+        screensaver_node = root.find("screensaver")
+        if screensaver_node is not None:
+            result["screensaver_name"] = (screensaver_node.text or "").strip()
+    except Exception:
+        pass
+
+    # Probe media-player once to detect limited-mode restrictions for display context.
+    media_player_url = f"http://{ip}:8060/query/media-player"
+    try:
+        req = urllib.request.Request(media_player_url, headers={"User-Agent": "NetworkPulse/1.0"})
+        with urllib.request.urlopen(req, timeout=2.5):
+            result["media_player_access"] = "available"
+    except urllib.error.HTTPError as e:
+        if e.code == 403:
+            result["media_player_access"] = "limited_mode_blocked"
+    except Exception:
+        pass
+
+    return result
 
 
 def check_online_status():
@@ -821,17 +1160,174 @@ def get_public_ip():
     return "Unavailable"
 
 
+def get_active_users():
+    """Return logged-in users with session detail (local vs ssh)."""
+    users = {}
+    try:
+        result = subprocess.run(
+            ["who"],
+            capture_output=True,
+            text=True,
+            timeout=2,
+        )
+        for line in (result.stdout or "").splitlines():
+            parts = line.split()
+            if len(parts) < 2:
+                continue
+            username = parts[0]
+            terminal = parts[1]
+            host = parts[4].strip("()") if len(parts) >= 5 else ""
+            if terminal.startswith("pts/"):
+                session_type = "ssh"
+            elif terminal == ":0" or terminal.startswith("tty"):
+                session_type = "local"
+            else:
+                session_type = "other"
+
+            entry = users.setdefault(username, {"username": username, "sessions": []})
+            entry["sessions"].append({
+                "terminal": terminal,
+                "host": host,
+                "type": session_type,
+            })
+    except Exception:
+        pass
+    return sorted(users.values(), key=lambda u: u["username"])
+
+
+def get_audit_activity(limit: int = 300, since: str = "today", user_filter: str = ""):
+    """
+    Return recent cmd_exec audit events.
+    Uses ausearch output when readable; otherwise returns a permission hint.
+    """
+    helper_cmd = os.environ.get(
+        "AUDIT_HELPER_CMD",
+        f"sudo -n {BASE_DIR / 'dashboard' / 'bin' / 'read_cmd_exec_audit.sh'} {since}",
+    )
+    cmd = shlex.split(helper_cmd)
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=6,
+        )
+    except Exception as e:
+        return {
+            "ok": False,
+            "message": f"Failed to execute ausearch: {e}",
+            "events": [],
+        }
+
+    stdout = result.stdout or ""
+    stderr = result.stderr or ""
+    combined_err = (stderr or "").strip()
+    if result.returncode != 0 and not stdout.strip():
+        if "no new privileges" in combined_err.lower():
+            return {
+                "ok": False,
+                "message": (
+                    "Audit command attempted privilege escalation in a no-new-privileges "
+                    "environment. Configure AUDIT_HELPER_CMD to a non-sudo command, or run "
+                    "the dashboard with direct permission to read audit logs."
+                ),
+                "events": [],
+            }
+        if "Permission denied" in combined_err:
+            return {
+                "ok": False,
+                "message": "Audit helper is not authorized yet. Add a sudoers rule for the dashboard user to run the audit helper without a password.",
+                "events": [],
+            }
+        if "password is required" in combined_err or "a password is required" in combined_err:
+            return {
+                "ok": False,
+                "message": "Audit helper needs NOPASSWD sudo authorization. Add a sudoers rule to allow this helper command.",
+                "events": [],
+            }
+        return {
+            "ok": False,
+            "message": combined_err or "No audit data available.",
+            "events": [],
+        }
+
+    events = []
+    users_seen = set()
+    current = {}
+    msg_time_re = re.compile(r"msg=audit\(([^)]+)\)")
+    for raw in stdout.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        if line.startswith("----"):
+            if current.get("timestamp") or current.get("user") or current.get("command"):
+                events.append(current)
+            current = {}
+            continue
+        if line.startswith("time->"):
+            current["timestamp"] = line.replace("time->", "").strip()
+            continue
+        if "msg=audit(" in line and "timestamp" not in current:
+            m = msg_time_re.search(line)
+            if m:
+                current["timestamp"] = m.group(1)
+        if line.startswith("type=PROCTITLE"):
+            # Extract command payload after proctitle=
+            marker = "proctitle="
+            idx = line.find(marker)
+            if idx != -1:
+                current["command"] = line[idx + len(marker):].strip()
+            continue
+        if line.startswith("type=SYSCALL"):
+            # Capture auid and exe when present.
+            for token in line.split():
+                if token.startswith("auid=") and "user" not in current:
+                    current["auid"] = token.split("=", 1)[1]
+                elif token.startswith("uid=") and "uid" not in current:
+                    current["uid"] = token.split("=", 1)[1]
+                elif token.startswith("exe=") and "exe" not in current:
+                    current["exe"] = token.split("=", 1)[1].strip('"')
+            continue
+
+    if current.get("timestamp") or current.get("user") or current.get("command"):
+        events.append(current)
+
+    normalized = []
+    for e in events:
+        actor = e.get("auid")
+        if actor in (None, "", "unset"):
+            actor = e.get("uid", "unknown")
+        e["user"] = actor
+        if actor not in (None, "", "unset"):
+            users_seen.add(actor)
+        normalized.append(e)
+
+    if user_filter:
+        normalized = [e for e in normalized if str(e.get("user", "")).lower() == user_filter.lower()]
+
+    normalized = [e for e in normalized if e.get("timestamp") or e.get("command")]
+    normalized = list(reversed(normalized))[:max(1, limit)]
+    return {
+        "ok": True,
+        "message": f"Showing {len(normalized)} cmd_exec events since {since}.",
+        "users": sorted(users_seen),
+        "events": normalized,
+    }
+
+
 @app.route('/')
 def index():
     """Main dashboard page"""
     devices = load_device_data()
     last_updated = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    watch_findings = build_watch_correlation_findings()
     
     return render_template('index.html', 
                          devices=devices, 
                          last_updated=last_updated,
                          total_devices=len(devices),
-                         online_count=len([d for d in devices if is_active_status(d.get('status', ''))]))
+                         online_count=len([d for d in devices if is_active_status(d.get('status', ''))]),
+                         watch_findings=watch_findings)
 
 
 @app.route('/api/devices')
@@ -839,10 +1335,16 @@ def api_devices():
     """JSON API endpoint for live updates"""
     devices = load_device_data()
     scan_history = enrich_scan_history_with_state_changes(load_scan_history())
+    scan_matrix = build_scan_status_matrix(scan_history)
     connectivity = check_online_status()
+    watch_findings = build_watch_correlation_findings()
+    active_users = get_active_users()
     return jsonify({
         "devices": devices,
         "scan_history": scan_history,
+        "scan_matrix": scan_matrix,
+        "watch_findings": watch_findings,
+        "active_users": active_users,
         "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "total": len(devices),
         "online": len([d for d in devices if is_active_status(d.get('status', ''))]),
@@ -881,9 +1383,10 @@ def api_device_detail(ip):
 
     # Try live Roku ECP device-info enrichment (fast timeout).
     roku_info = fetch_roku_device_info(ip)
+    roku_live_lines = []
     if roku_info:
         extra["roku_device_info"] = roku_info
-        details.extend([
+        roku_live_lines.extend([
             f"Roku Name: {roku_info.get('friendly-device-name', '—')}",
             f"Location: {roku_info.get('user-device-location', '—')}",
             f"Model: {roku_info.get('model-name', '—')} ({roku_info.get('model-number', '—')})",
@@ -896,27 +1399,67 @@ def api_device_detail(ip):
             f"Uptime (seconds): {roku_info.get('uptime', '—')}",
         ])
 
+    # Add best-effort "what's playing" context from Roku active app data.
+    roku_playback = fetch_roku_playback_info(ip)
+    if roku_playback:
+        extra["roku_playback"] = roku_playback
+        playback_lines = []
+        active_name = roku_playback.get("active_app_name")
+        active_type = roku_playback.get("active_app_type")
+        active_ui = roku_playback.get("active_app_ui_location")
+        if active_name:
+            playback_lines.append(
+                f"Now Playing (Active App): {active_name}"
+                f"{f' [{active_type}]' if active_type else ''}"
+                f"{f' @ {active_ui}' if active_ui else ''}"
+            )
+        screensaver_name = roku_playback.get("screensaver_name")
+        if screensaver_name:
+            playback_lines.append(f"Screensaver: {screensaver_name}")
+        if roku_playback.get("media_player_access") == "limited_mode_blocked":
+            playback_lines.append("Playback metadata endpoint (/query/media-player) blocked in Roku Limited mode.")
+        roku_live_lines.extend(playback_lines)
+
+    # Normalize Roku detail formatting across devices while keeping data live.
+    if roku_live_lines:
+        details = roku_live_lines
+
     if details:
         extra["details"] = details
     if rich.get("details"):
         extra["details"] = details
-    if rich.get("access"):
+    if rich.get("access") and ip != "192.168.0.192":
         extra["access_methods"] = rich["access"]
     if rich.get("source"):
         extra["source"] = rich["source"]
     
+    response_access_methods = "See device documentation"
+    if ip != "192.168.0.192":
+        response_access_methods = rich.get("access", "See device documentation")
+
     return jsonify({
         "device": device,
         "rich_info": rich,
         "history": device.get("events", []),
+        "per_ip_status": device.get("per_ip_status", []),
+        "ip_addresses": device.get("ip_addresses", [device.get("ip")]),
+        "ip_display": device.get("ip_display", device.get("ip")),
         "deep_scan": deep_scan_data,
         "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "ports": rich.get("ports", device.get("ports", "—")),
-        "access_methods": rich.get("access", "See device documentation"),
+        "access_methods": response_access_methods,
         "mac": device.get("mac", "—"),
         "manufacturer": device.get("manufacturer", "—"),
         **extra
     })
+
+
+@app.route('/api/audit')
+def api_audit():
+    """Return recent Linux audit cmd_exec activity."""
+    since = request.args.get("since", "today")
+    user_filter = request.args.get("user", "").strip()
+    return jsonify(get_audit_activity(since=since, user_filter=user_filter))
 
 
 @app.route('/api/scan/<path:scan_time>/online')

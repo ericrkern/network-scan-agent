@@ -1158,3 +1158,85 @@ Found 31 host IPs to scan
    Results saved to /home/jetson/Documents/Network/deep_scan_results.json
 
 💥 Error during deep scan: [Errno 28] No space left on device
+fatal: unable to access 'https://github.com/ericrkern/network-scan-agent.git/': Could not resolve host: github.com
+error: cannot pull with rebase: You have unstaged changes.
+error: please commit or stash them.
+[main 9d1f2b8] Auto-update daily website/network data snapshot.
+ 12 files changed, 4355 insertions(+), 89 deletions(-)
+ rewrite __pycache__/network_scan_agent.cpython-310.pyc (60%)
+ rewrite dashboard/__pycache__/app.cpython-310.pyc (66%)
+ create mode 100644 public_ip_nmap.xml
+ create mode 100755 scripts/daily_github_push.sh
+fatal: unable to access 'https://github.com/ericrkern/network-scan-agent.git/': Could not resolve host: github.com
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+   02bc292..c2bd804  main       -> origin/main
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main cdf7aec] Auto-update daily website/network data snapshot.
+ 5 files changed, 3754 insertions(+), 136 deletions(-)
+To https://github.com/ericrkern/network-scan-agent.git
+   9029a0b..cdf7aec  main -> main
+2026-04-25 03:15:03 [auto-push] pushed latest changes
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main d920839] Auto-update daily website/network data snapshot.
+ 6 files changed, 5106 insertions(+), 132 deletions(-)
+To https://github.com/ericrkern/network-scan-agent.git
+   11f7265..d920839  main -> main
+2026-04-26 03:15:03 [auto-push] pushed latest changes
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main b77fd2c] Auto-update daily website/network data snapshot.
+ 12 files changed, 7728 insertions(+), 392 deletions(-)
+ create mode 100644 watch-monitor.log
+To https://github.com/ericrkern/network-scan-agent.git
+   d920839..b77fd2c  main -> main
+2026-04-27 03:15:03 [auto-push] pushed latest changes
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main cca34da] Auto-update daily website/network data snapshot.
+ 8 files changed, 9585 insertions(+), 4236 deletions(-)
+To https://github.com/ericrkern/network-scan-agent.git
+   b77fd2c..cca34da  main -> main
+2026-04-28 03:15:03 [auto-push] pushed latest changes
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main 809c4b8] Auto-update daily website/network data snapshot.
+ 5 files changed, 4457 insertions(+), 4678 deletions(-)
+To https://github.com/ericrkern/network-scan-agent.git
+   7f8386c..809c4b8  main -> main
+2026-04-29 03:15:03 [auto-push] pushed latest changes
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main dcfded7] Auto-update daily website/network data snapshot.
+ 15 files changed, 732 insertions(+), 259 deletions(-)
+ create mode 100755 dashboard/bin/read_cmd_exec_audit.sh
+fatal: could not read Username for 'https://github.com': No such device or address
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+[main e6a0e67] Auto-update daily website/network data snapshot.
+ 1 file changed, 8 insertions(+)
+fatal: could not read Username for 'https://github.com': No such device or address
