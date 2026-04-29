@@ -1,0 +1,17 @@
+=== Jetson-IO debug (no curses) ===
+
+1. Importing Jetson.board ...
+   OK
+2. Creating board.Board() ...
+   FAILED: The current user does not have read/write permissions to access /boot.
+Traceback (most recent call last):
+  File "/home/jetson/debug-jetson-io.py", line 38, in main
+    b = board.Board()
+  File "/opt/nvidia/jetson-io/Jetson/board.py", line 215, in __init__
+    fio.is_rw(self.bootdir)
+  File "/opt/nvidia/jetson-io/Utils/fio.py", line 37, in is_rw
+    __is_accessible(path, os.R_OK | os.W_OK, "read/write")
+  File "/opt/nvidia/jetson-io/Utils/fio.py", line 28, in __is_accessible
+    raise RuntimeError("The current user does not have %s "
+RuntimeError: The current user does not have read/write permissions to access /boot.
+
