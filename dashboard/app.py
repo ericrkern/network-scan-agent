@@ -1202,7 +1202,7 @@ def get_audit_activity(limit: int = 300, since: str = "today", user_filter: str 
     """
     helper_cmd = os.environ.get(
         "AUDIT_HELPER_CMD",
-        f"sudo -n {BASE_DIR / 'dashboard' / 'bin' / 'read_cmd_exec_audit.sh'} {since}",
+        f"{BASE_DIR / 'dashboard' / 'bin' / 'read_cmd_exec_audit.sh'} {since}",
     )
     cmd = shlex.split(helper_cmd)
     try:
@@ -1223,6 +1223,16 @@ def get_audit_activity(limit: int = 300, since: str = "today", user_filter: str 
     stderr = result.stderr or ""
     combined_err = (stderr or "").strip()
     if result.returncode != 0 and not stdout.strip():
+        if "no new privileges" in combined_err.lower():
+            return {
+                "ok": False,
+                "message": (
+                    "Audit command attempted privilege escalation in a no-new-privileges "
+                    "environment. Configure AUDIT_HELPER_CMD to a non-sudo command, or run "
+                    "the dashboard with direct permission to read audit logs."
+                ),
+                "events": [],
+            }
         if "Permission denied" in combined_err:
             return {
                 "ok": False,
