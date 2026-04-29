@@ -20,9 +20,10 @@ from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 # Configuration
-DEVICES_FILE = "/home/jetson/Documents/Network/devices.md"
-CACHE_FILE = "/home/jetson/Documents/Network/.seen_devices.json"
-OUTPUT_FILE = "/home/jetson/Documents/Network/deep_scan_results.json"
+BASE_DIR = Path(__file__).resolve().parent
+DEVICES_FILE = str(BASE_DIR / "devices.md")
+CACHE_FILE = str(BASE_DIR / ".seen_devices.json")
+OUTPUT_FILE = str(BASE_DIR / "deep_scan_results.json")
 
 COMMON_TCP_PORTS = [22, 53, 80, 135, 139, 443, 445, 631, 8080, 5900, 5000, 3000, 1883, 8060, 18789]
 COMMON_UDP_PORTS = [53, 67, 68, 69, 123, 137, 138, 161, 1900, 5353, 5060, 500, 4500]

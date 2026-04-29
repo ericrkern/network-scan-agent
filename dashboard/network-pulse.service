@@ -4,8 +4,10 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/home/jetson/Documents/Network/dashboard
-ExecStart=/usr/bin/python3 /home/jetson/Documents/Network/dashboard/app.py
+User=yb
+Group=yb
+WorkingDirectory=/usr/local/yb/.Network/dashboard
+ExecStart=/usr/bin/python3 /usr/local/yb/.Network/dashboard/app.py
 Restart=always
 RestartSec=5
 Environment=PYTHONUNBUFFERED=1

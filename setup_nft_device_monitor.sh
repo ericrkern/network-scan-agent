@@ -4,7 +4,7 @@ set -euo pipefail
 # Compatibility fallback: per-device counters via iptables.
 # Keeps counters in dedicated chains referenced from INPUT/OUTPUT/FORWARD.
 
-SEEN_FILE="/home/jetson/Documents/.Network/.seen_devices.json"
+SEEN_FILE="/usr/local/yb/.Network/.seen_devices.json"
 IN_CHAIN="DEV_MON_IN"
 OUT_CHAIN="DEV_MON_OUT"
 FWD_CHAIN="DEV_MON_FWD"
@@ -18,7 +18,7 @@ mapfile -t IPS < <(python3 - <<'PY'
 import json
 import ipaddress
 
-path = "/home/jetson/Documents/.Network/.seen_devices.json"
+path = "/usr/local/yb/.Network/.seen_devices.json"
 with open(path, "r") as f:
     data = json.load(f)
 
@@ -73,4 +73,4 @@ for ip in "${IPS[@]}"; do
   sudo iptables -A "${FWD_CHAIN}" -d "${ip}" -j RETURN
 done
 
-echo "Done. View counters with: sudo /home/jetson/report_nft_device_monitor.sh"
+echo "Done. View counters with: sudo /usr/local/yb/.Network/report_nft_device_monitor.sh"

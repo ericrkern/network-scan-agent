@@ -6,7 +6,7 @@ OUT_CHAIN="DEV_MON_OUT"
 FWD_CHAIN="DEV_MON_FWD"
 
 if ! sudo iptables -L "${IN_CHAIN}" -n -v >/dev/null 2>&1; then
-  echo "Monitor chains not found. Run: /home/jetson/setup_nft_device_monitor.sh"
+  echo "Monitor chains not found. Run: /usr/local/yb/.Network/setup_nft_device_monitor.sh"
   exit 1
 fi
 

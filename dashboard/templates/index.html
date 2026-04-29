@@ -86,7 +86,7 @@
                     </div>
                     
                     <div class="flex items-center gap-x-2 text-xs font-mono text-zinc-500">
-                        <div class="px-3 py-1 bg-zinc-800 rounded-xl">irene@yahboom</div>
+                        <div id="active-users" class="px-3 py-1 bg-zinc-800 rounded-xl">USERS: none</div>
                         <div id="last-updated" class="px-3 py-1 bg-zinc-800 rounded-xl"></div>
                     </div>
                 </div>
@@ -107,6 +107,14 @@
                 <button id="tab-topology" onclick="setMainTab('topology')"
                     class="px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white">
                     Network Topology Map
+                </button>
+                <button id="tab-matrix" onclick="setMainTab('matrix')"
+                    class="px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white">
+                    Status Matrix
+                </button>
+                <button id="tab-audit" onclick="setMainTab('audit')"
+                    class="px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white">
+                    Audit
                 </button>
             </div>
 
@@ -229,11 +237,11 @@
                         <table class="w-full text-sm">
                             <thead>
                                 <tr class="text-zinc-400 border-b border-zinc-800">
-                                    <th class="text-left py-2 pr-4">Scan Time</th>
-                                    <th class="text-left py-2 pr-4">New</th>
-                                    <th class="text-left py-2 pr-4">Online</th>
-                                    <th class="text-left py-2 pr-4">Total Detected</th>
-                                    <th class="text-left py-2 pr-4">State Changes</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 pr-4">Scan Time</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 pr-4">New</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 pr-4">Online</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 pr-4">Total Detected</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 pr-4">State Changes</th>
                                 </tr>
                             </thead>
                             <tbody id="scan-history-body">
@@ -260,6 +268,55 @@
                             <div id="selected-scan-title" class="text-sm font-semibold text-emerald-300 mb-3"></div>
                             <div id="selected-scan-devices" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2"></div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Matrix Tab Content -->
+            <div id="matrix-tab-content" class="hidden">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <div class="text-sm font-semibold text-white">Device Status Matrix</div>
+                            <div class="text-xs text-zinc-500 font-mono">Rows: scan timestamps (latest first) • Columns: device IPs</div>
+                        </div>
+                    </div>
+                    <div id="scan-matrix-container" class="overflow-x-auto">
+                        <div class="text-xs text-zinc-500">Loading matrix...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audit Tab Content -->
+            <div id="audit-tab-content" class="hidden">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <div class="text-sm font-semibold text-white">Command Audit (`cmd_exec`)</div>
+                            <div class="text-xs text-zinc-500 font-mono">Recent Linux audit events from `ausearch -k cmd_exec`</div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select id="audit-user-filter" onchange="loadAuditData()"
+                                class="bg-zinc-950 border border-zinc-700 text-zinc-300 text-xs rounded-xl px-2 py-1">
+                                <option value="">All users</option>
+                            </select>
+                            <div id="audit-message" class="text-xs text-zinc-500 font-mono"></div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto rounded-2xl border border-zinc-800">
+                        <table class="w-full text-xs">
+                            <thead>
+                                <tr class="text-zinc-400 border-b border-zinc-800">
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Timestamp</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">User</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Executable</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Command</th>
+                                </tr>
+                            </thead>
+                            <tbody id="audit-table-body">
+                                <tr><td colspan="4" class="px-3 py-3 text-zinc-500">Loading audit data...</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -605,36 +662,195 @@
             const dashboardBtn = document.getElementById('tab-dashboard');
             const scansBtn = document.getElementById('tab-scans');
             const topologyBtn = document.getElementById('tab-topology');
+            const matrixBtn = document.getElementById('tab-matrix');
+            const auditBtn = document.getElementById('tab-audit');
             const dashboard = document.getElementById('dashboard-tab-content');
             const scans = document.getElementById('scans-tab-content');
             const topology = document.getElementById('topology-tab-content');
+            const matrix = document.getElementById('matrix-tab-content');
+            const audit = document.getElementById('audit-tab-content');
 
             if (tab === 'topology') {
                 dashboard.classList.add('hidden');
                 scans.classList.add('hidden');
+                matrix.classList.add('hidden');
+                audit.classList.add('hidden');
                 topology.classList.remove('hidden');
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
+            } else if (tab === 'matrix') {
+                dashboard.classList.add('hidden');
+                scans.classList.add('hidden');
+                topology.classList.add('hidden');
+                audit.classList.add('hidden');
+                matrix.classList.remove('hidden');
+                dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
+            } else if (tab === 'audit') {
+                dashboard.classList.add('hidden');
+                scans.classList.add('hidden');
+                topology.classList.add('hidden');
+                matrix.classList.add('hidden');
+                audit.classList.remove('hidden');
+                dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
             } else if (tab === 'scans') {
                 dashboard.classList.add('hidden');
                 topology.classList.add('hidden');
+                matrix.classList.add('hidden');
+                audit.classList.add('hidden');
                 scans.classList.remove('hidden');
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
             } else {
                 scans.classList.add('hidden');
                 topology.classList.add('hidden');
+                matrix.classList.add('hidden');
+                audit.classList.add('hidden');
                 dashboard.classList.remove('hidden');
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
             }
         }
 
+        async function loadAuditData() {
+            const body = document.getElementById('audit-table-body');
+            const msg = document.getElementById('audit-message');
+            const userFilterEl = document.getElementById('audit-user-filter');
+            try {
+                const userFilter = userFilterEl ? userFilterEl.value : '';
+                const response = await fetch(`/api/audit?since=today&user=${encodeURIComponent(userFilter)}`);
+                const data = await response.json();
+                msg.textContent = data.message || '';
+                const users = Array.isArray(data.users) ? data.users : [];
+                if (userFilterEl) {
+                    const selected = userFilterEl.value;
+                    userFilterEl.innerHTML = `<option value="">All users</option>` +
+                        users.map((u) => `<option value="${u}">${u}</option>`).join('');
+                    userFilterEl.value = users.includes(selected) ? selected : '';
+                }
+                if (!data.ok) {
+                    body.innerHTML = `<tr><td colspan="4" class="px-3 py-3 text-amber-300">${data.message || 'Audit data unavailable.'}</td></tr>`;
+                    return;
+                }
+                const events = Array.isArray(data.events) ? data.events : [];
+                if (!events.length) {
+                    body.innerHTML = `<tr><td colspan="4" class="px-3 py-3 text-zinc-500">No recent audit events.</td></tr>`;
+                    return;
+                }
+                body.innerHTML = events.map((e) => `
+                    <tr class="border-b border-zinc-800/70">
+                        <td class="px-3 py-2 text-zinc-300">${e.timestamp || '—'}</td>
+                        <td class="px-3 py-2 text-zinc-300">${e.user || '—'}</td>
+                        <td class="px-3 py-2 text-zinc-400 font-mono">${e.exe || '—'}</td>
+                        <td class="px-3 py-2 text-yellow-300 font-mono break-all">${e.command || '—'}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                msg.textContent = 'Failed to load audit data';
+                body.innerHTML = `<tr><td colspan="4" class="px-3 py-3 text-red-300">Error loading audit data.</td></tr>`;
+            }
+        }
+
+        function renderScanMatrix(matrix) {
+            const container = document.getElementById('scan-matrix-container');
+            const devices = (matrix && Array.isArray(matrix.devices)) ? matrix.devices : [];
+            const deviceMeta = (matrix && matrix.device_meta) ? matrix.device_meta : {};
+            const rows = (matrix && Array.isArray(matrix.rows)) ? matrix.rows : [];
+            function formatScanTimestamp(ts) {
+                const d = new Date((ts || '').replace(' ', 'T'));
+                if (Number.isNaN(d.getTime())) return ts;
+                return d.toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+            }
+
+            if (devices.length === 0 || rows.length === 0) {
+                container.innerHTML = '<div class="text-xs text-zinc-500">No matrix data available yet.</div>';
+                return;
+            }
+
+            const head = `
+                <tr class="text-zinc-400 border-b border-zinc-800">
+                    <th class="sticky top-0 left-0 z-30 bg-zinc-900 text-left py-2 px-3 font-medium text-xs">Scan Timestamp</th>
+                    ${devices.map((ip) => {
+                        const meta = deviceMeta[ip] || {};
+                        const hostname = meta.hostname || ip;
+                        const label = meta.label || '';
+                        return `
+                            <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3 font-medium min-w-[180px]">
+                                <div class="text-xs text-white whitespace-normal break-words leading-snug">${hostname}</div>
+                                ${label ? `<div class="text-[10px] text-sky-300 whitespace-normal break-words leading-snug mt-0.5">${label}</div>` : ''}
+                                <div class="text-[10px] font-mono text-yellow-300 mt-1 break-all">${ip}</div>
+                            </th>
+                        `;
+                    }).join('')}
+                </tr>
+            `;
+
+            function cellBadge(state, transition) {
+                if (state === 'Online') {
+                    if (transition === 'online') return '<span class="inline-flex px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-200 border border-emerald-400/40">Online ↑</span>';
+                    return '<span class="inline-flex px-2 py-1 rounded-lg bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">Online</span>';
+                }
+                if (state === 'Offline') {
+                    if (transition === 'offline') return '<span class="inline-flex px-2 py-1 rounded-lg bg-red-500/20 text-red-200 border border-red-400/40">Offline ↓</span>';
+                    return '<span class="inline-flex px-2 py-1 rounded-lg bg-red-500/10 text-red-300 border border-red-500/30">Offline</span>';
+                }
+                return '<span class="inline-flex px-2 py-1 rounded-lg bg-zinc-700/40 text-zinc-400 border border-zinc-600/50">—</span>';
+            }
+
+            const body = rows.map((row) => `
+                <tr class="border-b border-zinc-800/70 hover:bg-zinc-800/20">
+                    <td class="sticky left-0 z-10 bg-zinc-900 px-3 py-2 font-mono text-xs text-zinc-300">${formatScanTimestamp(row.scan_time)}</td>
+                    ${devices.map((ip) => `<td class="px-3 py-2 text-xs">${cellBadge((row.cells || {})[ip], (row.transitions || {})[ip])}</td>`).join('')}
+                </tr>
+            `).join('');
+
+            container.innerHTML = `
+                <table class="w-full text-sm">
+                    <thead>${head}</thead>
+                    <tbody>${body}</tbody>
+                </table>
+            `;
+        }
+
         function renderScanHistory(rows) {
             const body = document.getElementById('scan-history-body');
+            function formatScanTimestamp(ts) {
+                const d = new Date((ts || '').replace(' ', 'T'));
+                if (Number.isNaN(d.getTime())) return ts;
+                return d.toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+            }
             if (!rows || rows.length === 0) {
                 body.innerHTML = `
                     <tr>
@@ -680,7 +896,7 @@
 
             body.innerHTML = rows.map(r => `
                 <tr class="border-b border-zinc-800/60 hover:bg-zinc-800/30 cursor-pointer" onclick="loadScanOnlineDevices('${r.scan_time}')">
-                    <td class="py-2 pr-4 font-mono text-zinc-300">${r.scan_time}</td>
+                    <td class="py-2 pr-4 font-mono text-zinc-300">${formatScanTimestamp(r.scan_time)}</td>
                     <td class="py-2 pr-4 text-zinc-300">${r.new_devices}</td>
                     <td class="py-2 pr-4 text-emerald-300">${r.online}</td>
                     <td class="py-2 pr-4 text-sky-300">${r.total_known}</td>
@@ -792,6 +1008,22 @@
                 
                 allDevices = data.devices;
                 document.getElementById('last-updated').textContent = `UPDATED ${data.last_updated.split(' ')[1]}`;
+                const users = Array.isArray(data.active_users) ? data.active_users : [];
+                const activeUsersText = users.length ? users.map((u) => {
+                    const sessions = Array.isArray(u.sessions) ? u.sessions : [];
+                    if (!sessions.length) return u.username;
+                    const sessionSummaries = sessions.map((s) => {
+                        if (s.type === 'local') {
+                            return `local ${s.terminal || ''}`.trim();
+                        }
+                        if (s.type === 'ssh') {
+                            return `ssh ${s.host || s.terminal || ''}`.trim();
+                        }
+                        return `${s.type || 'other'} ${s.terminal || ''}`.trim();
+                    });
+                    return `${u.username} (${sessionSummaries.join('; ')})`;
+                }).join(', ') : 'none';
+                document.getElementById('active-users').textContent = `USERS: ${activeUsersText}`;
                 document.getElementById('public-ip').textContent = data.public_ip || 'Unavailable';
                 const connectivityEl = document.getElementById('connectivity-badge');
                 const isOnline = Boolean(data.connectivity && data.connectivity.online);
@@ -801,6 +1033,8 @@
                 renderDevices(allDevices);
                 renderTopology(allDevices);
                 renderScanHistory(data.scan_history || []);
+                renderScanMatrix(data.scan_matrix || { devices: [], rows: [] });
+                loadAuditData();
             } catch (e) {
                 console.error("Failed to load devices", e);
             }

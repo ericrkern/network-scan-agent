@@ -81,9 +81,9 @@ This table tracks when devices were first seen (came online), their last known a
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
 <<<<<<< HEAD
-*Last updated: 2026-04-29 08:59:08*
+*Last updated: 2026-04-29 10:33:21*
 =======
-*Last updated: 2026-04-29 08:59:08*
+*Last updated: 2026-04-29 10:33:21*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -1640,6 +1640,8 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-29 10:33:21 | 0 | 15 | 50 |
+| 2026-04-29 09:15:08 | 0 | 15 | 50 |
 | 2026-04-29 08:59:08 | 0 | 15 | 50 |
 | 2026-04-29 08:44:16 | 0 | 15 | 50 |
 | 2026-04-29 08:27:08 | 0 | 14 | 50 |
@@ -2306,9 +2308,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 
 <<<<<<< HEAD
-*Last updated: 2026-04-29 08:59:08*
+*Last updated: 2026-04-29 10:33:21*
 =======
-*Last updated: 2026-04-29 08:59:08*
+*Last updated: 2026-04-29 10:33:21*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---

@@ -6,6 +6,8 @@ Built for the Jetson Network Scanner
 
 import json
 import os
+import shlex
+import re
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -17,11 +19,12 @@ from flask import Flask, render_template, jsonify, request, send_from_directory
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
-DEVICES_FILE = "/home/jetson/Documents/Network/devices.md"
-CACHE_FILE = "/home/jetson/Documents/Network/.seen_devices.json"
-SCAN_SNAPSHOTS_FILE = "/home/jetson/Documents/Network/.scan_snapshots.json"
-SCAN_SCRIPT = "/home/jetson/Documents/Network/network_scan_agent.py"
-LAN_LABELS_FILE = os.environ.get("LAN_LABELS_FILE", "/home/jetson/.config/lan-labels")
+BASE_DIR = Path(__file__).resolve().parent.parent
+DEVICES_FILE = str(BASE_DIR / "devices.md")
+CACHE_FILE = str(BASE_DIR / ".seen_devices.json")
+SCAN_SNAPSHOTS_FILE = str(BASE_DIR / ".scan_snapshots.json")
+SCAN_SCRIPT = str(BASE_DIR / "network_scan_agent.py")
+LAN_LABELS_FILE = os.environ.get("LAN_LABELS_FILE", "/home/yb/.config/lan-labels")
 KNOWN_HOSTNAME_OVERRIDES = {
     "192.168.0.98": "Irene's Watch",
     "192.168.50.3": "Irene's Watch",
@@ -788,6 +791,93 @@ def enrich_scan_history_with_state_changes(scan_history_rows):
     return enriched
 
 
+def build_scan_status_matrix(scan_history_rows):
+    """
+    Build a scan/device matrix where each row is a scan time and each column is a device.
+    Status is carried forward until a change is detected at a later scan.
+    """
+    snapshots_by_time = load_scan_snapshots()
+    if not scan_history_rows:
+        # Fallback to snapshot timeline when markdown scan-history rows are unavailable.
+        fallback_rows = [
+            {"scan_time": ts}
+            for ts in sorted(snapshots_by_time.keys(), reverse=True)
+        ]
+        scan_history_rows = fallback_rows
+    if not scan_history_rows:
+        return {"devices": [], "rows": []}
+
+    # scan_history_rows are newest->oldest; process oldest->newest for state propagation.
+    chronological_rows = list(reversed(scan_history_rows))
+    online_sets_by_scan = {}
+    device_ips = set()
+
+    for row in chronological_rows:
+        scan_time = row.get("scan_time", "")
+        snapshot = snapshots_by_time.get(scan_time)
+        if snapshot:
+            online_map = snapshot
+        else:
+            inferred = infer_online_devices_for_scan(scan_time)
+            online_map = {d["ip"]: d for d in inferred if d.get("ip")}
+
+        online_ips = set(online_map.keys())
+        online_sets_by_scan[scan_time] = online_ips
+        device_ips.update(online_ips)
+
+    # Include currently known devices as columns even if they never appeared online in recent rows.
+    current_devices = load_device_data()
+    for d in current_devices:
+        ip = d.get("ip")
+        if ip:
+            device_ips.add(ip)
+
+    ordered_devices = sorted(device_ips)
+    device_meta = {}
+    current_state = {ip: "Unknown" for ip in ordered_devices}
+    matrix_rows = []
+
+    for d in current_devices:
+        ip = d.get("ip")
+        if not ip:
+            continue
+        device_meta[ip] = {
+            "hostname": d.get("hostname", ip),
+            "label": d.get("label", ""),
+        }
+
+    for row in chronological_rows:
+        scan_time = row.get("scan_time", "")
+        online_ips = online_sets_by_scan.get(scan_time, set())
+        cell_map = {}
+        transition_map = {}
+
+        for ip in ordered_devices:
+            next_state = "Online" if ip in online_ips else "Offline"
+            prev_state = current_state.get(ip, "Unknown")
+            transition = "none"
+            if prev_state != "Unknown" and next_state != prev_state:
+                transition = "online" if next_state == "Online" else "offline"
+
+            current_state[ip] = next_state
+            cell_map[ip] = next_state
+            transition_map[ip] = transition
+
+        matrix_rows.append({
+            "scan_time": scan_time,
+            "cells": cell_map,
+            "transitions": transition_map,
+        })
+
+    # Return newest scan at top.
+    matrix_rows.reverse()
+    return {
+        "devices": ordered_devices,
+        "device_meta": device_meta,
+        "rows": matrix_rows,
+    }
+
+
 def load_device_data():
     """Load and enrich device data from cache + rich markdown details"""
     devices = []
@@ -905,8 +995,6 @@ def load_device_data():
         if not hostname or hostname == d.get("ip", "") or hostname.startswith("192.168.") or hostname.startswith("100.") or hostname.startswith("172."):
             return 1  # no-name devices at bottom
         return 0  # named devices first
-
-    devices = collapse_duplicate_devices(devices)
 
     devices.sort(
         key=lambda x: (
@@ -1072,6 +1160,151 @@ def get_public_ip():
     return "Unavailable"
 
 
+def get_active_users():
+    """Return logged-in users with session detail (local vs ssh)."""
+    users = {}
+    try:
+        result = subprocess.run(
+            ["who"],
+            capture_output=True,
+            text=True,
+            timeout=2,
+        )
+        for line in (result.stdout or "").splitlines():
+            parts = line.split()
+            if len(parts) < 2:
+                continue
+            username = parts[0]
+            terminal = parts[1]
+            host = parts[4].strip("()") if len(parts) >= 5 else ""
+            if terminal.startswith("pts/"):
+                session_type = "ssh"
+            elif terminal == ":0" or terminal.startswith("tty"):
+                session_type = "local"
+            else:
+                session_type = "other"
+
+            entry = users.setdefault(username, {"username": username, "sessions": []})
+            entry["sessions"].append({
+                "terminal": terminal,
+                "host": host,
+                "type": session_type,
+            })
+    except Exception:
+        pass
+    return sorted(users.values(), key=lambda u: u["username"])
+
+
+def get_audit_activity(limit: int = 300, since: str = "today", user_filter: str = ""):
+    """
+    Return recent cmd_exec audit events.
+    Uses ausearch output when readable; otherwise returns a permission hint.
+    """
+    helper_cmd = os.environ.get(
+        "AUDIT_HELPER_CMD",
+        f"sudo -n {BASE_DIR / 'dashboard' / 'bin' / 'read_cmd_exec_audit.sh'} {since}",
+    )
+    cmd = shlex.split(helper_cmd)
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=6,
+        )
+    except Exception as e:
+        return {
+            "ok": False,
+            "message": f"Failed to execute ausearch: {e}",
+            "events": [],
+        }
+
+    stdout = result.stdout or ""
+    stderr = result.stderr or ""
+    combined_err = (stderr or "").strip()
+    if result.returncode != 0 and not stdout.strip():
+        if "Permission denied" in combined_err:
+            return {
+                "ok": False,
+                "message": "Audit helper is not authorized yet. Add a sudoers rule for the dashboard user to run the audit helper without a password.",
+                "events": [],
+            }
+        if "password is required" in combined_err or "a password is required" in combined_err:
+            return {
+                "ok": False,
+                "message": "Audit helper needs NOPASSWD sudo authorization. Add a sudoers rule to allow this helper command.",
+                "events": [],
+            }
+        return {
+            "ok": False,
+            "message": combined_err or "No audit data available.",
+            "events": [],
+        }
+
+    events = []
+    users_seen = set()
+    current = {}
+    msg_time_re = re.compile(r"msg=audit\(([^)]+)\)")
+    for raw in stdout.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        if line.startswith("----"):
+            if current.get("timestamp") or current.get("user") or current.get("command"):
+                events.append(current)
+            current = {}
+            continue
+        if line.startswith("time->"):
+            current["timestamp"] = line.replace("time->", "").strip()
+            continue
+        if "msg=audit(" in line and "timestamp" not in current:
+            m = msg_time_re.search(line)
+            if m:
+                current["timestamp"] = m.group(1)
+        if line.startswith("type=PROCTITLE"):
+            # Extract command payload after proctitle=
+            marker = "proctitle="
+            idx = line.find(marker)
+            if idx != -1:
+                current["command"] = line[idx + len(marker):].strip()
+            continue
+        if line.startswith("type=SYSCALL"):
+            # Capture auid and exe when present.
+            for token in line.split():
+                if token.startswith("auid=") and "user" not in current:
+                    current["auid"] = token.split("=", 1)[1]
+                elif token.startswith("uid=") and "uid" not in current:
+                    current["uid"] = token.split("=", 1)[1]
+                elif token.startswith("exe=") and "exe" not in current:
+                    current["exe"] = token.split("=", 1)[1].strip('"')
+            continue
+
+    if current.get("timestamp") or current.get("user") or current.get("command"):
+        events.append(current)
+
+    normalized = []
+    for e in events:
+        actor = e.get("auid")
+        if actor in (None, "", "unset"):
+            actor = e.get("uid", "unknown")
+        e["user"] = actor
+        if actor not in (None, "", "unset"):
+            users_seen.add(actor)
+        normalized.append(e)
+
+    if user_filter:
+        normalized = [e for e in normalized if str(e.get("user", "")).lower() == user_filter.lower()]
+
+    normalized = [e for e in normalized if e.get("timestamp") or e.get("command")]
+    normalized = list(reversed(normalized))[:max(1, limit)]
+    return {
+        "ok": True,
+        "message": f"Showing {len(normalized)} cmd_exec events since {since}.",
+        "users": sorted(users_seen),
+        "events": normalized,
+    }
+
+
 @app.route('/')
 def index():
     """Main dashboard page"""
@@ -1092,12 +1325,16 @@ def api_devices():
     """JSON API endpoint for live updates"""
     devices = load_device_data()
     scan_history = enrich_scan_history_with_state_changes(load_scan_history())
+    scan_matrix = build_scan_status_matrix(scan_history)
     connectivity = check_online_status()
     watch_findings = build_watch_correlation_findings()
+    active_users = get_active_users()
     return jsonify({
         "devices": devices,
         "scan_history": scan_history,
+        "scan_matrix": scan_matrix,
         "watch_findings": watch_findings,
+        "active_users": active_users,
         "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "total": len(devices),
         "online": len([d for d in devices if is_active_status(d.get('status', ''))]),
@@ -1122,7 +1359,7 @@ def api_device_detail(ip):
     # Load deep scan results
     deep_scan_data = {}
     try:
-        deep_file = "/home/jetson/Documents/Network/deep_scan_results.json"
+        deep_file = str(BASE_DIR / "deep_scan_results.json")
         if os.path.exists(deep_file):
             with open(deep_file, 'r') as f:
                 deep_results = json.load(f)
@@ -1207,6 +1444,14 @@ def api_device_detail(ip):
     })
 
 
+@app.route('/api/audit')
+def api_audit():
+    """Return recent Linux audit cmd_exec activity."""
+    since = request.args.get("since", "today")
+    user_filter = request.args.get("user", "").strip()
+    return jsonify(get_audit_activity(since=since, user_filter=user_filter))
+
+
 @app.route('/api/scan/<path:scan_time>/online')
 def api_scan_online_devices(scan_time):
     """Return inferred online devices for a selected scan timestamp."""
@@ -1226,7 +1471,7 @@ def trigger_scan():
             ['python3', SCAN_SCRIPT], 
             capture_output=True, 
             text=True, 
-            cwd="/home/jetson/Documents/Network",
+            cwd=str(BASE_DIR),
             timeout=60
         )
         success = result.returncode == 0

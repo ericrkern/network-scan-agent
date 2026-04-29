@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_DIR="/home/jetson/Documents/.Network"
-LOG_FILE="/home/jetson/Documents/.Network/deep_scan_cron.log"
+REPO_DIR="/usr/local/yb/.Network"
+LOG_FILE="/usr/local/yb/.Network/deep_scan_cron.log"
 
 cd "$REPO_DIR"
 

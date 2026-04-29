@@ -15,16 +15,17 @@ import concurrent.futures
 import importlib.util
 
 # Configuration
-DEVICES_FILE = "/home/jetson/Documents/Network/devices.md"
-SEEN_DEVICES_CACHE = "/home/jetson/Documents/Network/.seen_devices.json"
-SCAN_SNAPSHOTS_FILE = "/home/jetson/Documents/Network/.scan_snapshots.json"
-IPHONE_IDENTITY_LOG_FILE = "/home/jetson/Documents/Network/.iphone_identity_checks.json"
+BASE_DIR = Path(__file__).resolve().parent
+DEVICES_FILE = str(BASE_DIR / "devices.md")
+SEEN_DEVICES_CACHE = str(BASE_DIR / ".seen_devices.json")
+SCAN_SNAPSHOTS_FILE = str(BASE_DIR / ".scan_snapshots.json")
+IPHONE_IDENTITY_LOG_FILE = str(BASE_DIR / ".iphone_identity_checks.json")
 NETWORKS = ["192.168.0.0/24", "192.168.50.0/24", "192.168.100.0/24"]
 ADJACENT_SUBNET_PREFIX = "192.168.50."
 COMMON_PORTS = [22, 80, 443, 445, 631, 8080, 5900, 3000, 5000]
 SCAN_TIMEOUT = 2
-DEEP_SCAN_SCRIPT = "/home/jetson/Documents/Network/deep_scan.py"
-DEEP_SCAN_RESULTS_FILE = "/home/jetson/Documents/Network/deep_scan_results.json"
+DEEP_SCAN_SCRIPT = str(BASE_DIR / "deep_scan.py")
+DEEP_SCAN_RESULTS_FILE = str(BASE_DIR / "deep_scan_results.json")
 SPECIAL_TRACKED_DEVICES = {
     "192.168.50.3": {
         "hostname": "Watch.MG8702",
