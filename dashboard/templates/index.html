@@ -120,6 +120,10 @@
                     class="px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white">
                     Nearby WiFi
                 </button>
+                <button id="tab-trace" onclick="setMainTab('trace')"
+                    class="px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white">
+                    Network Trace
+                </button>
             </div>
 
             <div id="dashboard-tab-content">
@@ -360,6 +364,59 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Network Trace Tab Content -->
+            <div id="trace-tab-content" class="hidden">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 mb-8">
+                    <div class="flex items-center justify-between mb-4 gap-4">
+                        <div>
+                            <div class="text-sm font-semibold text-white">Ingress / Egress Network Trace</div>
+                            <div class="text-xs text-zinc-500 font-mono">Top peers by bytes/packets from packet capture summary</div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input id="trace-minutes" type="number" min="1" max="240" value="15"
+                                class="w-20 bg-zinc-950 border border-zinc-700 text-zinc-300 text-xs rounded-xl px-2 py-1">
+                            <button onclick="traceAction('start')"
+                                class="px-3 py-1.5 rounded-xl text-xs font-medium bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-700/40">Start</button>
+                            <button onclick="traceAction('stop')"
+                                class="px-3 py-1.5 rounded-xl text-xs font-medium bg-red-600/20 hover:bg-red-600/30 text-red-300 border border-red-700/40">Stop</button>
+                            <button onclick="loadTraceData()"
+                                class="px-3 py-1.5 rounded-xl text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700">Refresh</button>
+                        </div>
+                    </div>
+                    <div class="mb-4 text-xs font-mono text-zinc-500" id="trace-message">Open the Network Trace tab to load status.</div>
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                        <div class="overflow-x-auto rounded-2xl border border-zinc-800">
+                            <table class="w-full text-xs">
+                                <thead>
+                                    <tr class="text-zinc-400 border-b border-zinc-800">
+                                        <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Inbound Peer</th>
+                                        <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Bytes</th>
+                                        <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Packets</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="trace-inbound-body">
+                                    <tr><td colspan="3" class="px-3 py-3 text-zinc-500">No trace data loaded.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="overflow-x-auto rounded-2xl border border-zinc-800">
+                            <table class="w-full text-xs">
+                                <thead>
+                                    <tr class="text-zinc-400 border-b border-zinc-800">
+                                        <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Outbound Peer</th>
+                                        <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Bytes</th>
+                                        <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Packets</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="trace-outbound-body">
+                                    <tr><td colspan="3" class="px-3 py-3 text-zinc-500">No trace data loaded.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Footer -->
@@ -486,6 +543,8 @@
         let allDevices = [];
         let currentFilter = 'all';
         let currentMainTab = 'dashboard';
+        let traceAutoRefresh = null;
+        let traceRequestInFlight = false;
         
         function tailwindScript() {
             tailwind.config = {
@@ -705,15 +764,21 @@
             const matrixBtn = document.getElementById('tab-matrix');
             const auditBtn = document.getElementById('tab-audit');
             const wifiBtn = document.getElementById('tab-wifi');
+            const traceBtn = document.getElementById('tab-trace');
             const dashboard = document.getElementById('dashboard-tab-content');
             const scans = document.getElementById('scans-tab-content');
             const topology = document.getElementById('topology-tab-content');
             const matrix = document.getElementById('matrix-tab-content');
             const audit = document.getElementById('audit-tab-content');
             const wifi = document.getElementById('wifi-tab-content');
-            if (!dashboardBtn || !scansBtn || !topologyBtn || !matrixBtn || !auditBtn || !wifiBtn ||
-                !dashboard || !scans || !topology || !matrix || !audit || !wifi) {
+            const trace = document.getElementById('trace-tab-content');
+            if (!dashboardBtn || !scansBtn || !topologyBtn || !matrixBtn || !auditBtn || !wifiBtn || !traceBtn ||
+                !dashboard || !scans || !topology || !matrix || !audit || !wifi || !trace) {
                 return;
+            }
+            if (traceAutoRefresh) {
+                clearInterval(traceAutoRefresh);
+                traceAutoRefresh = null;
             }
 
             if (tab === 'topology') {
@@ -722,12 +787,14 @@
                 matrix.classList.add('hidden');
                 audit.classList.add('hidden');
                 wifi.classList.add('hidden');
+                trace.classList.add('hidden');
                 topology.classList.remove('hidden');
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                traceBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
             } else if (tab === 'matrix') {
                 dashboard.classList.add('hidden');
@@ -735,12 +802,14 @@
                 topology.classList.add('hidden');
                 audit.classList.add('hidden');
                 wifi.classList.add('hidden');
+                trace.classList.add('hidden');
                 matrix.classList.remove('hidden');
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                traceBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
             } else if (tab === 'audit') {
                 dashboard.classList.add('hidden');
@@ -748,12 +817,14 @@
                 topology.classList.add('hidden');
                 matrix.classList.add('hidden');
                 wifi.classList.add('hidden');
+                trace.classList.add('hidden');
                 audit.classList.remove('hidden');
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                traceBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
             } else if (tab === 'wifi') {
                 dashboard.classList.add('hidden');
@@ -761,26 +832,49 @@
                 topology.classList.add('hidden');
                 matrix.classList.add('hidden');
                 audit.classList.add('hidden');
+                trace.classList.add('hidden');
                 wifi.classList.remove('hidden');
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                traceBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
                 loadWifiData();
+            } else if (tab === 'trace') {
+                dashboard.classList.add('hidden');
+                scans.classList.add('hidden');
+                topology.classList.add('hidden');
+                matrix.classList.add('hidden');
+                audit.classList.add('hidden');
+                wifi.classList.add('hidden');
+                trace.classList.remove('hidden');
+                dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                traceBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
+                loadTraceData();
+                traceAutoRefresh = setInterval(() => {
+                    if (currentMainTab === 'trace' && !isScanning) loadTraceData();
+                }, 30000);
             } else if (tab === 'scans') {
                 dashboard.classList.add('hidden');
                 topology.classList.add('hidden');
                 matrix.classList.add('hidden');
                 audit.classList.add('hidden');
                 wifi.classList.add('hidden');
+                trace.classList.add('hidden');
                 scans.classList.remove('hidden');
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                traceBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
             } else {
                 scans.classList.add('hidden');
@@ -788,13 +882,78 @@
                 matrix.classList.add('hidden');
                 audit.classList.add('hidden');
                 wifi.classList.add('hidden');
+                trace.classList.add('hidden');
                 dashboard.classList.remove('hidden');
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                traceBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
+            }
+        }
+
+        function getTraceMinutes() {
+            const el = document.getElementById('trace-minutes');
+            const raw = el ? Number(el.value) : 15;
+            if (!Number.isFinite(raw)) return 15;
+            return Math.max(1, Math.min(240, Math.floor(raw)));
+        }
+
+        function renderTraceRows(rows, targetId, emptyText) {
+            const body = document.getElementById(targetId);
+            if (!body) return;
+            if (!Array.isArray(rows) || rows.length === 0) {
+                body.innerHTML = `<tr><td colspan="3" class="px-3 py-3 text-zinc-500">${emptyText}</td></tr>`;
+                return;
+            }
+            body.innerHTML = rows.map((r) => `
+                <tr class="border-b border-zinc-800/70">
+                    <td class="px-3 py-2 text-zinc-200 font-mono break-all">${r.peer || '—'}</td>
+                    <td class="px-3 py-2 text-emerald-300 font-mono">${(r.bytes ?? 0).toLocaleString()}</td>
+                    <td class="px-3 py-2 text-sky-300 font-mono">${(r.packets ?? 0).toLocaleString()}</td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadTraceData() {
+            if (traceRequestInFlight) return;
+            traceRequestInFlight = true;
+            const minutes = getTraceMinutes();
+            const msg = document.getElementById('trace-message');
+            if (msg) msg.textContent = 'Loading trace summary...';
+            try {
+                const response = await fetch(`/api/trace?action=summary&minutes=${minutes}&_ts=${Date.now()}`, { cache: 'no-store' });
+                const data = await response.json();
+                if (msg) msg.textContent = data.message || `Trace summary for last ${minutes}m`;
+                if (!data.ok) {
+                    renderTraceRows([], 'trace-inbound-body', data.message || 'Trace unavailable.');
+                    renderTraceRows([], 'trace-outbound-body', data.message || 'Trace unavailable.');
+                    return;
+                }
+                renderTraceRows(data.inbound || [], 'trace-inbound-body', 'No inbound peers in selected window.');
+                renderTraceRows(data.outbound || [], 'trace-outbound-body', 'No outbound peers in selected window.');
+            } catch (err) {
+                if (msg) msg.textContent = 'Failed to load trace summary';
+                renderTraceRows([], 'trace-inbound-body', 'Error loading trace data.');
+                renderTraceRows([], 'trace-outbound-body', 'Error loading trace data.');
+            } finally {
+                traceRequestInFlight = false;
+            }
+        }
+
+        async function traceAction(action) {
+            const minutes = getTraceMinutes();
+            const msg = document.getElementById('trace-message');
+            if (msg) msg.textContent = `Running trace action: ${action}...`;
+            try {
+                const response = await fetch(`/api/trace?action=${encodeURIComponent(action)}&minutes=${minutes}&_ts=${Date.now()}`, { cache: 'no-store' });
+                const data = await response.json();
+                if (msg) msg.textContent = data.message || `Trace ${action} completed`;
+                await loadTraceData();
+            } catch (err) {
+                if (msg) msg.textContent = `Trace action failed: ${action}`;
             }
         }
 

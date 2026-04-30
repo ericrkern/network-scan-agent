@@ -1212,6 +1212,99 @@ def resolve_wifi_scan_cmd() -> str:
     return os.environ.get("WIFI_SCAN_CMD", default_cmd).strip()
 
 
+def resolve_trace_helper_cmd(action: str, minutes: int = 15) -> str:
+    """Resolve trace helper command from env or safe default."""
+    helper = BASE_DIR / "dashboard" / "bin" / "network_trace_control.sh"
+    default_cmd = f"sudo -n {helper} {action} {minutes}"
+    configured = os.environ.get("TRACE_HELPER_CMD", "").strip()
+    if not configured:
+        return default_cmd
+    cmd = configured
+    if "{action}" in cmd:
+        cmd = cmd.replace("{action}", action)
+    else:
+        cmd = f"{cmd} {action}"
+    if "{minutes}" in cmd:
+        cmd = cmd.replace("{minutes}", str(minutes))
+    else:
+        cmd = f"{cmd} {minutes}"
+    return cmd
+
+
+def get_network_trace(action: str = "summary", minutes: int = 15):
+    """Manage network trace capture and fetch ingress/egress summaries."""
+    action = (action or "summary").strip().lower()
+    if action not in {"start", "stop", "status", "summary"}:
+        return {
+            "ok": False,
+            "message": "Invalid trace action. Use start, stop, status, or summary.",
+        }
+
+    helper_cmd = resolve_trace_helper_cmd(action, minutes)
+    try:
+        result = subprocess.run(
+            shlex.split(helper_cmd),
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+    except Exception as e:
+        return {
+            "ok": False,
+            "message": f"Failed to execute trace helper: {e}",
+            "action": action,
+        }
+
+    stdout = (result.stdout or "").strip()
+    stderr = (result.stderr or "").strip()
+
+    if result.returncode != 0:
+        # If helper returned structured JSON on a non-zero code, surface it directly.
+        if stdout:
+            try:
+                payload = json.loads(stdout)
+                if isinstance(payload, dict):
+                    payload.setdefault("ok", False)
+                    payload.setdefault("action", action)
+                    return payload
+            except Exception:
+                pass
+        lowered = stderr.lower()
+        if "password is required" in lowered or "a password is required" in lowered:
+            return {
+                "ok": False,
+                "message": "Trace helper needs NOPASSWD sudo authorization.",
+                "action": action,
+            }
+        if "not allowed to execute" in lowered or "permission denied" in lowered:
+            return {
+                "ok": False,
+                "message": "Trace helper is not authorized yet. Install the network-trace sudoers rule.",
+                "action": action,
+            }
+        return {
+            "ok": False,
+            "message": stderr or "Trace helper failed.",
+            "action": action,
+        }
+
+    payload = None
+    if stdout:
+        try:
+            payload = json.loads(stdout)
+        except Exception:
+            payload = None
+    if isinstance(payload, dict):
+        payload.setdefault("ok", True)
+        payload.setdefault("action", action)
+        return payload
+    return {
+        "ok": True,
+        "action": action,
+        "message": stdout or "Trace helper completed.",
+    }
+
+
 def get_wifi_ssids(limit: int = 80):
     """Return nearby WiFi SSIDs using a helper command (usually sudo-wrapped)."""
     helper_cmd = resolve_wifi_scan_cmd()
@@ -1562,6 +1655,18 @@ def api_wifi_ssids():
         limit = 80
     limit = max(1, min(limit, 200))
     return jsonify(get_wifi_ssids(limit=limit))
+
+
+@app.route('/api/trace')
+def api_trace():
+    """Start/stop/status/summary for ingress/egress network tracing."""
+    action = request.args.get("action", "summary")
+    try:
+        minutes = int(request.args.get("minutes", "15"))
+    except Exception:
+        minutes = 15
+    minutes = max(1, min(minutes, 240))
+    return jsonify(get_network_trace(action=action, minutes=minutes))
 
 
 @app.route('/api/scan/<path:scan_time>/online')

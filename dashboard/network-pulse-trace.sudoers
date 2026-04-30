@@ -1,0 +1,6 @@
+# Allow dashboard user to control network trace capture helper without password.
+# Install:
+#   sudo install -m 440 network-pulse-trace.sudoers /etc/sudoers.d/network-pulse-trace
+#   sudo visudo -cf /etc/sudoers.d/network-pulse-trace
+yb ALL=(root) NOPASSWD: /usr/local/yb/.Network/dashboard/bin/network_trace_control.sh *
+
