@@ -1,0 +1,7 @@
+# Allow the dashboard service user to run only the WiFi scan helper as root.
+# Install (once):
+#   sudo install -m 440 network-pulse-wifi.sudoers /etc/sudoers.d/network-pulse-wifi
+#   sudo visudo -cf /etc/sudoers.d/network-pulse-wifi
+#
+# If your dashboard runs as a different user, replace "yb" below.
+yb ALL=(root) NOPASSWD: /usr/local/yb/.Network/dashboard/bin/scan_wifi_ssids.sh

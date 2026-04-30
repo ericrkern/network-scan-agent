@@ -116,6 +116,10 @@
                     class="px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white">
                     Audit
                 </button>
+                <button id="tab-wifi" onclick="setMainTab('wifi')"
+                    class="px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white">
+                    Nearby WiFi
+                </button>
             </div>
 
             <div id="dashboard-tab-content">
@@ -315,6 +319,42 @@
                             </thead>
                             <tbody id="audit-table-body">
                                 <tr><td colspan="4" class="px-3 py-3 text-zinc-500">Loading audit data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WiFi Tab Content -->
+            <div id="wifi-tab-content" class="hidden">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 mb-8">
+                    <div class="flex items-center justify-between mb-4 gap-4">
+                        <div>
+                            <div class="text-sm font-semibold text-white">Nearby WiFi SSIDs</div>
+                            <div class="text-xs text-zinc-500 font-mono">Live scan of adjacent wireless networks</div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button onclick="loadWifiData()"
+                                class="px-3 py-1.5 rounded-xl text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700">
+                                Refresh
+                            </button>
+                            <div id="wifi-message" class="text-xs text-zinc-500 font-mono"></div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto rounded-2xl border border-zinc-800">
+                        <table class="w-full text-xs">
+                            <thead>
+                                <tr class="text-zinc-400 border-b border-zinc-800">
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">SSID</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Signal (dBm)</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Channel</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Frequency (MHz)</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">Security</th>
+                                    <th class="sticky top-0 z-20 bg-zinc-900 text-left py-2 px-3">BSSID</th>
+                                </tr>
+                            </thead>
+                            <tbody id="wifi-table-body">
+                                <tr><td colspan="6" class="px-3 py-3 text-zinc-500">Open the Nearby WiFi tab to scan.</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -664,67 +704,131 @@
             const topologyBtn = document.getElementById('tab-topology');
             const matrixBtn = document.getElementById('tab-matrix');
             const auditBtn = document.getElementById('tab-audit');
+            const wifiBtn = document.getElementById('tab-wifi');
             const dashboard = document.getElementById('dashboard-tab-content');
             const scans = document.getElementById('scans-tab-content');
             const topology = document.getElementById('topology-tab-content');
             const matrix = document.getElementById('matrix-tab-content');
             const audit = document.getElementById('audit-tab-content');
+            const wifi = document.getElementById('wifi-tab-content');
+            if (!dashboardBtn || !scansBtn || !topologyBtn || !matrixBtn || !auditBtn || !wifiBtn ||
+                !dashboard || !scans || !topology || !matrix || !audit || !wifi) {
+                return;
+            }
 
             if (tab === 'topology') {
                 dashboard.classList.add('hidden');
                 scans.classList.add('hidden');
                 matrix.classList.add('hidden');
                 audit.classList.add('hidden');
+                wifi.classList.add('hidden');
                 topology.classList.remove('hidden');
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
             } else if (tab === 'matrix') {
                 dashboard.classList.add('hidden');
                 scans.classList.add('hidden');
                 topology.classList.add('hidden');
                 audit.classList.add('hidden');
+                wifi.classList.add('hidden');
                 matrix.classList.remove('hidden');
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
             } else if (tab === 'audit') {
                 dashboard.classList.add('hidden');
                 scans.classList.add('hidden');
                 topology.classList.add('hidden');
                 matrix.classList.add('hidden');
+                wifi.classList.add('hidden');
                 audit.classList.remove('hidden');
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
+            } else if (tab === 'wifi') {
+                dashboard.classList.add('hidden');
+                scans.classList.add('hidden');
+                topology.classList.add('hidden');
+                matrix.classList.add('hidden');
+                audit.classList.add('hidden');
+                wifi.classList.remove('hidden');
+                dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
+                loadWifiData();
             } else if (tab === 'scans') {
                 dashboard.classList.add('hidden');
                 topology.classList.add('hidden');
                 matrix.classList.add('hidden');
                 audit.classList.add('hidden');
+                wifi.classList.add('hidden');
                 scans.classList.remove('hidden');
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
             } else {
                 scans.classList.add('hidden');
                 topology.classList.add('hidden');
                 matrix.classList.add('hidden');
                 audit.classList.add('hidden');
+                wifi.classList.add('hidden');
                 dashboard.classList.remove('hidden');
                 topologyBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 matrixBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 auditBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
+                wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 dashboardBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
+            }
+        }
+
+        async function loadWifiData() {
+            const body = document.getElementById('wifi-table-body');
+            const msg = document.getElementById('wifi-message');
+            if (!body || !msg) return;
+            try {
+                msg.textContent = 'Scanning...';
+                const response = await fetch(`/api/wifi/ssids?limit=120&_ts=${Date.now()}`, { cache: 'no-store' });
+                const data = await response.json();
+                const networks = Array.isArray(data.networks) ? data.networks : [];
+                msg.textContent = `${data.message || ''}${data.ok ? ` (${networks.length})` : ''}`;
+                if (!data.ok) {
+                    body.innerHTML = `<tr><td colspan="6" class="px-3 py-3 text-amber-300">${data.message || 'WiFi scan unavailable.'}</td></tr>`;
+                    return;
+                }
+                if (!networks.length) {
+                    body.innerHTML = `<tr><td colspan="6" class="px-3 py-3 text-zinc-500">No nearby WiFi networks detected.</td></tr>`;
+                    return;
+                }
+                body.innerHTML = networks.map((n) => `
+                    <tr class="border-b border-zinc-800/70">
+                        <td class="px-3 py-2 text-zinc-200">${n.ssid || '(hidden)'}</td>
+                        <td class="px-3 py-2 text-emerald-300 font-mono">${n.signal_dbm || '—'}</td>
+                        <td class="px-3 py-2 text-zinc-300 font-mono">${n.channel || '—'}</td>
+                        <td class="px-3 py-2 text-zinc-300 font-mono">${n.frequency_mhz || '—'}</td>
+                        <td class="px-3 py-2 text-sky-300">${n.security || 'Open'}</td>
+                        <td class="px-3 py-2 text-yellow-300 font-mono break-all">${n.bssid || '—'}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                msg.textContent = 'Failed to load WiFi scan';
+                body.innerHTML = `<tr><td colspan="6" class="px-3 py-3 text-red-300">Error loading WiFi data.</td></tr>`;
             }
         }
 
@@ -1003,7 +1107,7 @@
         
         async function loadDevices() {
             try {
-                const response = await fetch('/api/devices');
+                const response = await fetch(`/api/devices?_ts=${Date.now()}`, { cache: 'no-store' });
                 const data = await response.json();
                 
                 allDevices = data.devices;
@@ -1434,6 +1538,8 @@
         window.onload = function() {
             tailwindScript();
             loadDevices();
+            // Run one WiFi scan on initial page load only.
+            loadWifiData();
             
             // Auto-refresh every 25 seconds
             setInterval(() => {

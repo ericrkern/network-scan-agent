@@ -1195,15 +1195,106 @@ def get_active_users():
     return sorted(users.values(), key=lambda u: u["username"])
 
 
+def resolve_audit_helper_cmd(since: str) -> str:
+    """Resolve audit helper command from env or safe default."""
+    default_cmd = f"{BASE_DIR / 'dashboard' / 'bin' / 'read_cmd_exec_audit.sh'} {since}"
+    configured = os.environ.get("AUDIT_HELPER_CMD", "").strip()
+    if not configured:
+        return default_cmd
+    if "{since}" in configured:
+        return configured.replace("{since}", since)
+    return f"{configured} {since}"
+
+
+def resolve_wifi_scan_cmd() -> str:
+    """Resolve WiFi scan command from env or safe default."""
+    default_cmd = f"sudo -n {BASE_DIR / 'dashboard' / 'bin' / 'scan_wifi_ssids.sh'}"
+    return os.environ.get("WIFI_SCAN_CMD", default_cmd).strip()
+
+
+def get_wifi_ssids(limit: int = 80):
+    """Return nearby WiFi SSIDs using a helper command (usually sudo-wrapped)."""
+    helper_cmd = resolve_wifi_scan_cmd()
+    timeout_s = 45
+    try:
+        timeout_s = int(os.environ.get("WIFI_SCAN_TIMEOUT_SEC", "45"))
+    except Exception:
+        timeout_s = 45
+    timeout_s = max(10, min(timeout_s, 120))
+
+    try:
+        result = subprocess.run(
+            shlex.split(helper_cmd),
+            capture_output=True,
+            text=True,
+            timeout=timeout_s,
+        )
+    except Exception as e:
+        return {
+            "ok": False,
+            "message": f"Failed to execute WiFi scan helper: {e}",
+            "networks": [],
+        }
+
+    stdout = (result.stdout or "").strip()
+    stderr = (result.stderr or "").strip()
+    if result.returncode != 0:
+        lowered = stderr.lower()
+        if "password is required" in lowered or "a password is required" in lowered:
+            return {
+                "ok": False,
+                "message": "WiFi scan helper needs NOPASSWD sudo authorization. Install the provided sudoers rule for scan_wifi_ssids.sh.",
+                "networks": [],
+            }
+        if "not allowed to execute" in lowered or "permission denied" in lowered:
+            return {
+                "ok": False,
+                "message": "WiFi scan helper is not authorized yet. Add a sudoers rule for the dashboard user.",
+                "networks": [],
+            }
+        return {
+            "ok": False,
+            "message": stderr or "WiFi scan failed.",
+            "networks": [],
+        }
+
+    try:
+        data = json.loads(stdout) if stdout else {}
+    except Exception:
+        return {
+            "ok": False,
+            "message": "WiFi scan helper returned invalid JSON output.",
+            "networks": [],
+        }
+
+    networks = data.get("networks", [])
+    if not isinstance(networks, list):
+        networks = []
+
+    def score(n):
+        raw = n.get("signal_dbm")
+        try:
+            return float(raw)
+        except Exception:
+            return -999.0
+
+    networks = sorted(networks, key=score, reverse=True)[: max(1, limit)]
+    interface = data.get("interface", "unknown")
+    return {
+        "ok": True,
+        "message": f"Showing {len(networks)} nearby WiFi networks on {interface}.",
+        "interface": interface,
+        "networks": networks,
+        "scanned_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    }
+
+
 def get_audit_activity(limit: int = 300, since: str = "today", user_filter: str = ""):
     """
     Return recent cmd_exec audit events.
     Uses ausearch output when readable; otherwise returns a permission hint.
     """
-    helper_cmd = os.environ.get(
-        "AUDIT_HELPER_CMD",
-        f"sudo -n {BASE_DIR / 'dashboard' / 'bin' / 'read_cmd_exec_audit.sh'} {since}",
-    )
+    helper_cmd = resolve_audit_helper_cmd(since)
     cmd = shlex.split(helper_cmd)
     try:
         result = subprocess.run(
@@ -1462,6 +1553,17 @@ def api_audit():
     return jsonify(get_audit_activity(since=since, user_filter=user_filter))
 
 
+@app.route('/api/wifi/ssids')
+def api_wifi_ssids():
+    """Return nearby WiFi SSIDs from a privileged helper command."""
+    try:
+        limit = int(request.args.get("limit", "80"))
+    except Exception:
+        limit = 80
+    limit = max(1, min(limit, 200))
+    return jsonify(get_wifi_ssids(limit=limit))
+
+
 @app.route('/api/scan/<path:scan_time>/online')
 def api_scan_online_devices(scan_time):
     """Return inferred online devices for a selected scan timestamp."""
@@ -1507,6 +1609,7 @@ if __name__ == '__main__':
     os.makedirs('templates', exist_ok=True)
     os.makedirs('static', exist_ok=True)
     print("Network Dashboard starting on http://0.0.0.0:5000")
+    print(f"Audit helper command (effective): {resolve_audit_helper_cmd('today')}")
     print("Accessible via:")
     print(" - Local: http://192.168.0.197:5000")
     print(" - Tailscale: http://100.70.174.39:5000")
