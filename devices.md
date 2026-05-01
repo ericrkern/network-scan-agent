@@ -81,9 +81,9 @@ This table tracks when devices were first seen (came online), their last known a
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
 <<<<<<< HEAD
-*Last updated: 2026-04-29 10:33:21*
+*Last updated: 2026-04-30 14:01:27*
 =======
-*Last updated: 2026-04-29 10:33:21*
+*Last updated: 2026-04-30 14:01:27*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -1640,6 +1640,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-04-30 14:01:27 | 0 | 13 | 50 |
+| 2026-04-30 13:52:50 | 0 | 14 | 50 |
+| 2026-04-30 10:57:20 | 0 | 13 | 50 |
 | 2026-04-29 10:33:21 | 0 | 15 | 50 |
 | 2026-04-29 09:15:08 | 0 | 15 | 50 |
 | 2026-04-29 08:59:08 | 0 | 15 | 50 |
@@ -2308,9 +2311,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 
 <<<<<<< HEAD
-*Last updated: 2026-04-29 10:33:21*
+*Last updated: 2026-04-30 14:01:27*
 =======
-*Last updated: 2026-04-29 10:33:21*
+*Last updated: 2026-04-30 14:01:27*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -2583,11 +2586,11 @@ This table shows only devices that changed state (came online or went offline) b
 
 ## ⚡ Online Detector Enrichment
 
-Updated: 2026-04-29 08:44:16
+Updated: 2026-04-30 13:52:50
 
 | IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
 |-----|----------|-----|--------|------------|---------------|----------|
-| 100.79.216.111 | erics-macbook-pro.tail2a3b45.ts.net | — | Online | 5000, 7000 | No known access | Unknown |
+| 100.71.191.72 | emergingtechs-mac-mini.tail2a3b45.ts.net | — | Online | 22, 5900, 47490, 49243 | SSH (`ssh user@100.71.191.72`), VNC | VNC/Remote Desktop |
 ## 📱 iPhone Identity Correlation
 
 Updated: 2026-04-26 13:03:28
