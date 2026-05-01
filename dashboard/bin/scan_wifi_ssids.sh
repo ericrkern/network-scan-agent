@@ -106,36 +106,94 @@ if ! command -v nmcli >/dev/null 2>&1; then
   exit 0
 fi
 
-nmcli -t -f BSSID,SSID,SIGNAL,CHAN,FREQ,SECURITY dev wifi list ifname "$iface" 2>/dev/null | python3 - "$iface" <<'PY'
+nmcli_tmp="$(mktemp)"
+nmcli -m multiline -f BSSID,SSID,SIGNAL,CHAN,FREQ,SECURITY dev wifi list ifname "$iface" >"$nmcli_tmp" 2>/dev/null || true
+python3 - "$iface" "$nmcli_tmp" <<'PY'
 import json
 import sys
 
 iface = sys.argv[1]
+nmcli_path = sys.argv[2]
 networks = []
+current = {}
 
-for raw in sys.stdin:
+with open(nmcli_path, "r", errors="ignore") as f:
+  lines = f.readlines()
+
+for raw in lines:
     line = raw.strip()
     if not line:
+        if current:
+            bssid = current.get("BSSID", "").strip()
+            if bssid:
+                ssid = current.get("SSID", "").strip() or "(hidden)"
+                signal_raw = current.get("SIGNAL", "").strip()
+                try:
+                    q = int(signal_raw)
+                    signal_dbm = str(int((q / 2) - 100))
+                except Exception:
+                    signal_dbm = "—"
+                networks.append({
+                    "bssid": bssid,
+                    "ssid": ssid,
+                    "signal_dbm": signal_dbm,
+                    "channel": (current.get("CHAN", "").strip() or "—"),
+                    "frequency_mhz": (current.get("FREQ", "").strip() or "—"),
+                    "security": (current.get("SECURITY", "").strip() or "Open"),
+                })
+            current = {}
         continue
-    parts = line.split(":", 5)
-    if len(parts) < 6:
+
+    if ":" not in line:
         continue
-    bssid, ssid, signal, chan, freq, security = parts
-    ssid = ssid if ssid else "(hidden)"
-    try:
-        # Rough conversion from quality percent to dBm.
-        q = int(signal)
-        signal_dbm = str(int((q / 2) - 100))
-    except Exception:
-        signal_dbm = "—"
-    networks.append({
-        "bssid": bssid,
-        "ssid": ssid,
-        "signal_dbm": signal_dbm,
-        "channel": chan if chan else "—",
-        "frequency_mhz": freq if freq else "—",
-        "security": security if security else "Open",
-    })
+
+    key, value = line.split(":", 1)
+    key = key.strip()
+    value = value.strip()
+
+    # nmcli multiline output does not include blank separators between networks.
+    # A new BSSID line indicates a new record, so flush the previous one first.
+    if key == "BSSID" and current.get("BSSID"):
+        bssid = current.get("BSSID", "").strip()
+        if bssid:
+            ssid = current.get("SSID", "").strip() or "(hidden)"
+            signal_raw = current.get("SIGNAL", "").strip()
+            try:
+                q = int(signal_raw)
+                signal_dbm = str(int((q / 2) - 100))
+            except Exception:
+                signal_dbm = "—"
+            networks.append({
+                "bssid": bssid,
+                "ssid": ssid,
+                "signal_dbm": signal_dbm,
+                "channel": (current.get("CHAN", "").strip() or "—"),
+                "frequency_mhz": (current.get("FREQ", "").strip() or "—"),
+                "security": (current.get("SECURITY", "").strip() or "Open"),
+            })
+        current = {}
+
+    current[key] = value
+
+# Flush last block if present.
+if current:
+    bssid = current.get("BSSID", "").strip()
+    if bssid:
+        ssid = current.get("SSID", "").strip() or "(hidden)"
+        signal_raw = current.get("SIGNAL", "").strip()
+        try:
+            q = int(signal_raw)
+            signal_dbm = str(int((q / 2) - 100))
+        except Exception:
+            signal_dbm = "—"
+        networks.append({
+            "bssid": bssid,
+            "ssid": ssid,
+            "signal_dbm": signal_dbm,
+            "channel": (current.get("CHAN", "").strip() or "—"),
+            "frequency_mhz": (current.get("FREQ", "").strip() or "—"),
+            "security": (current.get("SECURITY", "").strip() or "Open"),
+        })
 
 def score(n):
     try:
@@ -146,3 +204,4 @@ def score(n):
 networks.sort(key=score, reverse=True)
 print(json.dumps({"interface": iface, "networks": networks}))
 PY
+rm -f "$nmcli_tmp"

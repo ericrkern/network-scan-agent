@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Dashboard runtime / secrets-adjacent
+dashboard/.venv/
+dashboard/dashboard.out
+dashboard/__pycache__/
+
+# Local backups / noise (adjust if you want these tracked)
+reset-backups-*/

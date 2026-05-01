@@ -13,6 +13,8 @@ RestartSec=5
 Environment=PYTHONUNBUFFERED=1
 
 # Security
+# NoNewPrivileges=yes blocks sudo/setuid; the Audit tab runs read_cmd_exec_audit.sh via sudo -n.
+# Omit NoNewPrivileges or run the dashboard interactively if you need Audit.
 NoNewPrivileges=yes
 PrivateTmp=yes
 

@@ -62,7 +62,10 @@
                         <h1 class="logo-font text-4xl font-semibold tracking-tighter text-white">NETWORK PULSE</h1>
                         <p class="text-sm font-mono -mt-1">
                             <span id="connectivity-badge" class="text-emerald-400">ONLINE</span>
-                            <span class="text-zinc-500">• 192.168.0.197</span>
+                            <span class="text-zinc-500">• LOCAL</span>
+                            <span id="local-ip" class="text-sky-400">{{ local_ip }}</span>
+                            <span class="text-zinc-500">• TAILSCALE</span>
+                            <span id="tailscale-ip" class="text-emerald-300">{{ tailscale_ip }}</span>
                             <span class="text-zinc-500">• WAN</span>
                             <span id="public-ip" class="text-yellow-400">Loading...</span>
                         </p>
@@ -166,31 +169,6 @@
                 </div>
             </div>
 
-            <!-- Watch Correlation Findings -->
-            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 mb-8">
-                <div class="flex items-start justify-between gap-4 mb-4">
-                    <div>
-                        <div class="text-sm font-semibold text-white">Watch Correlation Findings</div>
-                        <div class="text-xs text-zinc-500 font-mono">Updated {{ watch_findings.updated_at }}</div>
-                    </div>
-                    <a href="{{ watch_findings.source_url }}" target="_blank" class="text-xs text-sky-300 hover:text-sky-200 transition-colors">
-                        Apple Source
-                    </a>
-                </div>
-                <div class="text-sm text-zinc-300 mb-4">{{ watch_findings.conclusion }}</div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-                    {% for w in watch_findings.watches %}
-                    <div class="rounded-2xl border border-zinc-800 bg-zinc-950 p-3">
-                        <div class="text-xs text-zinc-400 mb-1">{{ w.hostname }}</div>
-                        <div class="font-mono text-yellow-400 text-sm">{{ w.ip }}</div>
-                        <div class="text-xs text-zinc-400 mt-1">MAC: <span class="font-mono text-zinc-300">{{ w.mac }}</span></div>
-                        <div class="text-xs text-zinc-500 mt-1">Seen: {{ w.discovered }}</div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="text-xs text-zinc-400">{{ watch_findings.source_summary }}</div>
-            </div>
-
             <!-- Controls -->
             <div class="flex items-center justify-between mb-6">
                 <div class="flex items-center gap-x-3">
@@ -227,7 +205,7 @@
             <div id="topology-tab-content" class="hidden">
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 mb-6">
                     <div class="text-lg font-semibold text-white mb-1">Network Topology</div>
-                    <div class="text-sm text-zinc-400">Live logical map grouped by subnet. Click any device below to open details.</div>
+                    <div class="text-sm text-zinc-400">Live logical map of all detected devices. Click any device below to open details.</div>
                 </div>
                 <div id="topology-map" class="space-y-6">
                     <!-- Populated by JavaScript -->
@@ -600,44 +578,7 @@
         
         function renderDevices(devices) {
             const container = document.getElementById('devices-grid');
-
-            const groupOrder = [
-                'Local LAN (192.168.0.0/24)',
-                'Adjacent Subnet (192.168.50.0/24)',
-                'Adjacent Subnet (192.168.100.0/24)',
-                'Docker Network (172.17.0.0/16)',
-                'Other Networks',
-                'Tailscale Mesh VPN',
-                'External/Public Internet'
-            ];
-
-            const grouped = {};
-            for (const device of devices) {
-                const key = device.subnet_group || 'Other Networks';
-                if (!grouped[key]) grouped[key] = [];
-                grouped[key].push(device);
-            }
-
-            const sections = [];
-            for (const groupName of groupOrder) {
-                const groupDevices = grouped[groupName];
-                if (!groupDevices || groupDevices.length === 0) continue;
-
-                sections.push(`
-                    <div class="col-span-full mt-4 mb-2">
-                        <div class="flex items-center justify-between border-b border-zinc-800 pb-2">
-                            <div class="text-sm font-semibold text-sky-300 tracking-wide">${groupName}</div>
-                            <div class="text-[10px] font-mono text-zinc-500">${groupDevices.length} devices</div>
-                        </div>
-                    </div>
-                `);
-
-                for (const d of groupDevices) {
-                    sections.push(createDeviceCard(d));
-                }
-            }
-
-            container.innerHTML = sections.join('');
+            container.innerHTML = devices.map((d) => createDeviceCard(d)).join('');
             
             // Update stats
             const online = devices.filter(d => d.status === 'Online').length;
@@ -650,108 +591,46 @@
 
         function renderTopology(devices) {
             const topology = document.getElementById('topology-map');
-
-            const groups = {};
-            for (const d of devices) {
-                const g = d.subnet_group || 'Other Networks';
-                if (!groups[g]) groups[g] = [];
-                groups[g].push(d);
-            }
-
-            const palette = {
-                'Local LAN (192.168.0.0/24)': '#22c55e',
-                'Adjacent Subnet (192.168.50.0/24)': '#38bdf8',
-                'Adjacent Subnet (192.168.100.0/24)': '#60a5fa',
-                'Docker Network (172.17.0.0/16)': '#f59e0b',
-                'Other Networks': '#a78bfa',
-                'Tailscale Mesh VPN': '#14b8a6',
-                'External/Public Internet': '#f97316'
-            };
-
-            const orderedGroups = Object.keys(groups)
-                .filter((k) => groups[k] && groups[k].length > 0)
-                .sort((a, b) => a.localeCompare(b));
-
-            const centerX = 620;
-            const centerY = 360;
-            const radius = Math.max(190, Math.min(300, 70 + orderedGroups.length * 26));
             const gateway = devices.find(d => d.ip === '192.168.0.1');
             const gatewayName = gateway ? gateway.hostname : 'Network Core';
-
-            const nodeData = orderedGroups.map((key, idx) => {
-                const angle = -Math.PI / 2 + ((2 * Math.PI * idx) / Math.max(orderedGroups.length, 1));
-                const x = Math.round(centerX + radius * Math.cos(angle));
-                const y = Math.round(centerY + radius * Math.sin(angle));
-                const list = groups[key].slice().sort((a, b) => (a.hostname || '').localeCompare(b.hostname || ''));
-                const online = list.filter(d => d.status === 'Online').length;
-                return {
-                    key,
-                    x,
-                    y,
-                    color: palette[key] || '#94a3b8',
-                    list,
-                    online
-                };
+            const sortedDevices = [...devices].sort((a, b) => {
+                const aName = (a.hostname || a.ip || '').toLowerCase();
+                const bName = (b.hostname || b.ip || '').toLowerCase();
+                return aName.localeCompare(bName);
             });
-
-            const subnetNodesSvg = nodeData.map((n) => {
-                const visible = n.list.slice(0, 6);
-                const panelHeight = 72 + (visible.length * 16) + (n.list.length > 6 ? 14 : 0);
-                const rows = visible.map((d, idx) => `
-                    <text x="${n.x - 136}" y="${n.y + 62 + (idx * 16)}" fill="#d4d4d8" font-size="10">${d.hostname || d.ip}</text>
-                    <text x="${n.x + 136}" y="${n.y + 62 + (idx * 16)}" text-anchor="end" fill="#facc15" font-size="10">${d.ip}</text>
-                `).join('');
-                const more = n.list.length > 6
-                    ? `<text x="${n.x}" y="${n.y + 62 + (visible.length * 16)}" text-anchor="middle" fill="#a1a1aa" font-size="10">+${n.list.length - 6} more</text>`
-                    : '';
-
-                return `
-                    <line x1="${centerX}" y1="${centerY}" x2="${n.x}" y2="${n.y}" stroke="${n.color}" stroke-width="2" opacity="0.5" />
-                    <circle cx="${n.x}" cy="${n.y}" r="8" fill="${n.color}" />
-                    <rect x="${n.x - 150}" y="${n.y + 14}" width="300" height="${panelHeight}" rx="12" fill="#18181b" stroke="${n.color}" stroke-opacity="0.55" />
-                    <text x="${n.x}" y="${n.y + 34}" text-anchor="middle" fill="#e4e4e7" font-size="12" font-weight="600">${n.key}</text>
-                    <text x="${n.x}" y="${n.y + 50}" text-anchor="middle" fill="#a1a1aa" font-size="11">${n.list.length} detected • ${n.online} online</text>
-                    ${rows}
-                    ${more}
-                `;
-            }).join('');
-
-            const deviceSections = nodeData.map((n) => `
-                <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
-                    <div class="text-sm font-semibold mb-3" style="color:${n.color}">${n.key}</div>
-                    <div class="flex flex-wrap gap-2">
-                        ${n.list.map(d => `
-                            <button onclick="showDeviceHistory('${d.ip}')" class="px-3 py-1.5 rounded-xl bg-zinc-950 border border-zinc-800 hover:bg-zinc-800 text-left w-full">
-                                <span class="text-xs text-white block whitespace-normal break-words leading-snug">${d.hostname}</span>
-                                <span class="text-[10px] text-yellow-400 font-mono mt-1 block break-all">${d.ip}</span>
-                            </button>
-                        `).join('')}
-                    </div>
-                </div>
-            `).join('');
+            const onlineCount = sortedDevices.filter(d => d.status === 'Online').length;
 
             topology.innerHTML = `
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
-                    <div class="text-xs uppercase tracking-widest text-zinc-500 mb-3">Rebuilt Topology (Detected Devices Only)</div>
-                    <div class="overflow-x-auto">
-                        <svg viewBox="0 0 1240 900" class="w-full min-w-[1000px] h-auto rounded-2xl bg-zinc-950 border border-zinc-800">
-                            <defs>
-                                <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
-                                    <stop offset="0%" stop-color="#facc15" stop-opacity="0.35" />
-                                    <stop offset="100%" stop-color="#facc15" stop-opacity="0" />
-                                </radialGradient>
-                            </defs>
-                            <circle cx="${centerX}" cy="${centerY}" r="116" fill="url(#coreGlow)" />
-                            <rect x="${centerX - 170}" y="${centerY - 54}" width="340" height="108" rx="16" fill="#18181b" stroke="#facc15" stroke-opacity="0.55" />
-                            <text x="${centerX}" y="${centerY - 14}" text-anchor="middle" fill="#fde68a" font-size="16" font-weight="700">Core Gateway</text>
-                            <text x="${centerX}" y="${centerY + 8}" text-anchor="middle" fill="#e4e4e7" font-size="14">${gatewayName}</text>
-                            <text x="${centerX}" y="${centerY + 28}" text-anchor="middle" fill="#a1a1aa" font-size="12">${gateway ? gateway.ip : 'n/a'}</text>
-                            ${subnetNodesSvg}
-                        </svg>
+                    <div class="text-xs uppercase tracking-widest text-zinc-500 mb-3">Unified Topology (All Devices)</div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs mb-4">
+                        <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-3">
+                            <div class="text-zinc-500">Core Gateway</div>
+                            <div class="text-zinc-100 font-medium">${gatewayName}</div>
+                            <div class="text-yellow-400 font-mono">${gateway ? gateway.ip : 'n/a'}</div>
+                        </div>
+                        <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-3">
+                            <div class="text-zinc-500">Total Devices</div>
+                            <div class="text-zinc-100 font-medium">${sortedDevices.length}</div>
+                        </div>
+                        <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-3">
+                            <div class="text-zinc-500">Online Devices</div>
+                            <div class="text-emerald-300 font-medium">${onlineCount}</div>
+                        </div>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
-                    ${deviceSections}
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 xl:col-span-2">
+                        <div class="text-sm font-semibold text-sky-300 mb-3">All Detected Devices</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
+                            ${sortedDevices.map(d => `
+                                <button onclick="showDeviceHistory('${d.ip}')" class="px-3 py-1.5 rounded-xl bg-zinc-950 border border-zinc-800 hover:bg-zinc-800 text-left w-full">
+                                    <span class="text-xs text-white block whitespace-normal break-words leading-snug">${d.hostname}</span>
+                                    <span class="text-[10px] text-yellow-400 font-mono mt-1 block break-all">${d.ip}</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
                 </div>
             `;
         }
@@ -1288,6 +1167,8 @@
                 }).join(', ') : 'none';
                 document.getElementById('active-users').textContent = `USERS: ${activeUsersText}`;
                 document.getElementById('public-ip').textContent = data.public_ip || 'Unavailable';
+                document.getElementById('local-ip').textContent = data.local_ip || 'Unavailable';
+                document.getElementById('tailscale-ip').textContent = data.tailscale_ip || 'Unavailable';
                 const connectivityEl = document.getElementById('connectivity-badge');
                 const isOnline = Boolean(data.connectivity && data.connectivity.online);
                 connectivityEl.textContent = isOnline ? 'ONLINE' : 'OFFLINE';
@@ -1472,7 +1353,6 @@
                             <div class="flex items-center justify-between py-1.5 border-b border-zinc-800/70">
                                 <div>
                                     <div class="font-mono text-amber-300">${row.ip}</div>
-                                    <div class="text-[10px] text-zinc-500">${row.subnet_group || ''}</div>
                                 </div>
                                 <div class="text-right">
                                     <span class="inline-flex px-2.5 py-0.5 rounded-xl text-[10px] ${badgeClass}">${row.status}</span>

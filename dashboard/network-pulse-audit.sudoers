@@ -3,5 +3,7 @@
 #   sudo install -m 440 network-pulse-audit.sudoers /etc/sudoers.d/network-pulse-audit
 #   sudo visudo -cf /etc/sudoers.d/network-pulse-audit
 #
+# Replace ekern below if the dashboard runs as a different user.
 # The path must match read_cmd_exec_audit.sh on this system.
-yb ALL=(root) NOPASSWD: /usr/local/yb/.Network/dashboard/bin/read_cmd_exec_audit.sh *
+# No trailing args: sudoers allows any arguments for this command when none are listed.
+ekern ALL=(root) NOPASSWD: /home/ekern/Documents/network-scan-agent/dashboard/bin/read_cmd_exec_audit.sh

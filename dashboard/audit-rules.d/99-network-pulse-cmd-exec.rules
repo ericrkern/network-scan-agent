@@ -1,0 +1,9 @@
+# Log executed commands for Network Pulse audit tab (ausearch -k cmd_exec).
+# Install (once, as root):
+#   sudo cp audit-rules.d/99-network-pulse-cmd-exec.rules /etc/audit/rules.d/
+#   sudo augenrules --load
+#   sudo systemctl restart auditd
+#
+# aarch64 / x86_64: use arch=b64 for 64-bit syscall ABI.
+
+-a always,exit -F arch=b64 -S execve -F success=1 -k cmd_exec

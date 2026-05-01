@@ -2,7 +2,7 @@
 set -u
 
 # Watches seen in your device history.
-WATCH_IPS=("192.168.0.98" "192.168.50.3" "192.168.0.81")
+WATCH_IPS=("192.168.0.98" "192.168.0.81")
 HOSTNAME_HINT="Watch.MG8702"
 LOG_DIR="/usr/local/yb/.Network"
 LOG_FILE="${LOG_DIR}/watch-monitor.log"

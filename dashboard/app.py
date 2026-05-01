@@ -9,6 +9,7 @@ import os
 import shlex
 import re
 import subprocess
+import socket
 from datetime import datetime
 from pathlib import Path
 import urllib.request
@@ -19,6 +20,17 @@ from flask import Flask, render_template, jsonify, request, send_from_directory
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
+
+@app.after_request
+def _disable_caching_for_dynamic_pages(resp):
+    """Avoid stale dashboard/API JSON behind browsers or reverse proxies."""
+    path = request.path or ""
+    if path.startswith("/api/") or path == "/":
+        resp.headers["Cache-Control"] = "no-store, max-age=0, must-revalidate"
+        resp.headers["Pragma"] = "no-cache"
+    return resp
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEVICES_FILE = str(BASE_DIR / "devices.md")
 CACHE_FILE = str(BASE_DIR / ".seen_devices.json")
@@ -27,12 +39,43 @@ SCAN_SCRIPT = str(BASE_DIR / "network_scan_agent.py")
 LAN_LABELS_FILE = os.environ.get("LAN_LABELS_FILE", "/home/yb/.config/lan-labels")
 KNOWN_HOSTNAME_OVERRIDES = {
     "192.168.0.98": "Irene's Watch",
-    "192.168.50.3": "Irene's Watch",
     "192.168.0.81": "Friends Watch",
+    "192.168.0.170": "Prime",
+    "100.78.64.7": "Prime",
+    "192.168.0.171": "M90q",
+    "192.168.0.153": "Cindy",
+    "100.67.102.109": "x9-14",
+    "192.168.0.172": "x19-14",
+}
+KNOWN_LABEL_OVERRIDES = {
+    "192.168.0.170": "MacBook Pro M5 Max",
+    "100.78.64.7": "MacBook Pro M5 Max",
+    "192.168.0.171": "Tiny",
+    "192.168.0.186": "Proxmox VE",
+    "192.168.0.153": "PGX",
+    "100.92.6.101": "PGX",
+    "100.67.102.109": "Nicks Laptop",
+    "192.168.0.172": "x19-14",
+    "192.168.0.1": "Verizon 5G Hotspot",
 }
 KNOWN_MAC_OVERRIDES = {
     "192.168.0.98": "4e:0a:ec:36:fd:82",
     "192.168.0.81": "fa:5b:a6:ab:1a:7f",
+    "192.168.0.153": "9c:c7:d3:87:eb:9c",
+    "100.92.6.101": "9c:c7:d3:87:eb:9c",
+}
+KNOWN_SUBNET_OVERRIDES = {
+    # Keep Prime (LAN + Tailscale) anchored to local LAN when mesh alias is active.
+    "192.168.0.170": "Local LAN (192.168.0.0/24)",
+    "100.78.64.7": "Local LAN (192.168.0.0/24)",
+}
+ONLINE_ALIAS_SYNC_CLUSTERS = [
+    {"192.168.0.170", "100.78.64.7"},
+]
+HIDDEN_DEVICE_IPS = {
+    "100.70.174.39",
+    "100.95.15.82",
+    "100.79.216.111",
 }
 
 
@@ -83,12 +126,47 @@ def normalize_mac(mac: str) -> str:
     return str(mac).strip().lower().replace("-", ":")
 
 
+def is_tailscale_ip(ip: str) -> bool:
+    return isinstance(ip, str) and ip.startswith("100.")
+
+
+def ip_subnet_prefix(ip: str) -> str:
+    if not isinstance(ip, str):
+        return ""
+    parts = ip.split(".")
+    if len(parts) != 4:
+        return ""
+    return ".".join(parts[:3])
+
+
+def canonical_hostname_for_grouping(device: dict) -> str:
+    """
+    Normalize hostname for cross-network correlation.
+    Example: thinkstation.tailxxxx.ts.net -> thinkstation
+    """
+    if not isinstance(device, dict):
+        return ""
+
+    hostname = str(device.get("hostname", "")).strip().lower()
+    ip = str(device.get("ip", "")).strip()
+    if not hostname or hostname in ("—", "none") or hostname == ip:
+        return ""
+    if re.match(r"^\d{1,3}(?:\.\d{1,3}){3}$", hostname):
+        return ""
+
+    # Normalize common suffixes.
+    hostname = re.sub(r"\.tail[^.]*\.ts\.net$", "", hostname)
+    hostname = re.sub(r"\.ts\.net$", "", hostname)
+    hostname = re.sub(r"\.local$", "", hostname)
+    return hostname.strip()
+
+
 def collapse_duplicate_devices(devices):
     """
     Collapse duplicate logical devices so UI shows one card even with multiple IPs.
     Priority:
       1) Same normalized MAC across multiple IPs
-      2) Correlated iPhone pair (192.168.0.49 + 192.168.50.106)
+      2) Correlated iPhone aliases on local LAN
     """
     if not devices:
         return devices
@@ -106,12 +184,36 @@ def collapse_duplicate_devices(devices):
         mac_groups.setdefault(mac, []).append(d)
     for _, members in mac_groups.items():
         ips = sorted({m["ip"] for m in members if m.get("ip")})
-        if len(ips) > 1:
+        # Guardrail: skip same-subnet MAC merges; these can be ARP artifacts
+        # (e.g. router MAC shown for multiple LAN hosts).
+        prefixes = {ip_subnet_prefix(ip) for ip in ips if ip_subnet_prefix(ip)}
+        if len(ips) > 1 and len(prefixes) > 1:
             groups.append(ips)
             grouped_ips.update(ips)
 
+    # Correlate Tailscale + local LAN aliases by canonical hostname.
+    hostname_groups = {}
+    for d in devices:
+        canon = canonical_hostname_for_grouping(d)
+        if not canon:
+            continue
+        hostname_groups.setdefault(canon, []).append(d)
+    for _, members in hostname_groups.items():
+        ips = sorted({m.get("ip") for m in members if m.get("ip")})
+        if len(ips) < 2:
+            continue
+        has_tailscale = any(is_tailscale_ip(ip) for ip in ips)
+        has_non_tailscale = any(not is_tailscale_ip(ip) for ip in ips)
+        if not (has_tailscale and has_non_tailscale):
+            continue
+        # Avoid creating overlapping duplicate groups.
+        if any(set(ips).issubset(set(existing)) for existing in groups):
+            continue
+        groups.append(ips)
+        grouped_ips.update(ips)
+
     # Correlate known iPhone aliases (private-MAC rotation + routed-subnet alias).
-    iphone_cluster = ["192.168.0.49", "192.168.0.131", "192.168.50.106"]
+    iphone_cluster = ["192.168.0.49", "192.168.0.131"]
     iphone_present = [ip for ip in iphone_cluster if ip in by_ip]
     if len(iphone_present) >= 2:
         cluster_hostnames = [
@@ -135,7 +237,7 @@ def collapse_duplicate_devices(devices):
             grouped_ips.update(iphone_present)
 
     # Correlate known watch aliases (private-MAC rotation + routed-subnet alias).
-    watch_cluster = ["192.168.0.98", "192.168.0.112", "192.168.50.3"]
+    watch_cluster = ["192.168.0.98", "192.168.0.112"]
     watch_present = [ip for ip in watch_cluster if ip in by_ip]
     if len(watch_present) >= 2:
         cluster_hostnames = [
@@ -155,6 +257,27 @@ def collapse_duplicate_devices(devices):
             groups.append(sorted(watch_present))
             grouped_ips.update(watch_present)
 
+    # Explicit operator-defined merges for known same-device dual addressing.
+    manual_clusters = [
+        ["192.168.0.170", "100.78.64.7"],
+        ["192.168.0.153", "100.92.6.101"],
+        ["100.67.102.109", "192.168.0.172"],
+    ]
+    for cluster in manual_clusters:
+        present = [ip for ip in cluster if ip in by_ip]
+        if len(present) < 2:
+            continue
+        # Remove overlaps so explicit mapping wins.
+        normalized_groups = []
+        for g in groups:
+            if set(g) & set(present):
+                continue
+            normalized_groups.append(g)
+        groups = normalized_groups
+        grouped_ips = {ip for g in groups for ip in g}
+        groups.append(sorted(present))
+        grouped_ips.update(present)
+
     merged_devices = []
     for ips in groups:
         members = [by_ip[ip] for ip in ips if ip in by_ip]
@@ -162,12 +285,51 @@ def collapse_duplicate_devices(devices):
             continue
 
         online_members = [m for m in members if m.get("status") == "Online"]
-        primary = online_members[0] if online_members else members[0]
+        online_primary_lan_members = [
+            m for m in online_members
+            if str(m.get("ip", "")).startswith("192.168.0.")
+        ]
+        primary_lan_members = [
+            m for m in members
+            if str(m.get("ip", "")).startswith("192.168.0.")
+        ]
+        online_non_tailscale = [
+            m for m in online_members
+            if not is_tailscale_ip(m.get("ip"))
+        ]
+        non_tailscale_members = [
+            m for m in members
+            if not is_tailscale_ip(m.get("ip"))
+        ]
+        # Prefer 192.168.0.0/24 as primary identity when present.
+        primary = (
+            online_primary_lan_members[0]
+            if online_primary_lan_members else (
+                primary_lan_members[0]
+                if primary_lan_members else (
+                    online_non_tailscale[0]
+                    if online_non_tailscale else (
+                        online_members[0]
+                        if online_members else (
+                            non_tailscale_members[0]
+                            if non_tailscale_members else members[0]
+                        )
+                    )
+                )
+            )
+        )
 
         status = "Online" if online_members else ("Offline" if all(m.get("status") == "Offline" for m in members) else "Unknown")
         status_color = "emerald" if status == "Online" else ("red" if status == "Offline" else "amber")
 
-        ip_addresses = sorted({m.get("ip") for m in members if m.get("ip")})
+        ip_addresses = sorted(
+            {m.get("ip") for m in members if m.get("ip")},
+            key=lambda ip: (
+                0 if str(ip).startswith("192.168.0.") else 1,
+                1 if is_tailscale_ip(ip) else 0,
+                ip,
+            ),
+        )
         per_ip_status = []
         for m in sorted(members, key=lambda item: item.get("ip", "")):
             per_ip_status.append({
@@ -177,6 +339,14 @@ def collapse_duplicate_devices(devices):
                 "last_status_time": m.get("last_status_time", m.get("last_seen", "—")),
                 "subnet_group": m.get("subnet_group", "Other Networks"),
             })
+        current_ip_set = {m.get("ip") for m in members if m.get("ip")}
+        should_sync_online_alias = (
+            status == "Online"
+            and any(cluster.issubset(current_ip_set) for cluster in ONLINE_ALIAS_SYNC_CLUSTERS)
+        )
+        if should_sync_online_alias:
+            for row in per_ip_status:
+                row["status"] = "Online"
 
         member_labels = [m.get("label") for m in members if m.get("label") not in (None, "", "—", "None")]
         merged = dict(primary)
@@ -210,7 +380,15 @@ def collapse_duplicate_devices(devices):
             key=lambda ev: ev.get("timestamp", ""),
             reverse=True,
         )[:50]
-        if member_labels:
+        primary_ip = str(primary.get("ip") or "")
+        preferred_hostname = KNOWN_HOSTNAME_OVERRIDES.get(primary_ip)
+        if preferred_hostname:
+            merged["hostname"] = preferred_hostname
+        preferred_label = KNOWN_LABEL_OVERRIDES.get(primary_ip)
+        if preferred_label:
+            merged["label"] = preferred_label
+            merged["labels"] = sorted(set(member_labels + [preferred_label]))
+        elif member_labels:
             merged["label"] = member_labels[0]
             merged["labels"] = sorted(set(member_labels))
         # Keep a stable MAC if any member has one.
@@ -885,12 +1063,14 @@ def load_device_data():
     labels = load_ip_labels()
 
     def get_subnet_group(ip: str) -> str:
+        if ip in KNOWN_SUBNET_OVERRIDES:
+            return KNOWN_SUBNET_OVERRIDES[ip]
         if ip == "24.192.17.178":
             return "External/Public Internet"
         if ip.startswith("192.168.0."):
             return "Local LAN (192.168.0.0/24)"
-        if ip.startswith("192.168.50."):
-            return "Adjacent Subnet (192.168.50.0/24)"
+        if ip.startswith("192.168.1."):
+            return "Adjacent Subnet (192.168.1.0/24)"
         if ip.startswith("192.168.100."):
             return "Adjacent Subnet (192.168.100.0/24)"
         if ip.startswith("172.17."):
@@ -906,6 +1086,8 @@ def load_device_data():
                 cache = json.load(f)
                 
             for ip, data in cache.items():
+                if ip in HIDDEN_DEVICE_IPS:
+                    continue
                 status = data.get("last_status", "unknown")
                 last_seen = data.get("last_seen", "—")
                 cache_hostname = data.get("hostname", "—")
@@ -915,7 +1097,7 @@ def load_device_data():
                 
                 rich_hostname = rich.get("hostname")
                 hostname = choose_device_name(ip, rich_hostname, cache_hostname, labels.get(ip))
-                if ip in KNOWN_HOSTNAME_OVERRIDES and hostname in (None, "", "—", ip):
+                if ip in KNOWN_HOSTNAME_OVERRIDES:
                     hostname = KNOWN_HOSTNAME_OVERRIDES[ip]
                 
                 rich_identity = rich.get("identity")
@@ -954,7 +1136,7 @@ def load_device_data():
                 devices.append({
                     "ip": ip,
                     "hostname": hostname,
-                    "label": labels.get(ip, ""),
+                    "label": KNOWN_LABEL_OVERRIDES.get(ip, labels.get(ip, "")),
                     "identity": identity,
                     "subnet_group": get_subnet_group(ip),
                     "status": status_text,
@@ -971,16 +1153,10 @@ def load_device_data():
     except Exception as e:
         print(f"Error loading cache: {e}")
     
-    # Sort by subnet group first, then status/name
-    subnet_order = {
-        "Local LAN (192.168.0.0/24)": 0,
-        "Adjacent Subnet (192.168.50.0/24)": 1,
-        "Adjacent Subnet (192.168.100.0/24)": 2,
-        "Docker Network (172.17.0.0/16)": 3,
-        "Other Networks": 4,
-        "Tailscale Mesh VPN": 5,
-        "External/Public Internet": 6,
-    }
+    # Collapse correlated aliases (MAC, known clusters, Tailscale<->LAN hostname pairs).
+    devices = collapse_duplicate_devices(devices)
+
+    # Sort as one unified list (not grouped by subnet).
 
     def status_priority(d):
         if d["status"] == "Online": return 0
@@ -998,7 +1174,6 @@ def load_device_data():
 
     devices.sort(
         key=lambda x: (
-            subnet_order.get(x.get("subnet_group", "Other Networks"), 99),
             status_priority(x),
             name_priority(x),
             x.get("hostname", "").lower()
@@ -1011,7 +1186,7 @@ def build_watch_correlation_findings():
     """Build concise watch-correlation findings for dashboard display."""
     watches = [
         {
-            "ip": "192.168.0.98, 192.168.0.112 (alias: 192.168.50.3)",
+            "ip": "192.168.0.98, 192.168.0.112",
             "hostname": "Irene's Watch",
             "mac": "4e:0a:ec:36:fd:82",
             "discovered": "Merged alias across subnets",
@@ -1019,7 +1194,7 @@ def build_watch_correlation_findings():
     ]
 
     conclusion = (
-        "Dashboard now treats 192.168.0.98, 192.168.0.112, and 192.168.50.3 as one logical device "
+        "Dashboard now treats 192.168.0.98 and 192.168.0.112 as one logical device "
         "labeled Irene's Watch."
     )
     source_url = "https://support.apple.com/en-us/HT211227"
@@ -1160,6 +1335,42 @@ def get_public_ip():
     return "Unavailable"
 
 
+def get_local_ip():
+    """Best-effort primary local LAN IP for dashboard header."""
+    probe_targets = [("8.8.8.8", 80), ("1.1.1.1", 80)]
+    for host, port in probe_targets:
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            sock.connect((host, port))
+            ip = sock.getsockname()[0]
+            sock.close()
+            if ip and not ip.startswith("127."):
+                return ip
+        except Exception:
+            continue
+    return "Unavailable"
+
+
+def get_tailscale_ip():
+    """Return first IPv4 Tailscale address, if available."""
+    try:
+        result = subprocess.run(
+            ["tailscale", "ip", "-4"],
+            capture_output=True,
+            text=True,
+            timeout=2,
+        )
+        if result.returncode != 0:
+            return "Unavailable"
+        for line in (result.stdout or "").splitlines():
+            ip = line.strip()
+            if ip.startswith("100."):
+                return ip
+    except Exception:
+        pass
+    return "Unavailable"
+
+
 def get_active_users():
     """Return logged-in users with session detail (local vs ssh)."""
     users = {}
@@ -1195,20 +1406,41 @@ def get_active_users():
     return sorted(users.values(), key=lambda u: u["username"])
 
 
-def resolve_audit_helper_cmd(since: str) -> str:
-    """Resolve audit helper command from env or safe default."""
-    default_cmd = f"{BASE_DIR / 'dashboard' / 'bin' / 'read_cmd_exec_audit.sh'} {since}"
+READ_CMD_EXEC_AUDIT_SH = str(BASE_DIR / "dashboard" / "bin" / "read_cmd_exec_audit.sh")
+
+
+def audit_helper_use_sudo() -> bool:
+    return os.environ.get("AUDIT_USE_SUDO", "1").strip().lower() not in ("0", "false", "no")
+
+
+def audit_helper_argv(since: str) -> list[str]:
+    """Argv list for running read_cmd_exec_audit.sh (no shell)."""
     configured = os.environ.get("AUDIT_HELPER_CMD", "").strip()
-    if not configured:
-        return default_cmd
-    if "{since}" in configured:
-        return configured.replace("{since}", since)
-    return f"{configured} {since}"
+    if configured:
+        return shlex.split(resolve_audit_helper_cmd(since))
+    if audit_helper_use_sudo():
+        return ["sudo", "-n", READ_CMD_EXEC_AUDIT_SH, since]
+    return [READ_CMD_EXEC_AUDIT_SH, since]
+
+
+def resolve_audit_helper_cmd(since: str) -> str:
+    """Resolve audit helper command from env or safe default (string form for logs / custom AUDIT_HELPER_CMD)."""
+    configured = os.environ.get("AUDIT_HELPER_CMD", "").strip()
+    if configured:
+        if "{since}" in configured:
+            return configured.replace("{since}", since)
+        return f"{configured} {since}"
+    # ausearch normally needs root to read audit logs; NOPASSWD sudoers entry recommended.
+    if audit_helper_use_sudo():
+        return f"sudo -n {shlex.quote(READ_CMD_EXEC_AUDIT_SH)} {shlex.quote(since)}"
+    return f"{READ_CMD_EXEC_AUDIT_SH} {since}"
 
 
 def resolve_wifi_scan_cmd() -> str:
     """Resolve WiFi scan command from env or safe default."""
-    default_cmd = f"sudo -n {BASE_DIR / 'dashboard' / 'bin' / 'scan_wifi_ssids.sh'}"
+    # Default to direct execution; some hosts allow non-root scans via iw/nmcli.
+    # Operators can still force sudo by setting WIFI_SCAN_CMD explicitly.
+    default_cmd = f"{BASE_DIR / 'dashboard' / 'bin' / 'scan_wifi_ssids.sh'}"
     return os.environ.get("WIFI_SCAN_CMD", default_cmd).strip()
 
 
@@ -1382,19 +1614,26 @@ def get_wifi_ssids(limit: int = 80):
     }
 
 
+# ausearch may emit multi-megabyte type=EXECVE lines (full argv as a0..an). Skip them;
+# we display PROCTITLE + SYSCALL exe= instead.
+AUDIT_PARSE_MAX_STDOUT_CHARS = 15 * 1024 * 1024
+AUDIT_PARSE_MAX_LINE_CHARS = 16384
+AUDIT_DISPLAY_MAX_COMMAND_CHARS = 512
+AUDIT_SUBPROCESS_TIMEOUT_SEC = 15
+
+
 def get_audit_activity(limit: int = 300, since: str = "today", user_filter: str = ""):
     """
     Return recent cmd_exec audit events.
     Uses ausearch output when readable; otherwise returns a permission hint.
     """
-    helper_cmd = resolve_audit_helper_cmd(since)
-    cmd = shlex.split(helper_cmd)
+    cmd = audit_helper_argv(since)
     try:
         result = subprocess.run(
             cmd,
             capture_output=True,
             text=True,
-            timeout=6,
+            timeout=AUDIT_SUBPROCESS_TIMEOUT_SEC,
         )
     except Exception as e:
         return {
@@ -1404,29 +1643,80 @@ def get_audit_activity(limit: int = 300, since: str = "today", user_filter: str 
         }
 
     stdout = result.stdout or ""
+    if len(stdout) > AUDIT_PARSE_MAX_STDOUT_CHARS:
+        stdout = stdout[:AUDIT_PARSE_MAX_STDOUT_CHARS]
     stderr = result.stderr or ""
     combined_err = (stderr or "").strip()
+    err_low = combined_err.lower()
+
+    # ausearch exits non-zero with "<no matches>" when the query matches nothing.
+    if result.returncode != 0 and "<no matches>" in err_low:
+        return {
+            "ok": True,
+            "message": f"No cmd_exec audit events since {since}.",
+            "users": [],
+            "events": [],
+        }
+
     if result.returncode != 0 and not stdout.strip():
-        if "no new privileges" in combined_err.lower():
+        if "no new privileges" in err_low:
             return {
                 "ok": False,
                 "message": (
                     "Audit command attempted privilege escalation in a no-new-privileges "
-                    "environment. Configure AUDIT_HELPER_CMD to a non-sudo command, or run "
-                    "the dashboard with direct permission to read audit logs."
+                    "environment (common with systemd NoNewPrivileges=yes). Remove that restriction "
+                    "for the dashboard service, or run the dashboard interactively without it. "
+                    "Alternatively configure AUDIT_HELPER_CMD if a non-setuid path can read audit logs."
                 ),
                 "events": [],
             }
-        if "Permission denied" in combined_err:
+        if "ausearch not found" in err_low or "no such file or directory" in err_low:
             return {
                 "ok": False,
-                "message": "Audit helper is not authorized yet. Add a sudoers rule for the dashboard user to run the audit helper without a password.",
+                "message": (
+                    "Linux audit tools are missing or not installed. Run: sudo apt-get install -y auditd "
+                    "Then copy dashboard/audit-rules.d/99-network-pulse-cmd-exec.rules to /etc/audit/rules.d/, "
+                    "run sudo augenrules --load, and install network-pulse-audit.sudoers so the dashboard user "
+                    "may run read_cmd_exec_audit.sh via sudo -n."
+                ),
                 "events": [],
             }
-        if "password is required" in combined_err or "a password is required" in combined_err:
+        if "permission denied" in err_low or "Permission denied" in combined_err:
             return {
                 "ok": False,
-                "message": "Audit helper needs NOPASSWD sudo authorization. Add a sudoers rule to allow this helper command.",
+                "message": (
+                    "Audit helper cannot read the audit log (permission denied). Install the NOPASSWD sudoers rule: "
+                    "run dashboard/bin/install_audit_sudoers.sh once (enter your sudo password), "
+                    "or: sudo install -m 440 dashboard/network-pulse-audit.sudoers /etc/sudoers.d/network-pulse-audit "
+                    "&& sudo visudo -cf /etc/sudoers.d/network-pulse-audit"
+                ),
+                "events": [],
+            }
+        if "password is required" in err_low or "a password is required" in err_low:
+            return {
+                "ok": False,
+                "message": (
+                    "Dashboard runs sudo -n for audit logs; NOPASSWD is required. Run once: "
+                    "dashboard/bin/install_audit_sudoers.sh "
+                    "(or install dashboard/network-pulse-audit.sudoers into /etc/sudoers.d/network-pulse-audit). "
+                    "Ensure the sudoers path matches READ_CMD_EXEC_AUDIT_SH on this host."
+                ),
+                "events": [],
+            }
+        if (
+            "not allowed" in err_low
+            or "not permitted to execute" in err_low
+            or "unknown user" in err_low
+            or err_low.startswith("sudo:")
+        ):
+            return {
+                "ok": False,
+                "message": (
+                    "Audit helper is not authorized yet. Add a sudoers rule so the dashboard Linux user may run "
+                    f"{READ_CMD_EXEC_AUDIT_SH} as root without a password "
+                    "(see dashboard/bin/install_audit_sudoers.sh and network-pulse-audit.sudoers). "
+                    "If you run under systemd with NoNewPrivileges=yes, sudo cannot work; disable that for this unit."
+                ),
                 "events": [],
             }
         return {
@@ -1455,12 +1745,19 @@ def get_audit_activity(limit: int = 300, since: str = "today", user_filter: str 
             m = msg_time_re.search(line)
             if m:
                 current["timestamp"] = m.group(1)
+        if len(line) > AUDIT_PARSE_MAX_LINE_CHARS:
+            continue
+        if line.startswith("type=EXECVE"):
+            continue
         if line.startswith("type=PROCTITLE"):
             # Extract command payload after proctitle=
             marker = "proctitle="
             idx = line.find(marker)
             if idx != -1:
-                current["command"] = line[idx + len(marker):].strip()
+                cmd = line[idx + len(marker) :].strip()
+                if len(cmd) > AUDIT_DISPLAY_MAX_COMMAND_CHARS:
+                    cmd = cmd[:AUDIT_DISPLAY_MAX_COMMAND_CHARS] + "…"
+                current["command"] = cmd
             continue
         if line.startswith("type=SYSCALL"):
             # Capture auid and exe when present.
@@ -1484,6 +1781,8 @@ def get_audit_activity(limit: int = 300, since: str = "today", user_filter: str 
         e["user"] = actor
         if actor not in (None, "", "unset"):
             users_seen.add(actor)
+        if not e.get("command") and e.get("exe"):
+            e["command"] = os.path.basename(e["exe"])
         normalized.append(e)
 
     if user_filter:
@@ -1505,13 +1804,17 @@ def index():
     devices = load_device_data()
     last_updated = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     watch_findings = build_watch_correlation_findings()
+    local_ip = get_local_ip()
+    tailscale_ip = get_tailscale_ip()
     
     return render_template('index.html', 
                          devices=devices, 
                          last_updated=last_updated,
                          total_devices=len(devices),
                          online_count=len([d for d in devices if is_active_status(d.get('status', ''))]),
-                         watch_findings=watch_findings)
+                         watch_findings=watch_findings,
+                         local_ip=local_ip,
+                         tailscale_ip=tailscale_ip)
 
 
 @app.route('/api/devices')
@@ -1523,6 +1826,8 @@ def api_devices():
     connectivity = check_online_status()
     watch_findings = build_watch_correlation_findings()
     active_users = get_active_users()
+    local_ip = get_local_ip()
+    tailscale_ip = get_tailscale_ip()
     return jsonify({
         "devices": devices,
         "scan_history": scan_history,
@@ -1534,6 +1839,8 @@ def api_devices():
         "online": len([d for d in devices if is_active_status(d.get('status', ''))]),
         "connectivity": connectivity,
         "public_ip": get_public_ip(),
+        "local_ip": local_ip,
+        "tailscale_ip": tailscale_ip,
     })
 
 

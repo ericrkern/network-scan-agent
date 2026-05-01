@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Network Device Discovery Agent
-Scans network for new devices every hour and updates devices.md
+Scans network for new devices every 15 minutes and updates devices.md
 """
 
 import subprocess
@@ -20,24 +20,20 @@ DEVICES_FILE = str(BASE_DIR / "devices.md")
 SEEN_DEVICES_CACHE = str(BASE_DIR / ".seen_devices.json")
 SCAN_SNAPSHOTS_FILE = str(BASE_DIR / ".scan_snapshots.json")
 IPHONE_IDENTITY_LOG_FILE = str(BASE_DIR / ".iphone_identity_checks.json")
-NETWORKS = ["192.168.0.0/24", "192.168.50.0/24", "192.168.100.0/24"]
-ADJACENT_SUBNET_PREFIX = "192.168.50."
+NETWORKS = ["192.168.0.0/24", "192.168.1.0/24", "192.168.100.0/24"]
+ADJACENT_SUBNET_PREFIX = "192.168.100."
 COMMON_PORTS = [22, 80, 443, 445, 631, 8080, 5900, 3000, 5000]
 SCAN_TIMEOUT = 2
 DEEP_SCAN_SCRIPT = str(BASE_DIR / "deep_scan.py")
 DEEP_SCAN_RESULTS_FILE = str(BASE_DIR / "deep_scan_results.json")
 SPECIAL_TRACKED_DEVICES = {
-    "192.168.50.3": {
-        "hostname": "Watch.MG8702",
-        "type": "Smart Watch",
-    },
-    "192.168.50.106": {
-        "hostname": "iPhone.MG8702",
-        "type": "Mobile Phone",
+    "192.168.0.170": {
+        "hostname": "Prime",
+        "type": "Web Device",
     },
 }
 IPHONE_IDENTITY_REFERENCE_IP = "192.168.0.49"
-IPHONE_IDENTITY_CANDIDATE_IP = "192.168.50.106"
+IPHONE_IDENTITY_CANDIDATE_IP = "192.168.0.131"
 
 
 def normalize_mac(mac):
@@ -514,7 +510,7 @@ def host_reports_up_with_tcp_probe(ip):
 
 def detect_adjacent_subnet_status(known_ips):
     """
-    Additional online detection pass for 192.168.50.0/24.
+    Additional online detection pass for adjacent subnet hosts.
     This catches devices that block ICMP but still resolve/respond.
     """
     detected_live = set()
@@ -1311,7 +1307,7 @@ def main():
     print("\n✨ Scan complete!")
     print(f"   New devices added: {len(new_devices)}")
     print(f"   Total known devices: {len(device_records)}")
-    print(f"   Next scan: in 1 hour")
+    print(f"   Next scan: in 15 minutes")
     
     # Update scan history
     update_scan_history(len(new_devices), len(device_records), len(all_live_hosts))
