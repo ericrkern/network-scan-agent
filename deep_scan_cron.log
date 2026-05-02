@@ -1,0 +1,1268 @@
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 30 host IPs to scan
+
+[ 1/30]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/30]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/30]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/30]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/30]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/30]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/30]   🔍 Deep scanning 100.79.216.111... ⏰ timeout
+[ 8/30]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/30]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/30]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/30]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/30]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/30]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/30]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/30]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/30]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/30]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/30]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/30]   🔍 Deep scanning 192.168.0.15... ⏰ timeout
+[20/30]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/30]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/30]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/30]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/30]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/30]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/30]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/30]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/30]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/30]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[30/30]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1950.8 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 30 host IPs to scan
+
+[ 1/30]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/30]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/30]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/30]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/30]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/30]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/30]   🔍 Deep scanning 100.79.216.111... ⏰ timeout
+[ 8/30]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/30]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/30]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/30]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/30]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/30]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/30]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/30]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/30]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/30]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/30]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/30]   🔍 Deep scanning 192.168.0.15... ⏰ timeout
+[20/30]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/30]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/30]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/30]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/30]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/30]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/30]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/30]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/30]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/30]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[30/30]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 2011.0 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 30 host IPs to scan
+
+[ 1/30]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/30]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/30]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/30]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/30]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/30]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/30]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/30]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/30]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/30]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/30]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/30]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/30]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/30]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/30]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/30]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/30]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/30]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/30]   🔍 Deep scanning 192.168.0.15... ⏰ timeout
+[20/30]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/30]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/30]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/30]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/30]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/30]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/30]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/30]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/30]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/30]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[30/30]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1925.5 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 30 host IPs to scan
+
+[ 1/30]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/30]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/30]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/30]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/30]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/30]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/30]   🔍 Deep scanning 100.79.216.111... ⏰ timeout
+[ 8/30]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/30]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/30]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/30]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/30]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/30]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/30]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/30]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/30]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/30]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/30]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/30]   🔍 Deep scanning 192.168.0.15... ⏰ timeout
+[20/30]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/30]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/30]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/30]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/30]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/30]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/30]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/30]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/30]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/30]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[30/30]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1956.5 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 30 host IPs to scan
+
+[ 1/30]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/30]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/30]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/30]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/30]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/30]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/30]   🔍 Deep scanning 100.79.216.111... ⏰ timeout
+[ 8/30]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/30]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/30]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/30]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/30]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/30]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/30]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/30]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/30]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/30]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/30]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/30]   🔍 Deep scanning 192.168.0.15... ⏰ timeout
+[20/30]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/30]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/30]   🔍 Deep scanning 192.168.0.192... ⏰ timeout
+[23/30]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/30]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/30]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/30]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/30]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/30]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/30]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[30/30]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 2034.8 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 30 host IPs to scan
+
+[ 1/30]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/30]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/30]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/30]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/30]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/30]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/30]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/30]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/30]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/30]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/30]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/30]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/30]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/30]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/30]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/30]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/30]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/30]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/30]   🔍 Deep scanning 192.168.0.15... ✅ tcp:6 udp:0 os:Unknown
+[20/30]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/30]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/30]   🔍 Deep scanning 192.168.0.192... ⏰ timeout
+[23/30]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/30]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/30]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/30]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/30]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/30]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/30]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[30/30]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1976.6 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 30 host IPs to scan
+
+[ 1/30]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/30]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/30]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/30]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/30]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/30]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/30]   🔍 Deep scanning 100.79.216.111... ✅ tcp:4 udp:0 os:Unknown
+[ 8/30]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/30]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/30]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/30]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/30]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/30]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/30]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/30]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/30]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/30]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/30]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/30]   🔍 Deep scanning 192.168.0.15... ⏰ timeout
+[20/30]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/30]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/30]   🔍 Deep scanning 192.168.0.192... ⏰ timeout
+[23/30]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/30]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/30]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/30]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/30]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/30]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/30]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[30/30]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 2036.4 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 30 host IPs to scan
+
+[ 1/30]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/30]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/30]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/30]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/30]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/30]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/30]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/30]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/30]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/30]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/30]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/30]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/30]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/30]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/30]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/30]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/30]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/30]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/30]   🔍 Deep scanning 192.168.0.15... ⏰ timeout
+[20/30]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/30]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/30]   🔍 Deep scanning 192.168.0.192... ⏰ timeout
+[23/30]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/30]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/30]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/30]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/30]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/30]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/30]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[30/30]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 2002.9 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 30 host IPs to scan
+
+[ 1/30]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/30]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/30]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/30]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/30]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/30]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/30]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/30]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/30]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/30]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/30]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/30]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/30]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/30]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/30]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/30]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/30]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/30]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/30]   🔍 Deep scanning 192.168.0.15... ⏰ timeout
+[20/30]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/30]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/30]   🔍 Deep scanning 192.168.0.192... ⏰ timeout
+[23/30]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/30]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/30]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/30]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/30]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/30]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/30]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[30/30]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 2019.3 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ⏰ timeout
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ⏰ timeout
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 2076.6 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ⏰ timeout
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ✅ tcp:0 udp:0 os:Unknown
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 2006.7 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ⏰ timeout
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ✅ tcp:0 udp:0 os:Unknown
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1900.1 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ⏰ timeout
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ✅ tcp:0 udp:0 os:Unknown
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1899.3 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ⏰ timeout
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ✅ tcp:0 udp:0 os:Unknown
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1868.8 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ✅ tcp:0 udp:0 os:Unknown
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1900.6 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ⏰ timeout
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ✅ tcp:0 udp:0 os:Unknown
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ✅ tcp:0 udp:0 os:Unknown
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1831.9 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ⏰ timeout
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ✅ tcp:0 udp:0 os:Unknown
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1901.4 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ⏰ timeout
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ✅ tcp:0 udp:0 os:Unknown
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1879.3 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ⏰ timeout
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ✅ tcp:0 udp:0 os:Unknown
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1856.6 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ⏰ timeout
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ✅ tcp:0 udp:0 os:Unknown
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1833.4 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ⏰ timeout
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ⏰ timeout
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ✅ tcp:0 udp:0 os:Unknown
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1952.8 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ⏰ timeout
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ✅ tcp:0 udp:0 os:Unknown
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1907.7 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ✅ tcp:0 udp:0 os:Unknown
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1767.1 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ⏰ timeout
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1889.4 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ✅ tcp:0 udp:0 os:Unknown
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ⏰ timeout
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1900.5 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+   Updated devices.md with deep scan summary
+
+🎉 Deep scan complete! Check the dashboard for updated device details.
+🧪 Network Deep Scanner (Aggressive)
+This run performs quick discovery + full TCP + UDP + service script scans.
+This may take several minutes.
+
+🚀 Starting Deep Network Analysis
+============================================================
+Found 31 host IPs to scan
+
+[ 1/31]   🔍 Deep scanning 10.122.11.69... ✅ tcp:0 udp:0 os:Unknown
+[ 2/31]   🔍 Deep scanning 100.100.100.100... ⏰ timeout
+[ 3/31]   🔍 Deep scanning 100.70.174.39... ⏰ timeout
+[ 4/31]   🔍 Deep scanning 100.71.191.72... ⏰ timeout
+[ 5/31]   🔍 Deep scanning 100.76.245.26... ✅ tcp:0 udp:0 os:Unknown
+[ 6/31]   🔍 Deep scanning 100.78.64.7... ⏰ timeout
+[ 7/31]   🔍 Deep scanning 100.79.216.111... ⏰ timeout
+[ 8/31]   🔍 Deep scanning 100.92.6.101... ⏰ timeout
+[ 9/31]   🔍 Deep scanning 100.93.92.44... ✅ tcp:0 udp:0 os:Unknown
+[10/31]   🔍 Deep scanning 100.95.15.82... ⏰ timeout
+[11/31]   🔍 Deep scanning 149.154.167.99... ⏰ timeout
+[12/31]   🔍 Deep scanning 172.17.0.1... ⏰ timeout
+[13/31]   🔍 Deep scanning 192.168.0.1... ⏰ timeout
+[14/31]   🔍 Deep scanning 192.168.0.127... ⏰ timeout
+[15/31]   🔍 Deep scanning 192.168.0.131... ✅ tcp:0 udp:0 os:Unknown
+[16/31]   🔍 Deep scanning 192.168.0.135... ✅ tcp:0 udp:0 os:Unknown
+[17/31]   🔍 Deep scanning 192.168.0.142... ✅ tcp:0 udp:0 os:Unknown
+[18/31]   🔍 Deep scanning 192.168.0.143... ✅ tcp:0 udp:0 os:Unknown
+[19/31]   🔍 Deep scanning 192.168.0.15... ⏰ timeout
+[20/31]   🔍 Deep scanning 192.168.0.158... ✅ tcp:0 udp:0 os:Unknown
+[21/31]   🔍 Deep scanning 192.168.0.182... ✅ tcp:0 udp:0 os:Unknown
+[22/31]   🔍 Deep scanning 192.168.0.192... ✅ tcp:0 udp:0 os:Unknown
+[23/31]   🔍 Deep scanning 192.168.0.197... ⏰ timeout
+[24/31]   🔍 Deep scanning 192.168.0.233... ⏰ timeout
+[25/31]   🔍 Deep scanning 192.168.0.246... ⏰ timeout
+[26/31]   🔍 Deep scanning 192.168.0.49... ✅ tcp:0 udp:0 os:Unknown
+[27/31]   🔍 Deep scanning 192.168.0.59... ✅ tcp:0 udp:0 os:Unknown
+[28/31]   🔍 Deep scanning 192.168.0.67... ✅ tcp:0 udp:0 os:Unknown
+[29/31]   🔍 Deep scanning 192.168.0.81... ✅ tcp:0 udp:0 os:Unknown
+[30/31]   🔍 Deep scanning 192.168.100.1... ✅ tcp:0 udp:0 os:Unknown
+[31/31]   🔍 Deep scanning 192.168.50.1... ⏰ timeout
+
+✅ Deep scan completed in 1919.4 seconds
+   Results saved to /home/jetson/Documents/Network/deep_scan_results.json
+
+💥 Error during deep scan: [Errno 28] No space left on device
+fatal: unable to access 'https://github.com/ericrkern/network-scan-agent.git/': Could not resolve host: github.com
+error: cannot pull with rebase: You have unstaged changes.
+error: please commit or stash them.
+[main 9d1f2b8] Auto-update daily website/network data snapshot.
+ 12 files changed, 4355 insertions(+), 89 deletions(-)
+ rewrite __pycache__/network_scan_agent.cpython-310.pyc (60%)
+ rewrite dashboard/__pycache__/app.cpython-310.pyc (66%)
+ create mode 100644 public_ip_nmap.xml
+ create mode 100755 scripts/daily_github_push.sh
+fatal: unable to access 'https://github.com/ericrkern/network-scan-agent.git/': Could not resolve host: github.com
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+   02bc292..c2bd804  main       -> origin/main
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main cdf7aec] Auto-update daily website/network data snapshot.
+ 5 files changed, 3754 insertions(+), 136 deletions(-)
+To https://github.com/ericrkern/network-scan-agent.git
+   9029a0b..cdf7aec  main -> main
+2026-04-25 03:15:03 [auto-push] pushed latest changes
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main d920839] Auto-update daily website/network data snapshot.
+ 6 files changed, 5106 insertions(+), 132 deletions(-)
+To https://github.com/ericrkern/network-scan-agent.git
+   11f7265..d920839  main -> main
+2026-04-26 03:15:03 [auto-push] pushed latest changes
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main b77fd2c] Auto-update daily website/network data snapshot.
+ 12 files changed, 7728 insertions(+), 392 deletions(-)
+ create mode 100644 watch-monitor.log
+To https://github.com/ericrkern/network-scan-agent.git
+   d920839..b77fd2c  main -> main
+2026-04-27 03:15:03 [auto-push] pushed latest changes
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main cca34da] Auto-update daily website/network data snapshot.
+ 8 files changed, 9585 insertions(+), 4236 deletions(-)
+To https://github.com/ericrkern/network-scan-agent.git
+   b77fd2c..cca34da  main -> main
+2026-04-28 03:15:03 [auto-push] pushed latest changes
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main 809c4b8] Auto-update daily website/network data snapshot.
+ 5 files changed, 4457 insertions(+), 4678 deletions(-)
+To https://github.com/ericrkern/network-scan-agent.git
+   7f8386c..809c4b8  main -> main
+2026-04-29 03:15:03 [auto-push] pushed latest changes
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main dcfded7] Auto-update daily website/network data snapshot.
+ 15 files changed, 732 insertions(+), 259 deletions(-)
+ create mode 100755 dashboard/bin/read_cmd_exec_audit.sh
+fatal: could not read Username for 'https://github.com': No such device or address
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+[main e6a0e67] Auto-update daily website/network data snapshot.
+ 1 file changed, 8 insertions(+)
+fatal: could not read Username for 'https://github.com': No such device or address
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main 06d7f23] Auto-update daily website/network data snapshot.
+ 1 file changed, 5 insertions(+)
+To https://github.com/ericrkern/network-scan-agent.git
+   00e3dfd..06d7f23  main -> main
+2026-04-30 03:15:04 [auto-push] pushed latest changes
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[main 0ee9117] Auto-update daily website/network data snapshot.
+ 8 files changed, 332 insertions(+), 321 deletions(-)
+To https://github.com/ericrkern/network-scan-agent.git
+   6d7fb45..0ee9117  main -> main
+2026-05-01 03:15:02 [auto-push] pushed latest changes
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+   0ee9117..c3577cc  main       -> origin/main
+From https://github.com/ericrkern/network-scan-agent
+ * branch            main       -> FETCH_HEAD
+Updating 0ee9117..c3577cc
