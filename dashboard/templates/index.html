@@ -195,8 +195,8 @@
                 </div>
             </div>
 
-            <!-- Devices Grid -->
-            <div id="devices-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <!-- Devices by subnet (sections injected by JavaScript) -->
+            <div id="devices-grid" class="space-y-12">
                 <!-- Populated by JavaScript -->
             </div>
             </div>
@@ -399,10 +399,7 @@
 
         <!-- Footer -->
         <footer class="border-t border-zinc-800 bg-zinc-900 mt-12">
-            <div class="max-w-7xl mx-auto px-8 py-8 text-xs font-mono text-zinc-500 flex justify-between items-center">
-                <div>
-                    Powered by Jetson • Network Scan Agent • Last scan from <span class="text-yellow-400">192.168.0.197</span>
-                </div>
+            <div class="max-w-7xl mx-auto px-8 py-8 text-xs font-mono text-zinc-500 flex justify-end items-center">
                 <div class="flex items-center gap-x-6">
                     <a href="https://github.com" target="_blank" class="hover:text-white transition-colors">
                         <i class="fa-brands fa-github"></i>
@@ -519,6 +516,16 @@
 
     <script>
         let allDevices = [];
+        let subnetSectionOrder = [
+            "Local LAN (192.168.2.0/24)",
+            "Local LAN (192.168.0.0/24)",
+            "Adjacent Subnet (192.168.1.0/24)",
+            "Adjacent Subnet (192.168.100.0/24)",
+            "Docker Network (172.17.0.0/16)",
+            "External/Public Internet",
+            "Other Networks",
+            "Tailscale Mesh VPN",
+        ];
         let currentFilter = 'all';
         let currentMainTab = 'dashboard';
         let traceAutoRefresh = null;
@@ -576,9 +583,30 @@
             `;
         }
         
+        function subnetRank(name) {
+            const i = subnetSectionOrder.indexOf(name);
+            return i === -1 ? subnetSectionOrder.length : i;
+        }
+
         function renderDevices(devices) {
             const container = document.getElementById('devices-grid');
-            container.innerHTML = devices.map((d) => createDeviceCard(d)).join('');
+            const bySubnet = new Map();
+            for (const d of devices) {
+                const k = d.dashboard_subnet || 'Other Networks';
+                if (!bySubnet.has(k)) bySubnet.set(k, []);
+                bySubnet.get(k).push(d);
+            }
+            const keys = [...bySubnet.keys()].sort((a, b) => subnetRank(a) - subnetRank(b));
+            container.innerHTML = keys.map((subnet) => {
+                const list = bySubnet.get(subnet);
+                return `
+                <section class="subnet-section" aria-label="${subnet}">
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-sky-400 mb-4 pb-2 border-b border-zinc-800">${subnet}</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        ${list.map((d) => createDeviceCard(d)).join('')}
+                    </div>
+                </section>`;
+            }).join('');
             
             // Update stats
             const online = devices.filter(d => d.status === 'Online').length;
@@ -1113,12 +1141,16 @@
             }
             
             if (searchTerm) {
-                filtered = filtered.filter(device => 
-                    (device.ip && device.ip.toLowerCase().includes(searchTerm)) ||
-                    ((device.ip_display || '').toLowerCase().includes(searchTerm)) ||
-                    (device.hostname && device.hostname.toLowerCase().includes(searchTerm)) ||
-                    (device.type && device.type.toLowerCase().includes(searchTerm))
-                );
+                filtered = filtered.filter(device => {
+                    const extraIps = (device.ip_addresses || []).map((x) => String(x).toLowerCase());
+                    return (
+                        (device.ip && device.ip.toLowerCase().includes(searchTerm)) ||
+                        ((device.ip_display || '').toLowerCase().includes(searchTerm)) ||
+                        extraIps.some((ip) => ip.includes(searchTerm)) ||
+                        (device.hostname && device.hostname.toLowerCase().includes(searchTerm)) ||
+                        (device.type && device.type.toLowerCase().includes(searchTerm))
+                    );
+                });
             }
             
             renderDevices(filtered);
@@ -1149,6 +1181,9 @@
                 const data = await response.json();
                 
                 allDevices = data.devices;
+                if (Array.isArray(data.subnet_section_order) && data.subnet_section_order.length) {
+                    subnetSectionOrder = data.subnet_section_order;
+                }
                 document.getElementById('last-updated').textContent = `UPDATED ${data.last_updated.split(' ')[1]}`;
                 const users = Array.isArray(data.active_users) ? data.active_users : [];
                 const activeUsersText = users.length ? users.map((u) => {

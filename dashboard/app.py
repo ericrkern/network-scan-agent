@@ -36,7 +36,9 @@ DEVICES_FILE = str(BASE_DIR / "devices.md")
 CACHE_FILE = str(BASE_DIR / ".seen_devices.json")
 SCAN_SNAPSHOTS_FILE = str(BASE_DIR / ".scan_snapshots.json")
 SCAN_SCRIPT = str(BASE_DIR / "network_scan_agent.py")
-LAN_LABELS_FILE = os.environ.get("LAN_LABELS_FILE", "/home/yb/.config/lan-labels")
+LAN_LABELS_FILE = os.environ.get(
+    "LAN_LABELS_FILE", str(Path.home() / ".config" / "lan-labels")
+)
 KNOWN_HOSTNAME_OVERRIDES = {
     "192.168.0.98": "Irene's Watch",
     "192.168.0.81": "Friends Watch",
@@ -77,6 +79,99 @@ HIDDEN_DEVICE_IPS = {
     "100.95.15.82",
     "100.79.216.111",
 }
+
+# Dashboard section order (Tailscale always last).
+DASHBOARD_SUBNET_ORDER = [
+    "Local LAN (192.168.2.0/24)",
+    "Local LAN (192.168.0.0/24)",
+    "Adjacent Subnet (192.168.1.0/24)",
+    "Adjacent Subnet (192.168.100.0/24)",
+    "Docker Network (172.17.0.0/16)",
+    "External/Public Internet",
+    "Other Networks",
+    "Tailscale Mesh VPN",
+]
+
+
+def subnet_group_for_ip(ip: str) -> str:
+    """Human-readable subnet bucket for a single IPv4 address."""
+    if ip in KNOWN_SUBNET_OVERRIDES:
+        return KNOWN_SUBNET_OVERRIDES[ip]
+    if ip == "24.192.17.178":
+        return "External/Public Internet"
+    if ip.startswith("192.168.2."):
+        return "Local LAN (192.168.2.0/24)"
+    if ip.startswith("192.168.0."):
+        return "Local LAN (192.168.0.0/24)"
+    if ip.startswith("192.168.1."):
+        return "Adjacent Subnet (192.168.1.0/24)"
+    if ip.startswith("192.168.100."):
+        return "Adjacent Subnet (192.168.100.0/24)"
+    if ip.startswith("172.17."):
+        return "Docker Network (172.17.0.0/16)"
+    if ip.startswith("100."):
+        return "Tailscale Mesh VPN"
+    return "Other Networks"
+
+
+def dashboard_subnet_rank(label: str) -> int:
+    try:
+        return DASHBOARD_SUBNET_ORDER.index(label)
+    except ValueError:
+        return len(DASHBOARD_SUBNET_ORDER)
+
+
+def _lan_ip_preference_tuple(ip: str) -> tuple:
+    """Sort key: lower is preferred for dashboard identity (192.168.2.x first)."""
+    parts = str(ip).split(".")
+    if len(parts) != 4:
+        return (9, 255, 255, 255, 255, str(ip))
+    try:
+        a, b, c, d = (int(x) for x in parts)
+    except ValueError:
+        return (9, 255, 255, 255, 255, str(ip))
+    if a == 192 and b == 168 and c == 2:
+        return (0, a, b, c, d)
+    if a == 192 and b == 168:
+        return (1, a, b, c, d)
+    if a == 10:
+        return (2, a, b, c, d)
+    return (3, a, b, c, d)
+
+
+def preferred_lan_ip_from_candidates(candidates: list[str]) -> str | None:
+    """Best LAN IPv4 among addresses; excludes Tailscale 100.x."""
+    lan_only = [
+        str(ip).strip()
+        for ip in candidates
+        if ip and not str(ip).startswith("100.")
+    ]
+    if not lan_only:
+        return None
+    return sorted(lan_only, key=_lan_ip_preference_tuple)[0]
+
+
+def pick_primary_lan_ip_for_dashboard(device: dict) -> str | None:
+    """Prefer a LAN/routable IP for grouping; ignore Tailscale 100.x here."""
+    ips = device.get("ip_addresses")
+    if isinstance(ips, list) and ips:
+        candidates = [str(ip) for ip in ips if ip]
+    else:
+        candidates = [str(device.get("ip") or "")]
+    return preferred_lan_ip_from_candidates(candidates)
+
+
+def attach_dashboard_subnet(device: dict) -> None:
+    """Set dashboard_subnet for UI grouping (LAN-first; Tailscale-only at bottom)."""
+    lan_ip = pick_primary_lan_ip_for_dashboard(device)
+    device["dashboard_subnet"] = (
+        subnet_group_for_ip(lan_ip) if lan_ip else "Tailscale Mesh VPN"
+    )
+    # One address on cards when multiple are tracked (e.g. LAN + Tailscale).
+    addrs = device.get("ip_addresses")
+    if isinstance(addrs, list) and len(addrs) > 1 and lan_ip:
+        device["ip"] = lan_ip
+        device["ip_display"] = lan_ip
 
 
 def load_ip_labels():
@@ -285,51 +380,38 @@ def collapse_duplicate_devices(devices):
             continue
 
         online_members = [m for m in members if m.get("status") == "Online"]
-        online_primary_lan_members = [
-            m for m in online_members
-            if str(m.get("ip", "")).startswith("192.168.0.")
-        ]
-        primary_lan_members = [
-            m for m in members
-            if str(m.get("ip", "")).startswith("192.168.0.")
-        ]
-        online_non_tailscale = [
-            m for m in online_members
-            if not is_tailscale_ip(m.get("ip"))
-        ]
-        non_tailscale_members = [
-            m for m in members
-            if not is_tailscale_ip(m.get("ip"))
-        ]
-        # Prefer 192.168.0.0/24 as primary identity when present.
-        primary = (
-            online_primary_lan_members[0]
-            if online_primary_lan_members else (
-                primary_lan_members[0]
-                if primary_lan_members else (
-                    online_non_tailscale[0]
-                    if online_non_tailscale else (
-                        online_members[0]
-                        if online_members else (
-                            non_tailscale_members[0]
-                            if non_tailscale_members else members[0]
-                        )
-                    )
-                )
-            )
-        )
+        group_ips = [str(m.get("ip")) for m in members if m.get("ip")]
+        preferred_lan = preferred_lan_ip_from_candidates(group_ips)
+
+        def pick_primary_member():
+            if preferred_lan:
+                lan_matches = [m for m in members if str(m.get("ip")) == preferred_lan]
+                online_lan = [m for m in lan_matches if m.get("status") == "Online"]
+                return online_lan[0] if online_lan else lan_matches[0]
+            online_non_ts = [
+                m for m in online_members if not is_tailscale_ip(m.get("ip"))
+            ]
+            if online_non_ts:
+                return online_non_ts[0]
+            non_ts = [m for m in members if not is_tailscale_ip(m.get("ip"))]
+            if non_ts:
+                return non_ts[0]
+            if online_members:
+                return online_members[0]
+            return members[0]
+
+        primary = pick_primary_member()
 
         status = "Online" if online_members else ("Offline" if all(m.get("status") == "Offline" for m in members) else "Unknown")
         status_color = "emerald" if status == "Online" else ("red" if status == "Offline" else "amber")
 
-        ip_addresses = sorted(
-            {m.get("ip") for m in members if m.get("ip")},
-            key=lambda ip: (
-                0 if str(ip).startswith("192.168.0.") else 1,
-                1 if is_tailscale_ip(ip) else 0,
-                ip,
-            ),
+        unique_ips = sorted({m.get("ip") for m in members if m.get("ip")})
+        lan_ips = sorted(
+            [ip for ip in unique_ips if ip and not is_tailscale_ip(ip)],
+            key=lambda ip: _lan_ip_preference_tuple(str(ip)),
         )
+        ts_ips = sorted([ip for ip in unique_ips if ip and is_tailscale_ip(ip)])
+        ip_addresses = lan_ips + ts_ips
         per_ip_status = []
         for m in sorted(members, key=lambda item: item.get("ip", "")):
             per_ip_status.append({
@@ -350,12 +432,15 @@ def collapse_duplicate_devices(devices):
 
         member_labels = [m.get("label") for m in members if m.get("label") not in (None, "", "—", "None")]
         merged = dict(primary)
-        merged["ip"] = primary.get("ip")
+        card_ip = preferred_lan if preferred_lan else str(primary.get("ip") or "")
+        merged["ip"] = card_ip
         merged["ip_addresses"] = ip_addresses
-        merged["ip_display"] = ", ".join(ip_addresses)
+        merged["ip_display"] = card_ip
         merged["status"] = status
         merged["status_color"] = status_color
-        merged["subnet_group"] = primary.get("subnet_group")
+        merged["subnet_group"] = (
+            subnet_group_for_ip(card_ip) if card_ip else primary.get("subnet_group")
+        )
         merged["per_ip_status"] = per_ip_status
         # Merge timestamps across all correlated IPs.
         first_seen_candidates = [m.get("first_seen") for m in members if m.get("first_seen") not in (None, "", "—")]
@@ -380,11 +465,18 @@ def collapse_duplicate_devices(devices):
             key=lambda ev: ev.get("timestamp", ""),
             reverse=True,
         )[:50]
-        primary_ip = str(primary.get("ip") or "")
-        preferred_hostname = KNOWN_HOSTNAME_OVERRIDES.get(primary_ip)
+        preferred_hostname = None
+        for ip in ip_addresses:
+            preferred_hostname = KNOWN_HOSTNAME_OVERRIDES.get(str(ip))
+            if preferred_hostname:
+                break
         if preferred_hostname:
             merged["hostname"] = preferred_hostname
-        preferred_label = KNOWN_LABEL_OVERRIDES.get(primary_ip)
+        preferred_label = None
+        for ip in ip_addresses:
+            preferred_label = KNOWN_LABEL_OVERRIDES.get(str(ip))
+            if preferred_label:
+                break
         if preferred_label:
             merged["label"] = preferred_label
             merged["labels"] = sorted(set(member_labels + [preferred_label]))
@@ -1062,23 +1154,6 @@ def load_device_data():
     md_info = parse_markdown_devices()
     labels = load_ip_labels()
 
-    def get_subnet_group(ip: str) -> str:
-        if ip in KNOWN_SUBNET_OVERRIDES:
-            return KNOWN_SUBNET_OVERRIDES[ip]
-        if ip == "24.192.17.178":
-            return "External/Public Internet"
-        if ip.startswith("192.168.0."):
-            return "Local LAN (192.168.0.0/24)"
-        if ip.startswith("192.168.1."):
-            return "Adjacent Subnet (192.168.1.0/24)"
-        if ip.startswith("192.168.100."):
-            return "Adjacent Subnet (192.168.100.0/24)"
-        if ip.startswith("172.17."):
-            return "Docker Network (172.17.0.0/16)"
-        if ip.startswith("100."):
-            return "Tailscale Mesh VPN"
-        return "Other Networks"
-    
     # Load from JSON cache (status, timestamps)
     try:
         if os.path.exists(CACHE_FILE):
@@ -1138,7 +1213,7 @@ def load_device_data():
                     "hostname": hostname,
                     "label": KNOWN_LABEL_OVERRIDES.get(ip, labels.get(ip, "")),
                     "identity": identity,
-                    "subnet_group": get_subnet_group(ip),
+                    "subnet_group": subnet_group_for_ip(ip),
                     "status": status_text,
                     "status_color": status_color,
                     "last_seen": last_seen,
@@ -1156,7 +1231,8 @@ def load_device_data():
     # Collapse correlated aliases (MAC, known clusters, Tailscale<->LAN hostname pairs).
     devices = collapse_duplicate_devices(devices)
 
-    # Sort as one unified list (not grouped by subnet).
+    for d in devices:
+        attach_dashboard_subnet(d)
 
     def status_priority(d):
         if d["status"] == "Online": return 0
@@ -1174,9 +1250,10 @@ def load_device_data():
 
     devices.sort(
         key=lambda x: (
+            dashboard_subnet_rank(x.get("dashboard_subnet", "Other Networks")),
             status_priority(x),
             name_priority(x),
-            x.get("hostname", "").lower()
+            x.get("hostname", "").lower(),
         )
     )
     return devices
@@ -1317,18 +1394,33 @@ def check_online_status():
     }
 
 
+def _is_ipv4_address(ip: str) -> bool:
+    """True if *ip* is a syntactically valid IPv4 address string."""
+    s = (ip or "").strip()
+    if not s:
+        return False
+    try:
+        socket.inet_pton(socket.AF_INET, s)
+        return True
+    except OSError:
+        return False
+
+
 def get_public_ip():
-    """Fetch current public/WAN egress IP for dashboard header."""
+    """Fetch current public/WAN egress IPv4 for dashboard header."""
+    # IPv4-only hostnames so the outbound connection uses IPv4; generic
+    # "what is my ip" URLs often return IPv6 when the client uses IPv6.
     urls = [
-        "https://ifconfig.me/ip",
-        "https://api.ipify.org",
+        "https://api4.ipify.org",
+        "https://ipv4.icanhazip.com",
+        "https://v4.ident.me",
     ]
     for url in urls:
         try:
             req = urllib.request.Request(url, headers={"User-Agent": "NetworkPulse/1.0"})
             with urllib.request.urlopen(req, timeout=2.5) as resp:
                 ip = resp.read().decode("utf-8").strip()
-            if ip:
+            if ip and _is_ipv4_address(ip):
                 return ip
         except Exception:
             continue
@@ -1830,6 +1922,7 @@ def api_devices():
     tailscale_ip = get_tailscale_ip()
     return jsonify({
         "devices": devices,
+        "subnet_section_order": DASHBOARD_SUBNET_ORDER,
         "scan_history": scan_history,
         "scan_matrix": scan_matrix,
         "watch_findings": watch_findings,
@@ -2020,9 +2113,18 @@ if __name__ == '__main__':
     # Create directories if they don't exist
     os.makedirs('templates', exist_ok=True)
     os.makedirs('static', exist_ok=True)
-    print("Network Dashboard starting on http://0.0.0.0:5000")
+    host = os.environ.get("HOST", "0.0.0.0").strip() or "0.0.0.0"
+    try:
+        port = int(os.environ.get("PORT", "5000"))
+    except ValueError:
+        port = 5000
+    debug_mode = os.environ.get("FLASK_DEBUG", "").strip().lower() in ("1", "true", "yes")
+    ts_ip = get_tailscale_ip()
+    lan_ip = get_local_ip()
+    print(f"Network Dashboard starting on http://{host}:{port}")
     print(f"Audit helper command (effective): {resolve_audit_helper_cmd('today')}")
-    print("Accessible via:")
-    print(" - Local: http://192.168.0.197:5000")
-    print(" - Tailscale: http://100.70.174.39:5000")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    print("Try:")
+    print(f" - LAN: http://{lan_ip}:{port}")
+    if ts_ip not in ("Unavailable", ""):
+        print(f" - Tailscale: http://{ts_ip}:{port}")
+    app.run(host=host, port=port, debug=debug_mode)

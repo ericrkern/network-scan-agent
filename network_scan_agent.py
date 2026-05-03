@@ -20,7 +20,13 @@ DEVICES_FILE = str(BASE_DIR / "devices.md")
 SEEN_DEVICES_CACHE = str(BASE_DIR / ".seen_devices.json")
 SCAN_SNAPSHOTS_FILE = str(BASE_DIR / ".scan_snapshots.json")
 IPHONE_IDENTITY_LOG_FILE = str(BASE_DIR / ".iphone_identity_checks.json")
-NETWORKS = ["192.168.0.0/24", "192.168.1.0/24", "192.168.100.0/24"]
+_BASE_NETWORKS = ["192.168.0.0/24", "192.168.1.0/24", "192.168.100.0/24"]
+_NET_ENV = os.environ.get("NETWORK_SCAN_AGENT_NETWORKS", "").strip()
+NETWORKS = (
+    [x.strip() for x in _NET_ENV.split(",") if x.strip()]
+    if _NET_ENV
+    else _BASE_NETWORKS
+)
 ADJACENT_SUBNET_PREFIX = "192.168.100."
 COMMON_PORTS = [22, 80, 443, 445, 631, 8080, 5900, 3000, 5000]
 SCAN_TIMEOUT = 2
@@ -864,6 +870,14 @@ def run_online_deep_scan_and_enrich(online_transition_ips, device_records):
     if not online_transition_ips:
         return []
 
+    if os.environ.get("NETWORK_SCAN_AGENT_SKIP_DEEP", "").strip().lower() in (
+        "1",
+        "true",
+        "yes",
+    ):
+        print("\n   Skipping deep scans (NETWORK_SCAN_AGENT_SKIP_DEEP is set).")
+        return []
+
     deep_mod = _load_deep_scan_module()
     if deep_mod is None or not hasattr(deep_mod, "run_nmap_deep_scan"):
         print("   Warning: deep scan module unavailable; skipping online deep scan trigger")
@@ -1066,6 +1080,136 @@ def update_scan_history(new_count, total_known, online_count):
         print(f"   Scan history updated")
     except Exception as e:
         print(f"   Warning: Could not update scan history: {e}")
+
+
+def _markdown_block_tailscale_cache_fallback(ip: str, rec: dict) -> str:
+    """Build a device markdown block from JSON cache when devices.md is missing an IP."""
+    mac = rec.get("mac", "—")
+    hostname = rec.get("hostname", "—")
+    ports_field = rec.get("ports")
+    if isinstance(ports_field, list):
+        ports = [int(p) for p in ports_field if str(p).isdigit()]
+    else:
+        ports = []
+    device = {
+        "ip": ip,
+        "hostname": hostname,
+        "mac": mac,
+        "ports": ports,
+        "type": rec.get("type", "Unknown"),
+        "discovered": rec.get("first_seen") or rec.get("last_seen") or "—",
+    }
+    block = format_device_entry(device)
+    if block.endswith("\n---\n\n"):
+        block = block[: -len("\n---\n\n")]
+    return block.strip()
+
+
+def reorder_devices_md_tailscale_bottom(devices_file):
+    """
+    Move all '### New Device Discovered' blocks whose primary IP is Tailscale
+    IPv4 (100.x) to the end of the file (after MAC merge + scan history),
+    under ## Tailscale mesh (100.x addresses).
+    Parses ### blocks from the entire file (handles misplaced sections). Dedupes by IP.
+    Fills missing Tailscale entries from .seen_devices.json when needed.
+    """
+    header_re = re.compile(r"^### New Device Discovered:\s*([\d.]+)\s*$", re.MULTILINE)
+
+    try:
+        with open(devices_file, "r") as f:
+            text = f.read()
+    except FileNotFoundError:
+        return
+
+    mac_pos = text.find("## MAC-Based Combined Devices")
+    scan_pos = text.find("## 📊 Scan History")
+
+    headers = list(header_re.finditer(text))
+    if not headers:
+        return
+
+    intro = text[: headers[0].start()].rstrip()
+
+    by_ip = {}
+    for i, m in enumerate(headers):
+        ip_key = m.group(1)
+        start = m.start()
+        end = headers[i + 1].start() if i + 1 < len(headers) else len(text)
+        block = text[start:end]
+        for marker in ("## MAC-Based Combined Devices", "## 📊 Scan History", "## Tailscale mesh (100.x addresses)"):
+            cut = block.find(marker)
+            if cut != -1:
+                block = block[:cut]
+        block = block.strip()
+        if block.startswith("### New Device Discovered:"):
+            by_ip[ip_key] = block
+
+    suffix_start = mac_pos if mac_pos != -1 else scan_pos
+    if suffix_start == -1:
+        suffix = ""
+    else:
+        suffix = text[suffix_start:].strip()
+        tail_tag = "## Tailscale mesh (100.x addresses)"
+        strip_idx = suffix.find(tail_tag)
+        if strip_idx != -1:
+            suffix = suffix[:strip_idx].rstrip()
+
+    try:
+        if os.path.exists(SEEN_DEVICES_CACHE):
+            with open(SEEN_DEVICES_CACHE, "r") as f:
+                cache = json.load(f)
+            if isinstance(cache, dict):
+                for ip_addr, rec in cache.items():
+                    if not isinstance(ip_addr, str) or not ip_addr.startswith("100."):
+                        continue
+                    if ip_addr in by_ip:
+                        continue
+                    if not isinstance(rec, dict):
+                        continue
+                    by_ip[ip_addr] = _markdown_block_tailscale_cache_fallback(ip_addr, rec)
+    except Exception as e:
+        print(f"   Warning: Tailscale cache fallback skipped: {e}")
+
+    def _sort_ip_key(block):
+        m = header_re.search(block)
+        if not m:
+            return (999, 999, 999, 999)
+        try:
+            return tuple(int(x) for x in m.group(1).split("."))
+        except ValueError:
+            return (999, 999, 999, 999)
+
+    blocks = sorted(by_ip.values(), key=_sort_ip_key)
+
+    lan_blocks, ts_blocks = [], []
+    for block in blocks:
+        m = header_re.search(block)
+        ip = m.group(1) if m else ""
+        if ip.startswith("100."):
+            ts_blocks.append(block)
+        else:
+            lan_blocks.append(block)
+
+    if not ts_blocks:
+        return
+
+    sep = "\n\n---\n\n"
+    ts_heading = "## Tailscale mesh (100.x addresses)"
+    ts_body = ts_heading + "\n\n" + sep.join(ts_blocks)
+
+    body = intro
+    if lan_blocks:
+        body += "\n\n" + sep.join(lan_blocks)
+    if suffix:
+        body += "\n\n---\n\n" + suffix
+    body += "\n\n---\n\n" + ts_body
+
+    try:
+        with open(devices_file, "w") as f:
+            f.write(body)
+        print(f"   Tailscale device sections grouped at bottom of {devices_file}")
+    except Exception as e:
+        print(f"   Warning: could not reorder Tailscale sections: {e}")
 
 
 def update_devices_file(new_devices):
@@ -1285,6 +1429,7 @@ def main():
         print(f"   Currently online: {len(all_live_hosts)}")
         # Still update scan history even if no new devices
         update_scan_history(0, len(device_records), len(all_live_hosts))
+        reorder_devices_md_tailscale_bottom(DEVICES_FILE)
         return
     
     print(f"\n🆕 {len(new_ips)} NEW device(s) detected!")
@@ -1311,6 +1456,7 @@ def main():
     
     # Update scan history
     update_scan_history(len(new_devices), len(device_records), len(all_live_hosts))
+    reorder_devices_md_tailscale_bottom(DEVICES_FILE)
 
 
 if __name__ == "__main__":

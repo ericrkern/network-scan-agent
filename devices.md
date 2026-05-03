@@ -1,57 +1,1733 @@
-# Network Device Inventory
-**Generated:** 2026-04-21  
-**Source:** Multi-subnet scan from Jetson host (192.168.0.197)  
-**Enhanced with:** First-seen timestamps and network uptime tracking (`On Network` column)
+
+## 🔔 Network Scan Alert - 2026-05-03 11:31:03
+
+**2 new device(s) discovered!**
+
+### New Device Discovered: 192.168.2.1
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.1 |
+| **Hostname** | OpenWrt.lan |
+| **MAC Address** | fc:65:de:1d:22:35 |
+| **Open Ports** | 80, 443, 631, 5000 |
+| **Device Type** | Printer/Scanner |
+| **Discovered** | 2026-05-03 10:29:30 |
+
+**Access Methods:**
+- HTTP: http://192.168.2.1
+- HTTPS: https://192.168.2.1
+- CUPS: http://192.168.2.1:631
 
 ---
 
-## Device Summary by Network
+---
 
-### Local LAN (192.168.0.0/24) — 10 Devices
+---
 
-| IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
-|-----|----------|-----|--------|------------|---------------|----------|
-| 192.168.0.1 | Motorola Router | c8:c7:50:f5:ca:1b | Online | 53, 80, 443, 5000 | Web UI (http/https), DNS | **Motorola MG8702 Router/Gateway** |
-| 192.168.0.59 | — | 8a:33:76:dd:0b:cb | Online | None | No known access | Unknown client device |
-| 192.168.0.67 | R7000.MG8702 | a0:04:60:31:85:a0 | Stealth (no ping) | UDP: 53,67,68,123,161,1900,5353,547,69,137,138,500,4500,5060 | SNMP, DHCP, VPN, VoIP | **Secondary Router/VPN Gateway** (Netgear R7000 or Lenovo) |
-| 192.168.0.127 | DESKTOP-HN6QL1F.MG8702 | 70:8b:cd:7c:f4:54 | Online | 139, 445 | SMB/CIFS | **Windows/Samba File Share** |
-| 192.168.0.135 | motorola-edge-2022.MG8702 | 8a:13:29:33:8a:2d | Online | None | No open ports | **Motorola Edge 2022 Phone** |
-| 192.168.0.143 | — | 30:03:c8:4a:0a:84 | Online | 80, 443, 631, 8080 | Web UI, IPP | **HP Color LaserJet MFP M283fdw** |
-| 192.168.0.158 | device.MG8702 | 44:61:32:c8:42:f0 | Online | None | No open ports | Unknown device |
-| 192.168.0.197 | yahboom | — | **This Host** | 22, 631, 5900 | SSH, CUPS, VNC | **Jetson (Scan Source)** |
-| 192.168.0.233 | RokuUltraB.MG8702 | d8:31:34:5f:40:b4 | Online | None | Roku protocol | **Roku Ultra Streaming Device** |
-| 192.168.0.246 | esp32s3-9F9FA0.MG8702 | 20:6e:f1:9f:9f:a0 | Online | None | ESP32 protocol | **ESP32-S3 IoT Device** |
+---
 
-### Adjacent Subnet (192.168.50.0/24) — 1 Device
+---
 
-| IP | Hostname | Status | Open Ports | Access Method | Identity |
-|-----|----------|--------|------------|---------------|----------|
-| 192.168.50.1 | — | Online | 53, 80, 443, 5000 | Web UI, DNS | **Router Interface** (same as 192.168.0.1) |
+---
 
-### Adjacent Subnet (192.168.100.0/24) — 1 Device
+---
 
-| IP | Hostname | Status | Open Ports | Access Method | Identity |
-|-----|----------|--------|------------|---------------|----------|
-| 192.168.100.1 | — | Online | None | ICMP only | **Router Interface** (management disabled) |
+---
 
-### Docker Network (172.17.0.0/16) — 1 Device
+---
 
-| IP | Hostname | Status | Open Ports | Access Method | Identity |
-|-----|----------|--------|------------|---------------|----------|
-| 172.17.0.1 | yahboom | Online | 22, 631, 5900 | SSH, CUPS, VNC | **Docker Bridge Interface** (local) |
+---
 
-### Tailscale Mesh VPN — 6 Devices
+---
 
-| IP | Hostname | Status | Open Ports | Access Method | Identity |
-|-----|----------|--------|------------|---------------|----------|
-| 100.71.191.72 | apple-mac-mini-m4-pro | Online | 22, 5900 | SSH, VNC | **Mac Mini** |
-| 100.76.245.26 | Velas16s-macbookpro | Offline | — | — | **Offline/Unresponsive** |
-| 100.78.64.7 | apple-macbook-pro-m5-prime-radiant | Online | 22, 5900, **18789** | SSH, VNC, Custom | **MacBook Pro** |
-| 100.79.216.111 | erics-macbook-pro.tail2a3b45.ts.net | Online | 5000 | AirTunes | **MacBook Pro (AirPlay)** |
-| 100.92.6.101 | thinkstation-pgx-cindy-crawford | Online | 22, 80, 8080, **18789** | SSH, HTTP, Custom | **OpenClaw Server/Lenovo ThinkStation** |
-| 100.93.92.44 | irene-macbookair | Offline | — | — | **Offline/Unresponsive** |
-| 100.95.15.82 | iphone172.tail2a3b45.ts.net | Online | None | iOS protocol | **iPhone** |
-| 100.100.100.100 | magicdns.localhost-tailscale-daemon | Online | 53, 80, 8080 | DNS, HTTP | **Tailscale MagicDNS Service** |
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.102
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.102 |
+| **Hostname** | HPBFDA8D.lan |
+| **MAC Address** | 28:92:4a:bf:da:8d |
+| **Open Ports** | 80, 443, 445, 631, 8080 |
+| **Device Type** | Printer/Scanner |
+| **Discovered** | 2026-05-03 10:29:34 |
+
+**Access Methods:**
+- HTTP: http://192.168.2.102
+- HTTPS: https://192.168.2.102
+- SMB: `smb://192.168.2.102`
+- CUPS: http://192.168.2.102:631
+- HTTP Alt: http://192.168.2.102:8080
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.114
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.114 |
+| **Hostname** | — |
+| **MAC Address** | 44:42:01:f9:03:5a |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:30 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.120
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.120 |
+| **Hostname** | iPhone.lan |
+| **MAC Address** | 4a:42:d1:7d:79:db |
+| **Open Ports** | None detected |
+| **Device Type** | Mobile Phone |
+| **Discovered** | 2026-05-03 10:29:44 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.122
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.122 |
+| **Hostname** | — |
+| **MAC Address** | 48:5f:2d:de:4b:87 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:31 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.128
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.128 |
+| **Hostname** | Watch-3.lan |
+| **MAC Address** | 4a:1a:84:8a:f9:44 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 18:15:53 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+
+
+## 🔔 Network Scan Alert - 2026-05-03 13:16:02
+
+**1 new device(s) discovered!**
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.136
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.136 |
+| **Hostname** | 09AA01RC3819036N.lan |
+| **MAC Address** | 64:16:66:b8:bd:57 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 13:16:02 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+
+
+## 🔔 Network Scan Alert - 2026-05-03 13:00:54
+
+**1 new device(s) discovered!**
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.137
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.137 |
+| **Hostname** | 09AA01AC17180V3M.lan |
+| **MAC Address** | 64:16:66:26:50:b8 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:30 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.155
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.155 |
+| **Hostname** | iPhone-3.lan |
+| **MAC Address** | 66:20:6b:5b:76:2e |
+| **Open Ports** | None detected |
+| **Device Type** | Mobile Phone |
+| **Discovered** | 2026-05-03 10:29:33 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.157
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.157 |
+| **Hostname** | iPhone-2.lan |
+| **MAC Address** | da:dd:91:07:12:1a |
+| **Open Ports** | None detected |
+| **Device Type** | Mobile Phone |
+| **Discovered** | 2026-05-03 13:00:54 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+
+
+## 🔔 Network Scan Alert - 2026-05-03 10:29:55
+
+**23 new device(s) discovered!**
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.168
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.168 |
+| **Hostname** | Google-Home.lan |
+| **MAC Address** | f4:f5:d8:b2:7e:74 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:30 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.169
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.169 |
+| **Hostname** | — |
+| **MAC Address** | 5a:96:96:c8:90:2a |
+| **Open Ports** | 5000 |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:25 |
+
+**Access Methods:**
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.181
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.181 |
+| **Hostname** | iPad.lan |
+| **MAC Address** | 4a:f6:c7:86:05:23 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 11:31:03 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+
+# Network Device Inventory
+
+## 🔔 Network Scan Alert - 2026-05-03 18:15:53
+
+**1 new device(s) discovered!**
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.196
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.196 |
+| **Hostname** | ekern-ThinkPad-X1-Carbon-Gen-9.lan |
+| **MAC Address** | 48:68:4a:19:49:1b |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:30 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.197
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.197 |
+| **Hostname** | Pixel-10-Pro-XL.lan |
+| **MAC Address** | 52:2d:14:36:d0:aa |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:29 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.199
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.199 |
+| **Hostname** | amazon-501503d5a.lan |
+| **MAC Address** | fc:65:de:1d:22:35 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:27 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.200
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.200 |
+| **Hostname** | MacBookPro.lan |
+| **MAC Address** | ee:fb:db:e0:01:2d |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 11:31:02 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.225
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.225 |
+| **Hostname** | — |
+| **MAC Address** | 28:24:c9:ea:23:74 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:34 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.226
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.226 |
+| **Hostname** | — |
+| **MAC Address** | b0:73:9c:67:98:39 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:44 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.227
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.227 |
+| **Hostname** | zerothguard.lan |
+| **MAC Address** | — |
+| **Open Ports** | 22, 5000 |
+| **Device Type** | Linux/SSH Server |
+| **Discovered** | 2026-05-03 10:29:55 |
+
+**Access Methods:**
+- SSH: `ssh user@192.168.2.227`
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 192.168.2.241
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.2.241 |
+| **Hostname** | Galaxy-A15-5G.lan |
+| **MAC Address** | d2:58:b2:98:94:90 |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:45 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
 
 ---
 
@@ -61,905 +1737,288 @@ Devices below are consolidated when identity evidence indicates one logical devi
 
 | Combined Device | Match Basis | Identifier | IP Addresses | Status | Notes |
 |-----------------|-------------|------------|--------------|--------|-------|
-| Combined Device 1 | MAC | d4:be:dc:ed:dd:90 | 192.168.0.1, 192.168.0.192 | online | Same MAC observed on multiple IPs; grouped as one logical device. |
-| Combined Device 2 | Correlated iPhone | e6:40:e4:dc:e1:f0 | 192.168.0.49, 192.168.0.131 | offline | Hostname correlation + prior identity check indicates one iPhone across two subnets. |
-## Device Connectivity Log
+| Combined Device 1 | MAC | fc:65:de:1d:22:35 | 192.168.2.1, 192.168.2.199 | online | Same MAC observed on multiple IPs; grouped as one logical device. |
+## 📊 Scan History
 
-This table tracks when devices were first seen (came online), their last known activity, and current status. Updated by the hourly network scan agent.
+| Scan Time | New Devices | Online | Total Known |
+|-----------|-------------|--------|-------------|
+| 2026-05-03 19:15:52 | 0 | 21 | 31 |
+| 2026-05-03 19:00:52 | 0 | 24 | 31 |
+| 2026-05-03 18:45:52 | 0 | 21 | 31 |
+| 2026-05-03 18:30:53 | 0 | 21 | 31 |
+| 2026-05-03 18:15:53 | 1 | 25 | 31 |
+| 2026-05-03 18:00:53 | 0 | 21 | 30 |
+| 2026-05-03 17:45:53 | 0 | 21 | 30 |
+| 2026-05-03 17:30:53 | 0 | 23 | 30 |
+| 2026-05-03 17:15:53 | 0 | 23 | 30 |
+| 2026-05-03 17:00:53 | 0 | 22 | 30 |
+| 2026-05-03 16:45:53 | 0 | 20 | 30 |
+| 2026-05-03 16:30:53 | 0 | 21 | 30 |
+| 2026-05-03 16:15:53 | 0 | 19 | 30 |
+| 2026-05-03 16:00:53 | 0 | 18 | 30 |
+| 2026-05-03 15:45:53 | 0 | 20 | 30 |
+| 2026-05-03 15:30:53 | 0 | 21 | 30 |
+| 2026-05-03 15:15:53 | 0 | 20 | 30 |
+| 2026-05-03 15:00:53 | 0 | 19 | 30 |
+| 2026-05-03 14:45:53 | 0 | 17 | 30 |
+| 2026-05-03 14:30:53 | 0 | 20 | 30 |
+| 2026-05-03 14:15:53 | 0 | 18 | 30 |
+| 2026-05-03 14:00:53 | 0 | 21 | 30 |
+| 2026-05-03 13:45:53 | 0 | 22 | 30 |
+| 2026-05-03 13:30:53 | 0 | 19 | 30 |
+| 2026-05-03 13:16:02 | 1 | 20 | 30 |
+| 2026-05-03 13:00:54 | 1 | 22 | 29 |
+| 2026-05-03 12:45:53 | 0 | 20 | 28 |
+| 2026-05-03 12:30:53 | 0 | 22 | 28 |
+| 2026-05-03 12:15:53 | 0 | 24 | 28 |
+| 2026-05-03 12:00:53 | 0 | 23 | 28 |
+| 2026-05-03 11:45:53 | 0 | 23 | 28 |
+| 2026-05-03 11:31:03 | 2 | 24 | 28 |
+| 2026-05-03 10:42:29 | 0 | 20 | 26 |
+| 2026-05-03 10:29:55 | 23 | 23 | 26 |
 
-| IP Address | Hostname | First Seen | Last Seen | On Network | Current Status |
-|------------|----------|------------|-----------|------------|----------------|
-| 192.168.0.1 | Motorola Router | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Router) |
-| 192.168.0.197 | yahboom | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (This Host) |
-| 192.168.0.143 | — | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Printer) |
-| 192.168.0.233 | RokuUltraB.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Streaming) |
-| 100.71.191.72 | apple-mac-mini-m4-pro | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (Mac Mini) |
-| 100.78.64.7 | apple-macbook-pro-m5-prime-radiant | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (MacBook Pro) |
-| 100.92.6.101 | thinkstation-pgx-cindy-crawford | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Online** (OpenClaw Server) |
-| 100.76.245.26 | Velas16s-macbookpro | 2026-04-20 | 2026-04-20 18:35 | ~14h | **Offline** |
-| 100.93.92.44 | — | 2026-04-20 | 2026-04-20 18:35 | ~14h | **Offline** |
-| 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
-<<<<<<< HEAD
-*Last updated: 2026-05-02 08:34:59*
-=======
-*Last updated: 2026-05-02 08:34:59*
->>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
-
----
-
-## Recent Online/Offline Changes (Since Last Scan)
-
-This table shows only devices that changed state (came online or went offline) between scans. Hostnames are included where known.
-
-| Status       | Devices                          | Scan Time           | Notes |
-|--------------|----------------------------------|---------------------|-------|
-| **Online** | —                                 | None                         | 2026-04-21 07:01:43 | No devices came online in the latest scan. |
-| **Offline**| —                                 | None                         | 2026-04-21 07:01:43 | No devices went offline in the latest scan. |
-| **Online** | esp32s3-9F9FA0.MG8702             | ESP32-S3 IoT (192.168.0.246) | 2026-04-20 18:35:03 | New IoT device joined the LAN. |
-| **Online** | device.MG8702                     | Unknown Client (192.168.0.158) | 2026-04-20 16:33:02 | New client device discovered. |
-
-*This table is focused exclusively on state changes. The full scan history is in the section above.*
----
-
-## Access Details by Device Type
-
-### Network Infrastructure
-
-**Primary Router: 192.168.0.1 / 192.168.50.1**
-- Access: Web UI at http://192.168.0.1 or https://192.168.0.1:443
-- Management port: 5000
-- Services: DNS (53), Web Admin (80/443)
-- IPv6 (link-local): `fe80::cac7:50ff:fef5:ca1b`
-- Credentials: Unknown (would require testing or admin knowledge)
-
-**Secondary Gateway: 192.168.0.67 (R7000)**
-- Access: UDP services only (no web UI detected on standard ports)
-- Services: VPN (500/4500), VoIP (5060), DHCP, DNS, SNMP
-- Access method: SNMP v2/v3 (community unknown), VPN tunnel, SIP
-- Status: Stealth device (no ping, no TCP)
-
-### Computing Devices
-
-**Your Jetson Host: 192.168.0.197**
-- SSH access: `ssh user@192.168.0.197` (port 22)
-- VNC access: `vncviewer 192.168.0.197:5900`
-- CUPS printing: http://192.168.0.197:631
-
-**Mac Mini: 100.71.191.72 (Tailscale)**
-- SSH: `ssh user@100.71.191.72`
-- VNC: `vncviewer 100.71.191.72:5900`
-- Access: Requires Tailscale auth + device credentials
-
-**MacBook Pro: 100.78.64.7 (Tailscale)**
-- SSH: `ssh user@100.78.64.7`
-- VNC: `vncviewer 100.78.64.7:5900`
-- Custom port 18789: Unknown service (likely application-specific)
-
-**OpenClaw Server: 100.92.6.101 (Tailscale)**
-- HTTP: http://100.92.6.101 (OpenClaw Security Audit interface)
-- HTTP Alt: http://100.92.6.101:8080
-- SSH: `ssh user@100.92.6.101`
-- Port 18789: OpenClaw service port
-- Access: Requires Tailscale + web/ssh credentials
-
-### IoT/Embedded Devices
-
-**HP Printer: 192.168.0.143**
-- Web UI: http://192.168.0.143 (HP EWS interface)
-- IPP Printing: port 631
-- ePrint/Cloud: port 8080
-- Access: Usually admin/admin or no auth for basic functions
-
-**Roku Ultra: 192.168.0.233**
-- Protocol: Roku ECP (External Control Protocol)
-- Port: 8060 (not scanned, standard Roku port)
-- Access: HTTP API, mobile app control
-- IPv6 (link-local): `fe80::da31:34ff:fe5f:40b4`
-
-**Roku Streaming Stick Plus: 192.168.0.192**
-- Protocol: Roku ECP + UPnP device descriptor
-- Base endpoint: http://192.168.0.192:8060 (returns XML, not a browser UI page)
-- Device details: `/query/device-info` (HTTP 200, model/software/network/power metadata)
-- Current app visibility: `/query/active-app` (HTTP 200, shows active app/screensaver)
-- Now-playing detail: `/query/media-player` is blocked (`403 ECP command not allowed in Limited mode`)
-- App list endpoint: `/query/apps` currently blocked in Limited mode (HTTP 403)
-- Control endpoints (for example `/keypress/Home`, `/launch/<id>`) currently unavailable from this interface
-- IPv6 (link-local): `fe80::d6be:dcff:feed:dd90`
-
-**Roku Streaming Stick: 192.168.0.68**
-- Protocol: Roku ECP (External Control Protocol)
-- Port: 8060 (standard Roku control port)
-- IPv6 (link-local): `fe80::1259:32ff:fe80:76fa`
-
-**ESP32-S3: 192.168.0.246**
-- Protocol: ESP32 native/MQTT/Web
-- Access: Likely web interface or serial
-
-**Motorola Phone: 192.168.0.135**
-- No open ports detected
-- Access: Likely cloud/Android services only
+*Last updated: 2026-05-03 19:15:52*
 
 ---
 
-## Special Port 18789 Analysis
-
-**Devices with port 18789 open:**
-1. **100.78.64.7** (MacBook Pro)
-2. **100.92.6.101** (OpenClaw Server)
-
-**Service fingerprint:**
-- Port 18789 is non-standard
-- On OpenClaw server (100.92.6.101), likely OpenClaw agent/service port
-- On MacBook Pro, possibly OpenClaw client or development instance
+---
 
 ---
 
-## Network Topology (Updated with All Discovered Devices)
-
-### Physical Network Topology
-
-```
-Internet
-    │
-    ▼
-[Motorola MG8702 Gateway]
-  192.168.0.1 ──┬── 192.168.0.67 (R7000 VPN Gateway - stealth)
-                │
-                ├── 192.168.50.0/24 (Router sub-interface)
-                │   └── 192.168.50.1
-                │
-                └── 192.168.100.0/24 (Router sub-interface)
-                    └── 192.168.100.1 (management disabled)
-
-192.168.0.0/24 (Main LAN)
-├── Infrastructure ───────────────────────────────────────────────
-│   ├── 192.168.0.1 ── Motorola MG8702 Router/Gateway
-│   │                   [DNS 53, Web 80/443, Mgmt 5000]
-│   │
-│   ├── 192.168.0.67 ── R7000 VPN/Gateway (stealth device)
-│   │                   [UDP: VPN 500/4500, VoIP 5060, SNMP 161]
-│   │
-│   └── 192.168.0.131 ── Apple DNS-SD Proxy ★ NEW
-│                       [DNS-over-TLS 853, mDNS relay]
-│
-├── Computing Devices ────────────────────────────────────────────
-│   ├── 192.168.0.197 ── Jetson (This Host) ★ SCAN SOURCE
-│   │                   [SSH 22, VNC 5900, RDP 3389, CUPS 631]
-│   │
-│   ├── 192.168.0.127 ── Windows File Share
-│   │                   [SMB 139/445]
-│   │
-│   ├── 192.168.0.59 ── Mobile Device (sleep/wake cycling) ★ MYSTERY
-│   │                   [No open ports, UDP-responsive]
-│   │
-│   └── 192.168.0.135 ── Motorola Edge 2022 Phone
-│
-├── Peripherals/IoT ────────────────────────────────────────────
-│   ├── 192.168.0.143 ── HP Color LaserJet MFP M283fdw
-│   │                   [Web 80/443, IPP 631, ePrint 8080]
-│   │
-│   ├── 192.168.0.233 ── Roku Ultra Streaming Device
-│   │                   [Roku ECP protocol]
-│   │
-│   ├── 192.168.0.158 ── Motorola IoT Device (silent) ★ MYSTERY
-│   │                   [No services exposed, ping only]
-│   │
-│   └── 192.168.0.246 ── ESP32-S3 IoT Device
-│
-├── Offline/Powered Off ───────────────────────────────────────
-│   ├── 192.168.0.142 ── Mystery Device (offline)
-│   │                   [Last seen: TCP port 32, now FAILED ARP]
-│   │
-│   └── 192.168.0.182 ── Ghost Entry (disconnected)
-│                       [No ARP, no response]
-│
-└── Virtual Interfaces (Local) ────────────────────────────────
-    ├── 172.17.0.1 ── Docker Bridge (l4tbr0: usb0/usb1 DOWN)
-    │
-    └── 127.0.0.1 ── Localhost Services
-        ├── Port 8888 (unknown service)
-        ├── Port 11434 (Ollama LLM)
-        └── Port 111 (RPCbind)
-
-Tailscale Mesh VPN Overlay (encrypted tunnel via 100.70.174.39)
-├── 100.71.191.72 ── Mac Mini
-│                   [SSH 22, VNC 5900]
-│
-├── 100.78.64.7 ── MacBook Pro
-│                  [SSH 22, VNC 5900, OpenClaw 18789]
-│
-├── 100.79.216.111 ── MacBook Pro (AirPlay mode)
-│                     [AirTunes 5000]
-│
-├── 100.92.6.101 ── OpenClaw Server ★ KEY FINDING
-│                   [HTTP 80/8080, SSH 22, OpenClaw 18789]
-│                   [Hostname: thinkstationpgx-9c48]
-│
-├── 100.95.15.82 ── iPhone (Tailscale)
-│
-├── 100.100.100.100 ── Tailscale MagicDNS
-│                      [DNS 53, HTTP 80/8080]
-│
-└── Offline Peers ─────────────────────────
-    ├── 100.76.245.26 ── (unresponsive)
-    └── 100.93.92.44 ── (unresponsive)
-```
-
-### Network Relationship Map
-
-```
-                    ┌─────────────────────────────────────────┐
-                    │         Internet Gateway                │
-                    │         192.168.0.1 (Motorola)          │
-                    │  Routes: .50.x, .100.x subnets          │
-                    └─────────────────────────────────────────┘
-                                      │
-           ┌──────────────────────────┼──────────────────────────┐
-           │                          │                          │
-           ▼                          ▼                          ▼
-   ┌───────────────┐          ┌───────────────┐          ┌───────────────┐
-   │ 192.168.0.67  │          │ 192.168.50.0  │          │ 192.168.100.0 │
-   │ R7000 Gateway │          │    /24        │          │    /24        │
-   │ [VPN/VoIP]    │          │ [Router intf] │          │ [Router intf] │
-   └───────────────┘          └───────────────┘          └───────────────┘
-           │                          │                          │
-           │                    ┌─────┴─────┐              (management
-           │                    │ .50.1     │               disabled)
-           ▼                    └───────────┘
-   ┌─────────────────────────────────────────────────────────────┐
-   │                    192.168.0.0/24 (Main LAN)                  │
-   │                                                               │
-   │  Infrastructure          Computing           IoT/Services      │
-   │  ─────────────────────────────────────────────────────────    │
-   │  ├─ .1   Router        ├─ .59   Mobile      ├─ .143 Printer │
-   │  ├─ .67  VPN GW        ├─ .127  Windows      ├─ .233 Roku    │
-   │  ├─ .131 Apple DNS     ├─ .135  Phone       ├─ .158 Moto IoT│
-   │  │                     ├─ .197  Jetson ★    └─ .246 ESP32   │
-   │  │                     │                                     │
-   │  Offline/Ghost         │                                     │
-   │  ├─ .142 (mystery)     Tailscale Overlay                    │
-   │  └─ .182 (ghost)       ├─ 100.92.6.101 OpenClaw ★          │
-   │                        ├─ 100.78.64.7   MacBook            │
-   │                        ├─ 100.71.191.72 Mac Mini           │
-   │                        └─ ... (4 more Tailscale devices)    │
-   └─────────────────────────────────────────────────────────────┘
-```
-
-### Legend
-- ★ **Key Discovery**: Critical device identified during deep scan
-- 🔒 **Secure Service**: TLS/encrypted port detected
-- 📡 **Always-On**: 24/7 service device
-- 😴 **Sleep/Wake**: Power-managed device (intermittent)
-- 👻 **Ghost/Offline**: Device no longer reachable
+---
 
 ---
 
-## Total Device Count
-
-| Network | Device Count |
-|---------|-------------|
-| 192.168.0.0/24 | 10 |
-| 192.168.50.0/24 | 1 |
-| 192.168.100.0/24 | 1 |
-| 172.17.0.0/16 (Docker) | 1 |
-| Tailscale | 6 (4 online) |
-| **TOTAL** | **19** |
+---
 
 ---
 
-## Notes
-
-- Stealth device 192.168.0.67 was discovered via ARP table, not ping scan
-- No responsive devices found in 10.0.0.0/8 or 172.16.0.0/16 from this host
-- OpenClaw service confirmed at 100.92.6.101 with HTTP interface
-- Port 18789 appears to be OpenClaw-related (present on 2 Tailscale hosts)
+---
 
 ---
 
-## Mystery/Other Clients Deep Scan Results (2026-04-20)
-
-### Summary
-Comprehensive deep scan performed on suspected offline/powered-off devices. **Major discovery: Apple device identified with DNS-SD proxy service.**
-
-### Detailed Findings by Device
-
-| IP | Hostname | MAC | Deep Scan Results | Identity |
-|-----|----------|-----|-------------------|----------|
-| **192.168.0.59** | — | `8a:33:76:dd:0b:cb` | **RECOVERED** - Now responding to ping (was temporarily offline). ARP status: DELAY. No TCP ports. UDP-responsive via router. | Unknown client (sleeping/mobile device) |
-| **192.168.0.131** | Irenes-iPhone.local | `06:4d:1c:2e:e9:ab` | **IDENTIFIED: APPLE DNS-SD PROXY** - Port 853 (DNS-over-TLS) open. Certificate: `com.apple.dnssd-proxy` from Apple Inc. Bonjour/mDNS relay service active. Randomized MAC (privacy feature). | **Apple Device** - MacBook/iMac/Apple TV/Time Capsule acting as mesh relay |
-| **192.168.0.142** | — | FAILED ARP | **OFFLINE** - No ping response. Previously showed port 32. ARP FAILED. May be wake-on-demand device or powered-off VM. | Unknown (possibly powered off) |
-| **192.168.0.158** | device.MG8702 | `44:61:32:c8:42:f0` | **STALE ARP but pingable** - No open TCP ports. UDP-responsive. Hostname suggests Motorola device but no services exposed. | Unknown Motorola device (possibly IoT) |
-| **192.168.0.182** | — | FAILED ARP | **OFFLINE** - No ping response. ARP FAILED. No historical data. | Unknown (offline or moved) |
-
-### Key Discoveries
-
-#### 192.168.0.131 - Apple DNS-SD Proxy Service
-**Major Find:** TLS certificate analysis reveals:
-```
-Subject: CN = com.apple.dnssd-proxy C9D056D6-E831-414C-A376-0619112943B2
-         OU = Networking, O = Apple Inc., L = Cupertino, ST = California, C = US
-Algorithm: id-ecPublicKey, 384-bit ECDSA
-Valid: Apr 17 2026 - Apr 17 2027
-```
-
-**Service Details:**
-- **Port 853**: DNS-over-TLS (DoT) - Secure DNS proxy
-- **Function**: Bonjour/mDNS relay for cross-network service discovery
-- **Device Type**: Likely MacBook, iMac, Apple TV, or Airport/Time Capsule
-- **Network Role**: Acts as mesh relay/extender for Apple services
-
-#### 192.168.0.59 - Power Cycling Behavior
-- **Initial scan**: ARP REACHABLE, then disappeared
-- **Deep scan**: RECOVERED - responding again
-- **Assessment**: Mobile device with aggressive power management (phone/tablet)
-- **Pattern**: Device sleeps, drops ARP, wakes on network activity
-
-#### 192.168.0.142 - Port 32 Mystery
-- **Previous finding**: Port 32 TCP open (unusual)
-- **Current status**: OFFLINE (FAILED ARP)
-- **Port 32 significance**: Historically AppleTalk or messaging protocols
-- **Assessment**: May be wake-on-demand device, VM, or Apple legacy device
-
-#### 192.168.0.158 - Silent Motorola Device
-- **Hostname**: device.MG8702 (suggests Motorola/Netgear ecosystem)
-- **Behavior**: Responds to ping but no TCP services
-- **Assessment**: Likely IoT sensor, smart home device, or managed switch
-
-#### 192.168.0.182 - Ghost Entry
-- **Status**: Complete ARP failure
-- **Assessment**: Device has left network or MAC address changed
-
-### VM Infrastructure Present but Inactive
-
-**NVIDIA L4T Bridge (`l4tbr0`)**
-- Status: DOWN (inactive)
-- Interfaces: `usb0`, `usb1` (USB gadget mode)
-- Can be used for USB networking to host PC or guest VMs
-- Present on Jetson platforms for USB Device Mode
-
-**No Active VM Platforms Detected:**
-- KVM/libvirt: Not running
-- VirtualBox/VMware: Not installed
-- LXD/Incus: Not installed
-- Docker: Installed but no running containers
-- systemd-nspawn: No machines
-- Kubernetes (k3s/minikube): Not running
-
-### Local Services on This Host (192.168.0.197)
-
-| Port | Service | Notes |
-|------|---------|-------|
-| 22 | SSH | Standard access |
-| 631 | CUPS | Printing service |
-| 5900 | VNC | gnome-remote-desktop |
-| 3389 | RDP | gnome-remote-desktop |
-| 8888 | Unknown | Requires elevated privileges to identify |
-| 11434 | Ollama | Local LLM/AI inference service |
-| 111 | RPCbind | NFS/portmapper |
-
-### R7000 Gateway (192.168.0.67) - Potential VM Host?
-
-The R7000 device has extensive VPN capabilities (IPsec, IKE) and could potentially:
-- Route to VM subnets via VPN tunnels
-- Host VMs on its internal storage
-- Act as a VLAN gateway for isolated VM networks
-
-**Recommendation:** Access R7000 web interface (if available via non-standard ports) to check for VM hosting features.
-
-### Updated Device Count (Final)
-
-| Network | Original | After Deep Scan | Status Summary |
-|---------|----------|-----------------|----------------|
-| 192.168.0.0/24 | 10 | **13** | 10 active + 3 identified mystery devices |
-| 192.168.50.0/24 | 1 | 1 | Router interface |
-| 192.168.100.0/24 | 1 | 1 | Router interface (management off) |
-| 172.17.0.0/16 | 1 | 1 | Docker bridge |
-| Tailscale | 6 | 6 | Overlay network |
-| **TOTAL** | **19** | **22** | **+3 mystery clients identified** |
-
-### Mystery Client Classification
-
-| Status | Devices |
-|--------|---------|
-| **Active & Identified** | 192.168.0.131 (Apple DNS-SD Proxy) |
-| **Active but Unknown** | 192.168.0.59, 192.168.0.158 |
-| **Offline/Sleeping** | 192.168.0.142, 192.168.0.182 |
-
-### Power State Assessment
-
-Based on deep scan behavior analysis:
-
-- **Powered On but Silent**: 192.168.0.158 (IoT device, no user services)
-- **Sleep/Wake Cycling**: 192.168.0.59 (mobile device, ARP disappeared then returned)
-- **Powered Off/Disconnected**: 192.168.0.142, 192.168.0.182 (no response at all)
-- **Always-On Service**: 192.168.0.131 (Apple DNS proxy actively serving requests)
+---
 
 ---
 
-## WiFi Network Scan Results (2026-04-20)
+---
 
-### Visible Wireless Networks
+---
 
-| SSID | BSSID | Channel | Frequency | Signal | Security | Status |
-|------|-------|---------|-----------|--------|----------|--------|
-| **Mags House** | C8:C7:50:F5:CA:1D | 149 | 5.745 GHz | **100%** (-27 dBm) | WPA2 | ✅ Connected |
+---
 
-### Connection Details
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+## Tailscale mesh (100.x addresses)
+
+### New Device Discovered: 100.65.1.48
 
 | Attribute | Value |
 |-----------|-------|
-| **Interface** | wlP1p1s0 |
-| **Client MAC** | dc:4a:9e:de:a8:fe |
-| **Current Band** | 5 GHz (802.11ac/ax) |
-| **Channel Width** | 80 MHz |
-| **TX Power** | 7.00 dBm |
-| **Link Quality** | 70/70 (excellent) |
-| **Data Rate** | 540 Mbit/s |
-
-### Radio Capabilities
-
-- **Supported Bands**: 2.4 GHz + 5 GHz
-- **Total Channels**: 32
-  - 2.4 GHz: Channels 1-13 (2.412-2.472 GHz)
-  - 5 GHz: Channels 36-165 (5.18-5.825 GHz)
-- **Current**: 5GHz @ 5745 MHz (Channel 149, 80MHz width)
-
-### Analysis
-
-- **Only one network visible** in current location
-- **No guest networks** or neighboring SSIDs detected
-- **Signal strength**: Excellent (-27 dBm indicates very close proximity to AP)
-- **BSSID correlation**: C8:C7:50:F5:CA:1D matches the Motorola MG8702 router at 192.168.0.1
-- **No hidden networks** detected in 2.4GHz or 5GHz bands
-
-### WiFi Topology Relationship
-
-```
-Internet
-    │
-    ▼
-[Motorola MG8702 Router]
-  192.168.0.1 ─┬─ Ethernet/Wired devices
-               │
-               └── WiFi Access Point (wlan)
-                    │
-                    ├── 5GHz: Channel 149 (5745 MHz)
-                    │   └── wlP1p1s0 (Jetson) ★ CONNECTED
-                    │       MAC: dc:4a:9e:de:a8:fe
-                    │       Rate: 540 Mbps
-                    │
-                    └── 2.4GHz: Available but unused
-                        └── (No devices on 2.4GHz band)
-```
-
----
-
-## OpenClaw Systems with Telegram Integration (2026-04-20)
-
-### OpenClaw Server (Tailscale)
-
-| Attribute | Value |
-|-----------|-------|
-| **Server IP** | 100.92.6.101 |
-| **Hostname** | thinkstationpgx-9c48.tail2a3b45.ts.net |
-| **Web Interface** | http://100.92.6.101 |
-| **Documentation** | http://100.92.6.101/docs/telegram_setup.md |
-| **Status** | ⚠️ Configured but inactive (invalid bot token) |
-| **Services** | HTTP (80), Alt-HTTP (8080), SSH (22), OpenClaw (18789) |
-
-### Telegram Integration Status
-
-| Component | Status | Details |
-|-----------|--------|---------|
-| Bot token configured | ✅ Yes | Stored in `~/.openclaw/openclaw.json` |
-| Gateway plugin enabled | ✅ Yes | `plugins.entries.telegram.enabled: true` |
-| Channel enabled | ✅ Yes | `channels.telegram.enabled: true` |
-| DM policy | `pairing` | Users must pair before chatting |
-| Group policy | `allowlist` | Groups must be explicitly allowed |
-| Network reachability | ✅ Fixed | DNS-bypass proxy on `127.0.0.1:18788` |
-| **Bot token validity** | ❌ **INVALID** | Returns 401 Unauthorized |
-| Pairing | ❌ Blocked | Cannot pair until token fixed |
-
-### Network Bypass Architecture
-
-The OpenClaw server cannot reach Telegram API directly due to network interception:
-
-```
-Normal DNS:  api.telegram.org  →  10.122.11.69 (FAKE - intercepted)
-Real IP:     api.telegram.org  →  149.154.167.99 (Actual Telegram)
-
-Solution: Local DNS-bypass Proxy
-├── File: ~/.openclaw/proxy/telegram-proxy.mjs
-├── Listen: http://127.0.0.1:18788
-├── Service: openclaw-telegram-proxy.service (systemd user)
-└── Function: Routes api.telegram.org → 149.154.167.99:443
-```
-
-### Files and Locations
-
-| File | Purpose |
-|------|---------|
-| `~/.openclaw/openclaw.json` | Main configuration with bot token |
-| `~/.openclaw/proxy/telegram-proxy.mjs` | DNS-bypass proxy script |
-| `~/.config/systemd/user/openclaw-telegram-proxy.service` | Systemd service unit |
-| `/docs/telegram_setup.md` | Full setup documentation |
-
-### How to Activate
-
-**Step 1: Regenerate Bot Token**
-1. Open Telegram, search **@BotFather**
-2. Send `/mybots` → select bot → **API Token** → **Revoke**
-3. Save new token
-
-**Step 2: Update Configuration**
-```bash
-openclaw channels add --channel telegram --token "NEW_TOKEN"
-```
-
-**Step 3: Start Services**
-```bash
-systemctl --user start openclaw-telegram-proxy
-openclaw gateway start
-```
-
-**Step 4: Pair Account**
-1. DM the bot on Telegram
-2. `openclaw pairing list telegram`
-3. `openclaw pairing approve telegram <CODE>`
-
-### Useful Commands
-
-```bash
-# Check channel status
-
-## 🔔 Network Scan Alert - 2026-05-02 08:34:59
-
-**1 new device(s) discovered!**
-
-### New Device Discovered: 192.168.100.222
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.100.222 |
-| **Hostname** | yahboom |
-| **MAC Address** | — |
-| **Open Ports** | 22, 631, 5000 |
-| **Device Type** | Printer/Scanner |
-| **Discovered** | 2026-05-02 08:34:59 |
-
-**Access Methods:**
-- SSH: `ssh user@192.168.100.222`
-- CUPS: http://192.168.100.222:631
-
----
-
-
-
-## 🔔 Network Scan Alert - 2026-04-28 14:03:56
-
-**1 new device(s) discovered!**
-
-### Device Identity Merged: 192.168.0.209 -> 192.168.0.98
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.209 (merged into 192.168.0.98) |
-| **Hostname** | Watch.MG8702 |
-| **MAC Address** | da:79:85:b5:b1:cc |
-| **Open Ports** | None detected |
-| **Device Type** | Apple Watch (correlated) |
-| **Discovered** | 2026-04-28 14:03:56 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-
-
-## 🔔 Network Scan Alert - 2026-04-27 11:41:25
-
-**1 new device(s) discovered!**
-
-### New Device Discovered: 100.87.84.95
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 100.87.84.95 |
-| **Hostname** | et-mini.tail2a3b45.ts.net |
-| **MAC Address** | — |
-| **Open Ports** | 445 |
-| **Device Type** | Windows/Samba Share |
-| **Discovered** | 2026-04-27 11:41:25 |
-
-**Access Methods:**
-- SMB: `smb://100.87.84.95`
-
----
-
-
-
-## 🔔 Network Scan Alert - 2026-04-26 20:12:25
-
-**1 new device(s) discovered!**
-
-### New Device Discovered: 192.168.0.112
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.112 |
-| **Hostname** | Watch.MG8702 |
-| **MAC Address** | 9a:b7:d7:52:d1:43 |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-26 20:12:25 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-
-
-## 🔔 Network Scan Alert - 2026-04-26 19:26:34
-
-**1 new device(s) discovered!**
-
-### New Device Discovered: 192.168.0.137
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.137 |
-| **Hostname** | Irene's macbook air |
-| **MAC Address** | 9e:35:b5:e5:25:91 |
-| **Open Ports** | 445, 5000 |
-| **Device Type** | Windows/Samba Share |
-| **Discovered** | 2026-04-26 19:26:34 |
-
-**Access Methods:**
-- SMB: `smb://192.168.0.137`
-
----
-
-
-
-## 🔔 Network Scan Alert - 2026-04-25 21:32:14
-
-**1 new device(s) discovered!**
-
-### New Device Discovered: 192.168.0.237
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.237 |
-| **Hostname** | iPad.MG8702 |
-| **MAC Address** | 9a:ca:86:b2:78:c6 |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-25 21:32:14 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-
-
-## 🔔 Network Scan Alert - 2026-04-25 19:55:36
-
-**1 new device(s) discovered!**
-
-### New Device Discovered: 192.168.0.238
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.238 |
-| **Hostname** | — |
+| **IP Address** | 100.65.1.48 |
+| **Hostname** | zerothguard |
 | **MAC Address** | — |
 | **Open Ports** | None detected |
 | **Device Type** | Unknown |
-| **Discovered** | 2026-04-25 19:55:36 |
+| **Discovered** | 2026-05-03 10:29:18 |
 
 **Access Methods:**
 - No common services detected (may be client device)
 
 ---
 
-
-
-## 🔔 Network Scan Alert - 2026-04-25 19:39:41
-
-**1 new device(s) discovered!**
-
-### New Device Discovered: 192.168.0.98
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.98 |
-| **Hostname** | Irene's Watch |
-| **MAC Address** | 4e:0a:ec:36:fd:82 |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-25 19:39:41 |
-
-**Access Methods:**
-- No common services detected (may be client device)
+---
 
 ---
 
-
-
-## 🔔 Network Scan Alert - 2026-04-23 19:42:26
-
-**1 new device(s) discovered!**
-
-### New Device Discovered: 192.168.0.68
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.68 |
-| **Hostname** | RokuStreamingStick.MG8702 |
-| **MAC Address** | 10:59:32:80:76:fa |
-| **Open Ports** | None detected |
-| **Device Type** | Streaming Device |
-| **Discovered** | 2026-04-23 19:42:26 |
-
-**Access Methods:**
-- No common services detected (may be client device)
+---
 
 ---
 
-
-
-## 🔔 Network Scan Alert - 2026-04-23 11:55:40
-
-**16 new device(s) discovered!**
-
-### New Device Discovered: 192.168.0.233
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.233 |
-| **Hostname** | RokuUltraB.MG8702 |
-| **MAC Address** | d8:31:34:5f:40:b4 |
-| **Open Ports** | None detected |
-| **Device Type** | Streaming Device |
-| **Discovered** | 2026-04-23 11:55:01 |
-
-**Access Methods:**
-- No common services detected (may be client device)
+---
 
 ---
 
-### New Device Discovered: 192.168.50.3
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 100.67.102.109
 
 | Attribute | Value |
 |-----------|-------|
-| **IP Address** | 192.168.50.3 |
-| **Hostname** | Irene's Watch |
+| **IP Address** | 100.67.102.109 |
+| **Hostname** | X9-14-G1 |
 | **MAC Address** | — |
 | **Open Ports** | None detected |
 | **Device Type** | Unknown |
-| **Discovered** | 2026-04-23 11:55:10 |
+| **Discovered** | 2026-05-03 10:29:18 |
 
 **Access Methods:**
 - No common services detected (may be client device)
 
 ---
 
-### New Device Discovered: 192.168.0.1
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.1 |
-| **Hostname** | home.MG8702 |
-| **MAC Address** | d4:be:dc:ed:dd:90 |
-| **Open Ports** | 80, 443, 5000 |
-| **Device Type** | Web Device |
-| **Discovered** | 2026-04-23 11:55:10 |
-
-**Access Methods:**
-- HTTP: http://192.168.0.1
-- HTTPS: https://192.168.0.1
+---
 
 ---
 
-### New Device Discovered: 192.168.0.197
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.197 |
-| **Hostname** | yahboom.MG8702 |
-| **MAC Address** | — |
-| **Open Ports** | 22, 631, 5000 |
-| **Device Type** | Printer/Scanner |
-| **Discovered** | 2026-04-23 11:55:11 |
-
-**Access Methods:**
-- SSH: `ssh user@192.168.0.197`
-- CUPS: http://192.168.0.197:631
+---
 
 ---
 
-### New Device Discovered: 100.78.64.7
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 100.78.64.7 |
-| **Hostname** | emergingtechs-macbook-pro.tail2a3b45.ts.net |
-| **MAC Address** | — |
-| **Open Ports** | 22, 5900, 5000 |
-| **Device Type** | Linux/SSH Server |
-| **Discovered** | 2026-04-23 11:55:14 |
-
-**Access Methods:**
-- SSH: `ssh user@100.78.64.7`
-- VNC: `vncviewer 100.78.64.7:5900`
+---
 
 ---
 
-### New Device Discovered: 192.168.50.106
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.50.106 |
-| **Hostname** | iPhone.MG8702 |
-| **MAC Address** | — |
-| **Open Ports** | None detected |
-| **Device Type** | Mobile Phone |
-| **Discovered** | 2026-04-23 11:55:23 |
-
-**Access Methods:**
-- No common services detected (may be client device)
+---
 
 ---
 
-### New Device Discovered: 192.168.0.127
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.127 |
-| **Hostname** | DESKTOP-HN6QL1F.MG8702 |
-| **MAC Address** | 70:8b:cd:7c:f4:54 |
-| **Open Ports** | 445 |
-| **Device Type** | Windows/Samba Share |
-| **Discovered** | 2026-04-23 11:55:23 |
-
-**Access Methods:**
-- SMB: `smb://192.168.0.127`
+---
 
 ---
 
-### New Device Discovered: 192.168.0.59
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.59 |
-| **Hostname** | — |
-| **MAC Address** | 8a:33:76:dd:0b:cb |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-23 11:55:26 |
-
-**Access Methods:**
-- No common services detected (may be client device)
+---
 
 ---
 
-### New Device Discovered: 192.168.0.246
+---
 
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.246 |
-| **Hostname** | esp32s3-9F9FA0.MG8702 |
-| **MAC Address** | 20:6e:f1:9f:9f:a0 |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-23 11:55:27 |
+---
 
-**Access Methods:**
-- No common services detected (may be client device)
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
 
 ---
 
@@ -968,47 +2027,418 @@ openclaw gateway start
 | Attribute | Value |
 |-----------|-------|
 | **IP Address** | 100.70.174.39 |
-| **Hostname** | yahboom.tail2a3b45.ts.net |
-| **MAC Address** | — |
-| **Open Ports** | 22, 631, 5000 |
-| **Device Type** | Printer/Scanner |
-| **Discovered** | 2026-04-23 11:55:28 |
-
-**Access Methods:**
-- SSH: `ssh user@100.70.174.39`
-- CUPS: http://100.70.174.39:631
-
----
-
-### New Device Discovered: 100.95.15.82
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 100.95.15.82 |
-| **Hostname** | iphone172.tail2a3b45.ts.net |
+| **Hostname** | yahboom |
 | **MAC Address** | — |
 | **Open Ports** | None detected |
-| **Device Type** | Mobile Phone |
-| **Discovered** | 2026-04-23 11:55:29 |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:18 |
 
 **Access Methods:**
 - No common services detected (may be client device)
 
 ---
 
-### New Device Discovered: 192.168.0.15
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 100.71.191.72
 
 | Attribute | Value |
 |-----------|-------|
-| **IP Address** | 192.168.0.15 |
-| **Hostname** | INUNZIATA-5ZNHG.MG8702 |
-| **MAC Address** | 30:05:05:72:30:35 |
-| **Open Ports** | 445 |
-| **Device Type** | Windows/Samba Share |
-| **Discovered** | 2026-04-23 11:55:37 |
+| **IP Address** | 100.71.191.72 |
+| **Hostname** | EmergingTech’s Mac mini |
+| **MAC Address** | — |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:18 |
 
 **Access Methods:**
-- SMB: `smb://192.168.0.15`
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 100.78.64.7
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 100.78.64.7 |
+| **Hostname** | EmergingTech’s MacBook Pro |
+| **MAC Address** | — |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:18 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 100.79.216.111
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 100.79.216.111 |
+| **Hostname** | Eric’s MacBook Pro |
+| **MAC Address** | — |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:18 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 100.87.84.95
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 100.87.84.95 |
+| **Hostname** | ET_mini |
+| **MAC Address** | — |
+| **Open Ports** | None detected |
+| **Device Type** | Unknown |
+| **Discovered** | 2026-05-03 10:29:18 |
+
+**Access Methods:**
+- No common services detected (may be client device)
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
 
 ---
 
@@ -1019,82 +2449,95 @@ openclaw gateway start
 | **IP Address** | 100.92.6.101 |
 | **Hostname** | thinkstationpgx-9c48.tail2a3b45.ts.net |
 | **MAC Address** | — |
-| **Open Ports** | 22, 80, 8080 |
+| **Open Ports** | 22, 5000 |
 | **Device Type** | Linux/SSH Server |
-| **Discovered** | 2026-04-23 11:55:38 |
+| **Discovered** | 2026-05-03 10:29:25 |
 
 **Access Methods:**
 - SSH: `ssh user@100.92.6.101`
-- HTTP: http://100.92.6.101
-- HTTP Alt: http://100.92.6.101:8080
 
 ---
 
-### New Device Discovered: 192.168.0.192
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.192 |
-| **Hostname** | 25RokuStreamingStickPlus.MG8702 |
-| **MAC Address** | d4:be:dc:ed:dd:90 |
-| **Open Ports** | None detected |
-| **Device Type** | Streaming Device |
-| **Discovered** | 2026-04-23 11:55:39 |
-
-**Access Methods:**
-- No common services detected (may be client device)
+---
 
 ---
 
-### New Device Discovered: 192.168.100.1
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+### New Device Discovered: 100.95.15.82
 
 | Attribute | Value |
 |-----------|-------|
-| **IP Address** | 192.168.100.1 |
-| **Hostname** | — |
+| **IP Address** | 100.95.15.82 |
+| **Hostname** | localhost |
 | **MAC Address** | — |
 | **Open Ports** | None detected |
 | **Device Type** | Unknown |
-| **Discovered** | 2026-04-23 11:55:40 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-### New Device Discovered: 192.168.50.1
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.50.1 |
-| **Hostname** | — |
-| **MAC Address** | — |
-| **Open Ports** | 80, 443, 5000 |
-| **Device Type** | Web Device |
-| **Discovered** | 2026-04-23 11:55:40 |
-
-**Access Methods:**
-- HTTP: http://192.168.50.1
-- HTTPS: https://192.168.50.1
-
----
-
-
-
-## 🔔 Network Scan Alert - 2026-04-21 20:59:09
-
-**1 new device(s) discovered!**
-
-### New Device Discovered: 192.168.0.81
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.81 |
-| **Hostname** | Friends Watch |
-| **MAC Address** | fa:5b:a6:ab:1a:7f |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-21 20:59:09 |
+| **Discovered** | 2026-05-03 10:29:18 |
 
 **Access Methods:**
 - No common services detected (may be client device)
@@ -1103,1258 +2546,6 @@ openclaw gateway start
 
 
 
-## 🔔 Network Scan Alert - 2026-04-20 18:35:03
-
-**1 new device(s) discovered!**
-
-### New Device Discovered: 192.168.0.49
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.49 |
-| **Hostname** | iPhone.MG8702 |
-| **MAC Address** | e6:40:e4:dc:e1:f0 |
-| **Open Ports** | None detected |
-| **Device Type** | Mobile Phone |
-| **Discovered** | 2026-04-20 18:35:03 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-
-
-## 🔔 Network Scan Alert - 2026-04-20 16:33:02
-
-**1 new device(s) discovered!**
-
-### New Device Discovered: 192.168.0.192
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.192 |
-| **Hostname** | 25RokuStreamingStickPlus.MG8702 |
-| **MAC Address** | d4:be:dc:ed:dd:90 |
-| **Open Ports** | None detected |
-| **Device Type** | Streaming Device |
-| **Discovered** | 2026-04-20 16:33:02 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-
-
-## 🔔 Network Scan Alert - 2026-04-20 15:32:37
-
-**13 new device(s) discovered!**
-
-### New Device Discovered: 192.168.0.1
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.1 |
-| **Hostname** | home.MG8702 |
-| **MAC Address** | 30:03:c8:4a:0a:84 |
-| **Open Ports** | 80, 443, 5000 |
-| **Device Type** | Web Device |
-| **Discovered** | 2026-04-20 15:32:26 |
-
-**Access Methods:**
-- HTTP: http://192.168.0.1
-- HTTPS: https://192.168.0.1
-
----
-
-### New Device Discovered: 192.168.0.15
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.15 |
-| **Hostname** | INUNZIATA-5ZNHG.MG8702 |
-| **MAC Address** | 30:05:05:72:30:35 |
-| **Open Ports** | 445 |
-| **Device Type** | Windows/Samba Share |
-| **Discovered** | 2026-04-20 15:32:34 |
-
-**Access Methods:**
-- SMB: `smb://192.168.0.15`
-
----
-
-### New Device Discovered: 192.168.0.59
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.59 |
-| **Hostname** | — |
-| **MAC Address** | 8a:33:76:dd:0b:cb |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-20 15:32:35 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-### New Device Discovered: 192.168.0.127
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.127 |
-| **Hostname** | DESKTOP-HN6QL1F.MG8702 |
-| **MAC Address** | 70:8b:cd:7c:f4:54 |
-| **Open Ports** | 445 |
-| **Device Type** | Windows/Samba Share |
-| **Discovered** | 2026-04-20 15:32:35 |
-
-**Access Methods:**
-- SMB: `smb://192.168.0.127`
-
----
-
-### New Device Discovered: 192.168.0.131
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.131 |
-| **Hostname** | Irenes-iPhone.local |
-| **MAC Address** | 06:4d:1c:2e:e9:ab |
-| **Open Ports** | None detected |
-| **Device Type** | Mobile Phone |
-| **Discovered** | 2026-04-20 15:32:35 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-### New Device Discovered: 192.168.0.135
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.135 |
-| **Hostname** | motorola-edge-2022.MG8702 |
-| **MAC Address** | 8a:13:29:33:8a:2d |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-20 15:32:35 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-### New Device Discovered: 192.168.0.143
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.143 |
-| **Hostname** | NPI8ABCE2.MG8702 |
-| **MAC Address** | 30:03:c8:4a:0a:84 |
-| **Open Ports** | 80, 443, 631, 8080 |
-| **Device Type** | Printer/Scanner |
-| **Discovered** | 2026-04-20 15:32:35 |
-
-**Access Methods:**
-- HTTP: http://192.168.0.143
-- HTTPS: https://192.168.0.143
-- CUPS: http://192.168.0.143:631
-- HTTP Alt: http://192.168.0.143:8080
-
----
-
-### New Device Discovered: 192.168.0.158
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.158 |
-| **Hostname** | device.MG8702 |
-| **MAC Address** | 44:61:32:c8:42:f0 |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-20 15:32:35 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-### New Device Discovered: 192.168.0.197
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.197 |
-| **Hostname** | yahboom.MG8702 |
-| **MAC Address** | — |
-| **Open Ports** | 22, 631, 5900 |
-| **Device Type** | Printer/Scanner |
-| **Discovered** | 2026-04-20 15:32:36 |
-
-**Access Methods:**
-- SSH: `ssh user@192.168.0.197`
-- CUPS: http://192.168.0.197:631
-- VNC: `vncviewer 192.168.0.197:5900`
-
----
-
-### New Device Discovered: 192.168.0.233
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.233 |
-| **Hostname** | RokuUltraB.MG8702 |
-| **MAC Address** | d8:31:34:5f:40:b4 |
-| **Open Ports** | None detected |
-| **Device Type** | Streaming Device |
-| **Discovered** | 2026-04-20 15:32:36 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-### New Device Discovered: 192.168.0.246
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.246 |
-| **Hostname** | — |
-| **MAC Address** | 20:6e:f1:9f:9f:a0 |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-20 15:32:36 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-### New Device Discovered: 192.168.50.1
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.50.1 |
-| **Hostname** | — |
-| **MAC Address** | — |
-| **Open Ports** | 80, 443, 5000 |
-| **Device Type** | Web Device |
-| **Discovered** | 2026-04-20 15:32:36 |
-
-**Access Methods:**
-- HTTP: http://192.168.50.1
-- HTTPS: https://192.168.50.1
-
----
-
-### New Device Discovered: 192.168.100.1
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.100.1 |
-| **Hostname** | — |
-| **MAC Address** | — |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-20 15:32:37 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-
-
-## 🔔 Network Scan Alert - 2026-04-20 15:31:43
-
-**13 new device(s) discovered!**
-
-### New Device Discovered: 192.168.0.1
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.1 |
-| **Hostname** | home.MG8702 |
-| **MAC Address** | 30:03:c8:4a:0a:84 |
-| **Open Ports** | 80, 443, 5000 |
-| **Device Type** | Web Device |
-| **Discovered** | 2026-04-20 15:31:32 |
-
-**Access Methods:**
-- HTTP: http://192.168.0.1
-- HTTPS: https://192.168.0.1
-
----
-
-### New Device Discovered: 192.168.0.15
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.15 |
-| **Hostname** | INUNZIATA-5ZNHG.MG8702 |
-| **MAC Address** | 30:05:05:72:30:35 |
-| **Open Ports** | 445 |
-| **Device Type** | Windows/Samba Share |
-| **Discovered** | 2026-04-20 15:31:40 |
-
-**Access Methods:**
-- SMB: `smb://192.168.0.15`
-
----
-
-### New Device Discovered: 192.168.0.59
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.59 |
-| **Hostname** | — |
-| **MAC Address** | 8a:33:76:dd:0b:cb |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-20 15:31:41 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-### New Device Discovered: 192.168.0.127
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.127 |
-| **Hostname** | DESKTOP-HN6QL1F.MG8702 |
-| **MAC Address** | 70:8b:cd:7c:f4:54 |
-| **Open Ports** | 445 |
-| **Device Type** | Windows/Samba Share |
-| **Discovered** | 2026-04-20 15:31:41 |
-
-**Access Methods:**
-- SMB: `smb://192.168.0.127`
-
----
-
-### New Device Discovered: 192.168.0.131
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.131 |
-| **Hostname** | Irenes-iPhone.local |
-| **MAC Address** | 06:4d:1c:2e:e9:ab |
-| **Open Ports** | None detected |
-| **Device Type** | Mobile Phone |
-| **Discovered** | 2026-04-20 15:31:41 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-### New Device Discovered: 192.168.0.135
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.135 |
-| **Hostname** | motorola-edge-2022.MG8702 |
-| **MAC Address** | 8a:13:29:33:8a:2d |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-20 15:31:41 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-### New Device Discovered: 192.168.0.143
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.143 |
-| **Hostname** | NPI8ABCE2.MG8702 |
-| **MAC Address** | 30:03:c8:4a:0a:84 |
-| **Open Ports** | 80, 443, 631, 8080 |
-| **Device Type** | Printer/Scanner |
-| **Discovered** | 2026-04-20 15:31:42 |
-
-**Access Methods:**
-- HTTP: http://192.168.0.143
-- HTTPS: https://192.168.0.143
-- CUPS: http://192.168.0.143:631
-- HTTP Alt: http://192.168.0.143:8080
-
----
-
-### New Device Discovered: 192.168.0.158
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.158 |
-| **Hostname** | device.MG8702 |
-| **MAC Address** | 44:61:32:c8:42:f0 |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-20 15:31:42 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-### New Device Discovered: 192.168.0.197
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.197 |
-| **Hostname** | yahboom.MG8702 |
-| **MAC Address** | — |
-| **Open Ports** | 22, 631, 5900 |
-| **Device Type** | Printer/Scanner |
-| **Discovered** | 2026-04-20 15:31:42 |
-
-**Access Methods:**
-- SSH: `ssh user@192.168.0.197`
-- CUPS: http://192.168.0.197:631
-- VNC: `vncviewer 192.168.0.197:5900`
-
----
-
-### New Device Discovered: 192.168.0.233
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.233 |
-| **Hostname** | RokuUltraB.MG8702 |
-| **MAC Address** | d8:31:34:5f:40:b4 |
-| **Open Ports** | None detected |
-| **Device Type** | Streaming Device |
-| **Discovered** | 2026-04-20 15:31:42 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-### New Device Discovered: 192.168.0.246
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.0.246 |
-| **Hostname** | — |
-| **MAC Address** | 20:6e:f1:9f:9f:a0 |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-20 15:31:42 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-### New Device Discovered: 192.168.50.1
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.50.1 |
-| **Hostname** | — |
-| **MAC Address** | — |
-| **Open Ports** | 80, 443, 5000 |
-| **Device Type** | Web Device |
-| **Discovered** | 2026-04-20 15:31:42 |
-
-**Access Methods:**
-- HTTP: http://192.168.50.1
-- HTTPS: https://192.168.50.1
-
----
-
-### New Device Discovered: 192.168.100.1
-
-| Attribute | Value |
-|-----------|-------|
-| **IP Address** | 192.168.100.1 |
-| **Hostname** | — |
-| **MAC Address** | — |
-| **Open Ports** | None detected |
-| **Device Type** | Unknown |
-| **Discovered** | 2026-04-20 15:31:43 |
-
-**Access Methods:**
-- No common services detected (may be client device)
-
----
-
-
-openclaw channels status
-
-# View gateway logs
-openclaw logs --follow
-
-# Check proxy service
-systemctl --user status openclaw-telegram-proxy
-
-# Run diagnostics
-openclaw doctor
-```
-
-### PicoClaw (Local Instance)
-
-**Location**: `~/Documents/picoclaw/`
-
-PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Telegram:
-
-| File | Purpose |
-|------|---------|
-| `pkg/channels/telegram.go` | Telegram channel implementation |
-| `pkg/channels/telegram_commands.go` | Bot command handlers |
-
-**Status**: Installed but not configured for Telegram on this host.
-
-### Summary
-
-- **OpenClaw Server (100.92.6.101)**: Fully configured for Telegram but **inactive** due to expired bot token
-- **Network workaround**: DNS-bypass proxy successfully routes around network interception
-- **Action required**: Regenerate bot token via @BotFather to activate
-- **Local PicoClaw**: Available in `~/Documents/picoclaw/` as alternative implementation
-
----
-
-## Security Exposure Audit (2026-04-20)
-
-### High-Risk Exposures
-
-| Device IP | Open Ports | Risk Summary |
-|-----------|------------|--------------|
-| `192.168.0.15` | 135, 139, 445, 3389, 5985 | SMB + RDP + WinRM exposed on LAN (high lateral movement risk) |
-| `192.168.0.127` | 135, 139, 445, 3389 | SMB + RDP exposed on LAN |
-| `192.168.0.197` | 22, 111, 631, 3389, 5900 | SSH + RPC + RDP/VNC exposed; broad remote-access surface |
-| `100.71.191.72` | 22, 5900 | SSH + VNC exposed over Tailscale |
-| `100.78.64.7` | 22, 5900 | SSH + VNC exposed over Tailscale |
-
-### Exposed Web/Admin Interfaces
-
-| Device IP | Ports | Findings |
-|-----------|-------|----------|
-| `192.168.0.143` | 80, 8080 | Printer admin pages reachable (HTTP 200) |
-| `100.92.6.101` | 80, 8080 | OpenClaw web interface reachable (HTTP 200) |
-| `100.100.100.100` | 53, 80, 8080 | Tailscale local service endpoint reachable (expected) |
-| `192.168.0.1` | 53, 80, 443, 5000 | Router admin/services exposed on LAN |
-| `192.168.50.1` | 53, 80, 443, 5000 | Router admin/services exposed on routed subnet |
-
-### Notes on Default Access
-
-- This audit performed safe exposure checks only (ports, banners, HTTP status and content reachability).
-- No credential brute-forcing or password guessing was performed.
-- “Default access” can only be confirmed with explicit auth tests against each service.
-
-### Recommended Next Checks
-
-1. Validate SMB guest/null-session access on `192.168.0.15` and `192.168.0.127`.
-2. Verify authentication requirements for printer/admin pages on `192.168.0.143`.
-3. Confirm RDP NLA and SSH password-policy hardening on exposed hosts.
-4. Restrict unnecessary LAN/Tailscale-exposed admin ports where possible.
-
----
-
-## 📊 Scan History
-
-| Scan Time | New Devices | Online | Total Known |
-|-----------|-------------|--------|-------------|
-| 2026-05-02 08:34:59 | 1 | 11 | 52 |
-| 2026-04-30 14:01:27 | 0 | 13 | 50 |
-| 2026-04-30 13:52:50 | 0 | 14 | 50 |
-| 2026-04-30 10:57:20 | 0 | 13 | 50 |
-| 2026-04-29 10:33:21 | 0 | 15 | 50 |
-| 2026-04-29 09:15:08 | 0 | 15 | 50 |
-| 2026-04-29 08:59:08 | 0 | 15 | 50 |
-| 2026-04-29 08:44:16 | 0 | 15 | 50 |
-| 2026-04-29 08:27:08 | 0 | 14 | 50 |
-| 2026-04-29 08:11:08 | 0 | 14 | 50 |
-| 2026-04-29 07:55:08 | 0 | 14 | 50 |
-| 2026-04-29 07:40:16 | 0 | 15 | 50 |
-| 2026-04-29 07:23:08 | 0 | 14 | 50 |
-| 2026-04-29 07:07:08 | 0 | 14 | 50 |
-| 2026-04-29 06:51:08 | 0 | 14 | 50 |
-| 2026-04-29 06:35:08 | 0 | 14 | 50 |
-| 2026-04-29 06:20:16 | 0 | 15 | 50 |
-| 2026-04-29 06:03:08 | 0 | 14 | 50 |
-| 2026-04-29 05:47:08 | 0 | 15 | 50 |
-| 2026-04-29 05:31:13 | 0 | 16 | 50 |
-| 2026-04-29 05:16:16 | 0 | 15 | 50 |
-| 2026-04-29 04:59:08 | 0 | 14 | 50 |
-| 2026-04-29 04:43:08 | 0 | 14 | 50 |
-| 2026-04-29 04:27:08 | 0 | 14 | 50 |
-| 2026-04-29 04:11:08 | 0 | 14 | 50 |
-| 2026-04-29 03:55:08 | 0 | 14 | 50 |
-| 2026-04-29 03:39:08 | 0 | 14 | 50 |
-| 2026-04-29 03:23:08 | 0 | 14 | 50 |
-| 2026-04-29 03:07:08 | 0 | 14 | 50 |
-| 2026-04-29 02:51:08 | 0 | 14 | 50 |
-| 2026-04-29 02:35:08 | 0 | 14 | 50 |
-| 2026-04-29 02:19:08 | 0 | 14 | 50 |
-| 2026-04-29 02:03:08 | 0 | 14 | 50 |
-| 2026-04-29 01:47:08 | 0 | 14 | 50 |
-| 2026-04-29 01:31:08 | 0 | 14 | 50 |
-| 2026-04-29 01:15:08 | 0 | 14 | 50 |
-| 2026-04-29 00:59:08 | 0 | 14 | 50 |
-| 2026-04-29 00:43:08 | 0 | 14 | 50 |
-| 2026-04-29 00:27:08 | 0 | 14 | 50 |
-| 2026-04-29 00:11:08 | 0 | 14 | 50 |
-| 2026-04-28 23:55:08 | 0 | 14 | 50 |
-| 2026-04-28 23:39:08 | 0 | 14 | 50 |
-| 2026-04-28 23:24:16 | 0 | 15 | 50 |
-| 2026-04-28 23:07:08 | 0 | 14 | 50 |
-| 2026-04-28 22:51:08 | 0 | 14 | 50 |
-| 2026-04-28 22:37:24 | 0 | 16 | 50 |
-| 2026-04-28 22:19:08 | 0 | 14 | 50 |
-| 2026-04-28 22:04:16 | 0 | 15 | 50 |
-| 2026-04-28 21:47:08 | 0 | 14 | 50 |
-| 2026-04-28 21:31:08 | 0 | 14 | 50 |
-| 2026-04-28 21:15:08 | 0 | 14 | 50 |
-| 2026-04-28 20:59:08 | 0 | 14 | 50 |
-| 2026-04-28 20:43:08 | 0 | 14 | 50 |
-| 2026-04-28 20:27:08 | 0 | 14 | 50 |
-| 2026-04-28 20:11:08 | 0 | 14 | 50 |
-| 2026-04-28 19:56:16 | 0 | 15 | 50 |
-| 2026-04-28 19:39:08 | 0 | 14 | 50 |
-| 2026-04-28 19:23:08 | 0 | 14 | 50 |
-| 2026-04-28 19:09:42 | 0 | 16 | 50 |
-| 2026-04-28 18:51:08 | 0 | 14 | 50 |
-| 2026-04-28 18:35:08 | 0 | 14 | 50 |
-| 2026-04-28 18:19:08 | 0 | 14 | 50 |
-| 2026-04-28 18:04:52 | 0 | 15 | 50 |
-| 2026-04-28 17:47:08 | 0 | 14 | 50 |
-| 2026-04-28 17:31:08 | 0 | 14 | 50 |
-| 2026-04-28 17:15:08 | 0 | 14 | 50 |
-| 2026-04-28 16:59:08 | 0 | 14 | 50 |
-| 2026-04-28 16:43:08 | 0 | 14 | 50 |
-| 2026-04-28 16:27:08 | 0 | 14 | 50 |
-| 2026-04-28 16:12:16 | 0 | 15 | 50 |
-| 2026-04-28 15:55:08 | 0 | 15 | 50 |
-| 2026-04-28 15:39:08 | 0 | 15 | 50 |
-| 2026-04-28 15:24:16 | 0 | 15 | 50 |
-| 2026-04-28 15:07:08 | 0 | 15 | 50 |
-| 2026-04-28 14:51:54 | 0 | 17 | 50 |
-| 2026-04-28 14:36:16 | 0 | 16 | 50 |
-| 2026-04-28 14:19:08 | 0 | 16 | 50 |
-| 2026-04-28 14:03:56 | 1 | 17 | 50 |
-| 2026-04-28 13:47:08 | 0 | 16 | 49 |
-| 2026-04-28 13:32:16 | 0 | 16 | 49 |
-| 2026-04-28 13:16:31 | 0 | 15 | 49 |
-| 2026-04-28 12:59:08 | 0 | 14 | 49 |
-| 2026-04-28 12:44:16 | 0 | 15 | 49 |
-| 2026-04-28 12:27:08 | 0 | 14 | 49 |
-| 2026-04-28 12:12:34 | 0 | 16 | 49 |
-| 2026-04-28 11:56:16 | 0 | 15 | 49 |
-| 2026-04-28 11:39:08 | 0 | 14 | 49 |
-| 2026-04-28 11:23:08 | 0 | 14 | 49 |
-| 2026-04-28 11:08:16 | 0 | 15 | 49 |
-| 2026-04-28 10:51:08 | 0 | 14 | 49 |
-| 2026-04-28 10:37:13 | 0 | 14 | 49 |
-| 2026-04-28 10:19:08 | 0 | 13 | 49 |
-| 2026-04-28 10:03:08 | 0 | 14 | 49 |
-| 2026-04-28 09:47:08 | 0 | 14 | 49 |
-| 2026-04-28 09:31:08 | 0 | 14 | 49 |
-| 2026-04-28 09:18:23 | 0 | 15 | 49 |
-| 2026-04-28 08:59:08 | 0 | 13 | 49 |
-| 2026-04-28 08:44:16 | 0 | 14 | 49 |
-| 2026-04-28 08:27:08 | 0 | 13 | 49 |
-| 2026-04-28 08:11:08 | 0 | 13 | 49 |
-| 2026-04-28 07:57:36 | 0 | 14 | 49 |
-| 2026-04-28 07:39:08 | 0 | 12 | 49 |
-| 2026-04-28 07:23:08 | 0 | 13 | 49 |
-| 2026-04-28 07:08:16 | 0 | 14 | 49 |
-| 2026-04-28 06:51:08 | 0 | 13 | 49 |
-| 2026-04-28 06:35:08 | 0 | 15 | 49 |
-| 2026-04-28 06:23:13 | 0 | 17 | 49 |
-| 2026-04-28 06:04:16 | 0 | 14 | 49 |
-| 2026-04-28 05:49:34 | 0 | 14 | 49 |
-| 2026-04-28 05:31:08 | 0 | 12 | 49 |
-| 2026-04-28 05:15:08 | 0 | 14 | 49 |
-| 2026-04-28 04:59:08 | 0 | 14 | 49 |
-| 2026-04-28 04:43:08 | 0 | 14 | 49 |
-| 2026-04-28 04:27:08 | 0 | 15 | 49 |
-| 2026-04-28 04:11:08 | 0 | 15 | 49 |
-| 2026-04-28 03:57:24 | 0 | 15 | 49 |
-| 2026-04-28 03:39:08 | 0 | 13 | 49 |
-| 2026-04-28 03:23:08 | 0 | 14 | 49 |
-| 2026-04-28 03:07:08 | 0 | 14 | 49 |
-| 2026-04-28 02:51:08 | 0 | 14 | 49 |
-| 2026-04-28 02:35:08 | 0 | 14 | 49 |
-| 2026-04-28 02:20:16 | 0 | 14 | 49 |
-| 2026-04-28 02:03:08 | 0 | 13 | 49 |
-| 2026-04-28 01:47:08 | 0 | 14 | 49 |
-| 2026-04-28 01:31:08 | 0 | 14 | 49 |
-| 2026-04-28 01:15:08 | 0 | 14 | 49 |
-| 2026-04-28 00:59:08 | 0 | 14 | 49 |
-| 2026-04-28 00:43:08 | 0 | 15 | 49 |
-| 2026-04-28 00:28:16 | 0 | 15 | 49 |
-| 2026-04-28 00:11:08 | 0 | 14 | 49 |
-| 2026-04-27 23:55:08 | 0 | 14 | 49 |
-| 2026-04-27 23:39:08 | 0 | 14 | 49 |
-| 2026-04-27 23:24:16 | 0 | 14 | 49 |
-| 2026-04-27 23:07:08 | 0 | 13 | 49 |
-| 2026-04-27 22:51:08 | 0 | 13 | 49 |
-| 2026-04-27 22:36:16 | 0 | 14 | 49 |
-| 2026-04-27 22:19:08 | 0 | 13 | 49 |
-| 2026-04-27 22:05:38 | 0 | 15 | 49 |
-| 2026-04-27 21:47:08 | 0 | 13 | 49 |
-| 2026-04-27 21:31:08 | 0 | 13 | 49 |
-| 2026-04-27 21:15:08 | 0 | 13 | 49 |
-| 2026-04-27 21:02:02 | 0 | 15 | 49 |
-| 2026-04-27 20:43:08 | 0 | 13 | 49 |
-| 2026-04-27 20:27:08 | 0 | 13 | 49 |
-| 2026-04-27 20:11:08 | 0 | 13 | 49 |
-| 2026-04-27 19:56:16 | 0 | 14 | 49 |
-| 2026-04-27 19:39:08 | 0 | 13 | 49 |
-| 2026-04-27 19:23:08 | 0 | 13 | 49 |
-| 2026-04-27 19:07:08 | 0 | 13 | 49 |
-| 2026-04-27 18:51:08 | 0 | 13 | 49 |
-| 2026-04-27 18:35:08 | 0 | 13 | 49 |
-| 2026-04-27 18:19:08 | 0 | 14 | 49 |
-| 2026-04-27 18:03:08 | 0 | 14 | 49 |
-| 2026-04-27 17:47:08 | 0 | 14 | 49 |
-| 2026-04-27 17:31:08 | 0 | 14 | 49 |
-| 2026-04-27 17:16:53 | 0 | 15 | 49 |
-| 2026-04-27 16:59:08 | 0 | 14 | 49 |
-| 2026-04-27 16:43:08 | 0 | 14 | 49 |
-| 2026-04-27 16:27:08 | 0 | 14 | 49 |
-| 2026-04-27 16:12:16 | 0 | 14 | 49 |
-| 2026-04-27 15:55:08 | 0 | 14 | 49 |
-| 2026-04-27 15:40:16 | 0 | 14 | 49 |
-| 2026-04-27 15:23:08 | 0 | 14 | 49 |
-| 2026-04-27 15:08:16 | 0 | 15 | 49 |
-| 2026-04-27 14:51:08 | 0 | 14 | 49 |
-| 2026-04-27 14:35:08 | 0 | 14 | 49 |
-| 2026-04-27 14:23:09 | 0 | 16 | 49 |
-| 2026-04-27 14:03:08 | 0 | 14 | 49 |
-| 2026-04-27 13:47:08 | 0 | 15 | 49 |
-| 2026-04-27 13:31:08 | 0 | 15 | 49 |
-| 2026-04-27 13:17:19 | 0 | 15 | 49 |
-| 2026-04-27 13:00:16 | 0 | 14 | 49 |
-| 2026-04-27 12:43:08 | 0 | 14 | 49 |
-| 2026-04-27 12:28:28 | 0 | 15 | 49 |
-| 2026-04-27 12:12:51 | 0 | 15 | 49 |
-| 2026-04-27 11:55:08 | 0 | 15 | 49 |
-| 2026-04-27 11:41:25 | 1 | 15 | 49 |
-| 2026-04-27 11:23:08 | 0 | 16 | 48 |
-| 2026-04-27 11:09:37 | 0 | 16 | 48 |
-| 2026-04-27 10:51:08 | 0 | 14 | 48 |
-| 2026-04-27 10:36:43 | 0 | 15 | 48 |
-| 2026-04-27 10:20:16 | 0 | 14 | 48 |
-| 2026-04-27 10:03:08 | 0 | 13 | 48 |
-| 2026-04-27 09:49:47 | 0 | 15 | 48 |
-| 2026-04-27 09:31:08 | 0 | 13 | 48 |
-| 2026-04-27 09:15:08 | 0 | 14 | 48 |
-| 2026-04-27 09:00:16 | 0 | 16 | 48 |
-| 2026-04-27 08:45:40 | 0 | 15 | 48 |
-| 2026-04-27 08:27:08 | 0 | 13 | 48 |
-| 2026-04-27 08:11:08 | 0 | 13 | 48 |
-| 2026-04-27 07:55:08 | 0 | 14 | 48 |
-| 2026-04-27 07:39:08 | 0 | 14 | 48 |
-| 2026-04-27 07:23:08 | 0 | 14 | 48 |
-| 2026-04-27 07:07:08 | 0 | 15 | 48 |
-| 2026-04-27 06:53:58 | 0 | 16 | 48 |
-| 2026-04-27 06:35:20 | 0 | 15 | 48 |
-| 2026-04-27 06:20:43 | 0 | 14 | 48 |
-| 2026-04-27 06:03:08 | 0 | 14 | 48 |
-| 2026-04-27 05:47:08 | 0 | 14 | 48 |
-| 2026-04-27 05:33:24 | 0 | 15 | 48 |
-| 2026-04-27 05:15:08 | 0 | 13 | 48 |
-| 2026-04-27 04:59:08 | 0 | 13 | 48 |
-| 2026-04-27 04:43:08 | 0 | 13 | 48 |
-| 2026-04-27 04:27:08 | 0 | 13 | 48 |
-| 2026-04-27 04:12:37 | 0 | 14 | 48 |
-| 2026-04-27 03:55:08 | 0 | 13 | 48 |
-| 2026-04-27 03:39:08 | 0 | 13 | 48 |
-| 2026-04-27 03:23:08 | 0 | 15 | 48 |
-| 2026-04-27 03:09:24 | 0 | 16 | 48 |
-| 2026-04-27 02:51:08 | 0 | 14 | 48 |
-| 2026-04-27 02:36:29 | 0 | 14 | 48 |
-| 2026-04-27 02:19:08 | 0 | 13 | 48 |
-| 2026-04-27 02:03:08 | 0 | 14 | 48 |
-| 2026-04-27 01:49:59 | 0 | 14 | 48 |
-| 2026-04-27 01:31:08 | 0 | 12 | 48 |
-| 2026-04-27 01:15:08 | 0 | 12 | 48 |
-| 2026-04-27 00:59:08 | 0 | 13 | 48 |
-| 2026-04-27 00:43:08 | 0 | 13 | 48 |
-| 2026-04-27 00:28:44 | 0 | 14 | 48 |
-| 2026-04-27 00:11:08 | 0 | 14 | 48 |
-| 2026-04-26 23:56:49 | 0 | 15 | 48 |
-| 2026-04-26 23:39:08 | 0 | 14 | 48 |
-| 2026-04-26 23:24:29 | 0 | 14 | 48 |
-| 2026-04-26 23:07:08 | 0 | 13 | 48 |
-| 2026-04-26 22:54:02 | 0 | 15 | 48 |
-| 2026-04-26 22:36:16 | 0 | 14 | 48 |
-| 2026-04-26 22:19:08 | 0 | 14 | 48 |
-| 2026-04-26 22:03:08 | 0 | 14 | 48 |
-| 2026-04-26 21:47:08 | 0 | 14 | 48 |
-| 2026-04-26 21:32:29 | 0 | 15 | 48 |
-| 2026-04-26 21:15:08 | 0 | 14 | 48 |
-| 2026-04-26 21:01:46 | 0 | 18 | 48 |
-| 2026-04-26 20:43:08 | 0 | 16 | 48 |
-| 2026-04-26 20:27:08 | 0 | 17 | 48 |
-| 2026-04-26 20:12:25 | 1 | 18 | 48 |
-| 2026-04-26 19:56:29 | 0 | 17 | 47 |
-| 2026-04-26 19:39:08 | 0 | 16 | 47 |
-| 2026-04-26 19:26:34 | 1 | 16 | 47 |
-| 2026-04-26 19:07:08 | 0 | 14 | 46 |
-| 2026-04-26 18:51:08 | 0 | 14 | 46 |
-| 2026-04-26 18:35:08 | 0 | 14 | 46 |
-| 2026-04-26 18:19:08 | 0 | 14 | 46 |
-| 2026-04-26 18:03:08 | 0 | 14 | 46 |
-| 2026-04-26 17:48:16 | 0 | 15 | 46 |
-| 2026-04-26 17:31:08 | 0 | 14 | 46 |
-| 2026-04-26 17:16:28 | 0 | 14 | 46 |
-| 2026-04-26 16:59:08 | 0 | 13 | 46 |
-| 2026-04-26 16:43:08 | 0 | 14 | 46 |
-| 2026-04-26 16:27:08 | 0 | 14 | 46 |
-| 2026-04-26 16:12:16 | 0 | 15 | 46 |
-| 2026-04-26 15:55:08 | 0 | 14 | 46 |
-| 2026-04-26 15:39:08 | 0 | 14 | 46 |
-| 2026-04-26 15:23:08 | 0 | 14 | 46 |
-| 2026-04-26 15:08:16 | 0 | 14 | 46 |
-| 2026-04-26 14:51:08 | 0 | 13 | 46 |
-| 2026-04-26 14:35:08 | 0 | 13 | 46 |
-| 2026-04-26 14:19:08 | 0 | 14 | 46 |
-| 2026-04-26 14:03:08 | 0 | 14 | 46 |
-| 2026-04-26 13:49:24 | 0 | 15 | 46 |
-| 2026-04-26 13:31:08 | 0 | 13 | 46 |
-| 2026-04-26 13:15:08 | 0 | 13 | 46 |
-| 2026-04-26 13:04:37 | 0 | 14 | 46 |
-| 2026-04-26 13:03:28 | 0 | 16 | 46 |
-| 2026-04-26 13:02:02 | 0 | 17 | 46 |
-| 2026-04-26 13:01:06 | 0 | 17 | 46 |
-| 2026-04-26 12:43:51 | 0 | 16 | 46 |
-| 2026-04-26 12:26:42 | 0 | 15 | 46 |
-| 2026-04-26 12:10:42 | 0 | 15 | 46 |
-| 2026-04-26 11:54:42 | 0 | 15 | 46 |
-| 2026-04-26 11:38:42 | 0 | 15 | 46 |
-| 2026-04-26 11:22:42 | 0 | 16 | 46 |
-| 2026-04-26 11:13:05 | 0 | 19 | 46 |
-| 2026-04-26 10:50:42 | 0 | 14 | 46 |
-| 2026-04-26 10:34:42 | 0 | 15 | 46 |
-| 2026-04-26 10:18:42 | 0 | 15 | 46 |
-| 2026-04-26 10:02:42 | 0 | 15 | 46 |
-| 2026-04-26 09:46:42 | 0 | 16 | 46 |
-| 2026-04-26 09:31:51 | 0 | 16 | 46 |
-| 2026-04-26 09:14:42 | 0 | 15 | 46 |
-| 2026-04-26 08:59:51 | 0 | 16 | 46 |
-| 2026-04-26 08:43:51 | 0 | 15 | 46 |
-| 2026-04-26 08:26:42 | 0 | 14 | 46 |
-| 2026-04-26 08:10:42 | 0 | 15 | 46 |
-| 2026-04-26 07:54:42 | 0 | 16 | 46 |
-| 2026-04-26 07:40:13 | 0 | 17 | 46 |
-| 2026-04-26 07:37:50 | 0 | 16 | 46 |
-| 2026-04-26 07:22:43 | 0 | 16 | 46 |
-| 2026-04-26 07:08:05 | 0 | 16 | 46 |
-| 2026-04-26 06:50:42 | 0 | 15 | 46 |
-| 2026-04-26 06:37:13 | 0 | 17 | 46 |
-| 2026-04-26 06:18:42 | 0 | 15 | 46 |
-| 2026-04-26 06:03:51 | 0 | 15 | 46 |
-| 2026-04-26 05:46:42 | 0 | 14 | 46 |
-| 2026-04-26 05:30:42 | 0 | 14 | 46 |
-| 2026-04-26 05:14:42 | 0 | 14 | 46 |
-| 2026-04-26 04:58:42 | 0 | 14 | 46 |
-| 2026-04-26 04:42:42 | 0 | 14 | 46 |
-| 2026-04-26 04:26:42 | 0 | 15 | 46 |
-| 2026-04-26 04:11:51 | 0 | 15 | 46 |
-| 2026-04-26 03:54:42 | 0 | 14 | 46 |
-| 2026-04-26 03:38:42 | 0 | 14 | 46 |
-| 2026-04-26 03:22:42 | 0 | 14 | 46 |
-| 2026-04-26 03:06:42 | 0 | 14 | 46 |
-| 2026-04-26 02:50:42 | 0 | 14 | 46 |
-| 2026-04-26 02:34:42 | 0 | 14 | 46 |
-| 2026-04-26 02:18:42 | 0 | 14 | 46 |
-| 2026-04-26 02:02:42 | 0 | 15 | 46 |
-| 2026-04-26 01:46:42 | 0 | 15 | 46 |
-| 2026-04-26 01:30:42 | 0 | 15 | 46 |
-| 2026-04-26 01:14:42 | 0 | 15 | 46 |
-| 2026-04-26 00:59:51 | 0 | 16 | 46 |
-| 2026-04-26 00:42:42 | 0 | 15 | 46 |
-| 2026-04-26 00:26:42 | 0 | 15 | 46 |
-| 2026-04-26 00:10:42 | 0 | 15 | 46 |
-| 2026-04-25 23:54:42 | 0 | 15 | 46 |
-| 2026-04-25 23:38:42 | 0 | 15 | 46 |
-| 2026-04-25 23:22:42 | 0 | 15 | 46 |
-| 2026-04-25 23:08:29 | 0 | 16 | 46 |
-| 2026-04-25 22:50:42 | 0 | 15 | 46 |
-| 2026-04-25 22:34:42 | 0 | 15 | 46 |
-| 2026-04-25 22:18:42 | 0 | 15 | 46 |
-| 2026-04-25 22:02:42 | 0 | 15 | 46 |
-| 2026-04-25 21:46:42 | 0 | 15 | 46 |
-| 2026-04-25 21:32:14 | 1 | 18 | 46 |
-| 2026-04-25 21:16:59 | 0 | 17 | 45 |
-| 2026-04-25 20:58:42 | 0 | 15 | 45 |
-| 2026-04-25 20:44:05 | 0 | 15 | 45 |
-| 2026-04-25 20:26:42 | 0 | 14 | 45 |
-| 2026-04-25 20:10:42 | 0 | 15 | 45 |
-| 2026-04-25 19:55:36 | 1 | 16 | 45 |
-| 2026-04-25 19:39:41 | 1 | 16 | 44 |
-| 2026-04-25 19:22:42 | 0 | 15 | 43 |
-| 2026-04-25 19:06:43 | 0 | 15 | 43 |
-| 2026-04-25 18:50:42 | 0 | 15 | 43 |
-| 2026-04-25 18:34:42 | 0 | 15 | 43 |
-| 2026-04-25 18:18:42 | 0 | 15 | 43 |
-| 2026-04-25 18:02:42 | 0 | 15 | 43 |
-| 2026-04-25 17:46:42 | 0 | 15 | 43 |
-| 2026-04-25 17:30:42 | 0 | 15 | 43 |
-| 2026-04-25 17:14:42 | 0 | 15 | 43 |
-| 2026-04-25 16:58:42 | 0 | 15 | 43 |
-| 2026-04-25 16:42:42 | 0 | 16 | 43 |
-| 2026-04-25 16:26:42 | 0 | 16 | 43 |
-| 2026-04-25 16:12:25 | 0 | 16 | 43 |
-| 2026-04-25 15:54:42 | 0 | 15 | 43 |
-| 2026-04-25 15:38:42 | 0 | 15 | 43 |
-| 2026-04-25 15:22:42 | 0 | 15 | 43 |
-| 2026-04-25 15:06:42 | 0 | 15 | 43 |
-| 2026-04-25 14:50:42 | 0 | 15 | 43 |
-| 2026-04-25 14:35:51 | 0 | 16 | 43 |
-| 2026-04-25 14:18:42 | 0 | 15 | 43 |
-| 2026-04-25 14:02:42 | 0 | 15 | 43 |
-| 2026-04-25 13:47:51 | 0 | 16 | 43 |
-| 2026-04-25 13:30:42 | 0 | 15 | 43 |
-| 2026-04-25 13:15:51 | 0 | 16 | 43 |
-| 2026-04-25 12:59:51 | 0 | 16 | 43 |
-| 2026-04-25 12:42:42 | 0 | 15 | 43 |
-| 2026-04-25 12:27:51 | 0 | 16 | 43 |
-| 2026-04-25 12:10:42 | 0 | 15 | 43 |
-| 2026-04-25 11:54:42 | 0 | 16 | 43 |
-| 2026-04-25 11:38:42 | 0 | 16 | 43 |
-| 2026-04-25 11:22:42 | 0 | 17 | 43 |
-| 2026-04-25 11:08:59 | 0 | 17 | 43 |
-| 2026-04-25 10:50:42 | 0 | 15 | 43 |
-| 2026-04-25 10:35:51 | 0 | 16 | 43 |
-| 2026-04-25 10:18:42 | 0 | 15 | 43 |
-| 2026-04-25 10:04:03 | 0 | 15 | 43 |
-| 2026-04-25 09:46:42 | 0 | 15 | 43 |
-| 2026-04-25 09:31:51 | 0 | 15 | 43 |
-| 2026-04-25 09:14:42 | 0 | 14 | 43 |
-| 2026-04-25 08:59:51 | 0 | 16 | 43 |
-| 2026-04-25 08:42:42 | 0 | 15 | 43 |
-| 2026-04-25 08:26:42 | 0 | 15 | 43 |
-| 2026-04-25 08:10:42 | 0 | 15 | 43 |
-| 2026-04-25 07:54:42 | 0 | 16 | 43 |
-| 2026-04-25 07:39:51 | 0 | 16 | 43 |
-| 2026-04-25 07:22:47 | 0 | 15 | 43 |
-| 2026-04-25 07:06:42 | 0 | 15 | 43 |
-| 2026-04-25 06:50:42 | 0 | 16 | 43 |
-| 2026-04-25 06:35:51 | 0 | 16 | 43 |
-| 2026-04-25 06:19:22 | 0 | 15 | 43 |
-| 2026-04-25 06:03:42 | 0 | 16 | 43 |
-| 2026-04-25 05:47:42 | 0 | 17 | 43 |
-| 2026-04-25 05:32:51 | 0 | 17 | 43 |
-| 2026-04-25 05:15:42 | 0 | 16 | 43 |
-| 2026-04-25 05:00:51 | 0 | 17 | 43 |
-| 2026-04-25 04:43:42 | 0 | 16 | 43 |
-| 2026-04-25 04:27:42 | 0 | 16 | 43 |
-| 2026-04-25 04:11:42 | 0 | 16 | 43 |
-| 2026-04-25 03:55:42 | 0 | 16 | 43 |
-| 2026-04-25 03:39:42 | 0 | 16 | 43 |
-| 2026-04-25 03:23:42 | 0 | 16 | 43 |
-| 2026-04-25 03:07:42 | 0 | 16 | 43 |
-| 2026-04-25 02:51:42 | 0 | 16 | 43 |
-| 2026-04-25 02:35:42 | 0 | 16 | 43 |
-| 2026-04-25 02:19:42 | 0 | 16 | 43 |
-| 2026-04-25 02:03:42 | 0 | 16 | 43 |
-| 2026-04-25 01:49:03 | 0 | 16 | 43 |
-| 2026-04-25 01:34:13 | 0 | 16 | 43 |
-| 2026-04-25 01:15:42 | 0 | 14 | 43 |
-| 2026-04-25 00:59:42 | 0 | 15 | 43 |
-| 2026-04-25 00:43:42 | 0 | 15 | 43 |
-| 2026-04-25 00:27:42 | 0 | 15 | 43 |
-| 2026-04-25 00:11:42 | 0 | 15 | 43 |
-| 2026-04-24 23:57:05 | 0 | 15 | 43 |
-| 2026-04-24 23:39:42 | 0 | 14 | 43 |
-| 2026-04-24 23:24:51 | 0 | 15 | 43 |
-| 2026-04-24 23:07:42 | 0 | 14 | 43 |
-| 2026-04-24 22:51:42 | 0 | 14 | 43 |
-| 2026-04-24 22:38:19 | 0 | 16 | 43 |
-| 2026-04-24 22:19:42 | 0 | 15 | 43 |
-| 2026-04-24 22:03:42 | 0 | 16 | 43 |
-| 2026-04-24 21:47:42 | 0 | 16 | 43 |
-| 2026-04-24 21:31:42 | 0 | 16 | 43 |
-| 2026-04-24 21:15:42 | 0 | 16 | 43 |
-| 2026-04-24 21:00:51 | 0 | 16 | 43 |
-| 2026-04-24 20:43:42 | 0 | 15 | 43 |
-| 2026-04-24 20:27:42 | 0 | 16 | 43 |
-| 2026-04-24 20:12:51 | 0 | 16 | 43 |
-| 2026-04-24 19:55:42 | 0 | 15 | 43 |
-| 2026-04-24 19:39:42 | 0 | 15 | 43 |
-| 2026-04-24 19:23:42 | 0 | 15 | 43 |
-| 2026-04-24 19:07:42 | 0 | 15 | 43 |
-| 2026-04-24 18:51:42 | 0 | 15 | 43 |
-| 2026-04-24 18:35:42 | 0 | 15 | 43 |
-| 2026-04-24 18:19:42 | 0 | 15 | 43 |
-| 2026-04-24 18:03:42 | 0 | 15 | 43 |
-| 2026-04-24 17:47:42 | 0 | 15 | 43 |
-| 2026-04-24 17:32:51 | 0 | 17 | 43 |
-| 2026-04-24 17:15:42 | 0 | 16 | 43 |
-| 2026-04-24 17:01:04 | 0 | 16 | 43 |
-| 2026-04-24 16:43:42 | 0 | 16 | 43 |
-| 2026-04-24 16:29:59 | 0 | 17 | 43 |
-| 2026-04-24 16:12:51 | 0 | 17 | 43 |
-| 2026-04-24 15:57:18 | 0 | 16 | 43 |
-| 2026-04-24 15:39:42 | 0 | 16 | 43 |
-| 2026-04-24 15:23:42 | 0 | 16 | 43 |
-| 2026-04-24 15:07:42 | 0 | 16 | 43 |
-| 2026-04-24 14:51:42 | 0 | 16 | 43 |
-| 2026-04-24 14:35:42 | 0 | 16 | 43 |
-| 2026-04-24 14:19:42 | 0 | 16 | 43 |
-| 2026-04-24 14:03:42 | 0 | 16 | 43 |
-| 2026-04-24 13:47:42 | 0 | 16 | 43 |
-| 2026-04-24 13:32:51 | 0 | 16 | 43 |
-| 2026-04-24 13:15:42 | 0 | 16 | 43 |
-| 2026-04-24 12:59:42 | 0 | 16 | 43 |
-| 2026-04-24 12:43:42 | 0 | 16 | 43 |
-| 2026-04-24 12:27:42 | 0 | 16 | 43 |
-| 2026-04-24 12:11:42 | 0 | 16 | 43 |
-| 2026-04-24 11:55:42 | 0 | 16 | 43 |
-| 2026-04-24 11:39:42 | 0 | 16 | 43 |
-| 2026-04-24 11:25:24 | 0 | 17 | 43 |
-| 2026-04-24 11:08:51 | 0 | 16 | 43 |
-| 2026-04-24 10:51:42 | 0 | 16 | 43 |
-| 2026-04-24 10:35:42 | 0 | 16 | 43 |
-| 2026-04-24 10:20:51 | 0 | 16 | 43 |
-| 2026-04-24 10:06:43 | 0 | 17 | 43 |
-| 2026-04-24 09:47:42 | 0 | 15 | 43 |
-| 2026-04-24 09:31:42 | 0 | 15 | 43 |
-| 2026-04-24 09:16:51 | 0 | 16 | 43 |
-| 2026-04-24 08:59:42 | 0 | 15 | 43 |
-| 2026-04-24 08:43:42 | 0 | 16 | 43 |
-| 2026-04-24 08:28:51 | 0 | 16 | 43 |
-| 2026-04-24 08:11:42 | 0 | 15 | 43 |
-| 2026-04-24 07:55:42 | 0 | 15 | 43 |
-| 2026-04-24 07:39:42 | 0 | 15 | 43 |
-| 2026-04-24 07:23:42 | 0 | 16 | 43 |
-| 2026-04-24 07:07:42 | 0 | 16 | 43 |
-| 2026-04-24 06:51:42 | 0 | 16 | 43 |
-| 2026-04-24 06:36:51 | 0 | 16 | 43 |
-| 2026-04-24 06:19:42 | 0 | 15 | 43 |
-| 2026-04-24 06:03:42 | 0 | 16 | 43 |
-| 2026-04-24 05:47:42 | 0 | 16 | 43 |
-| 2026-04-24 05:31:42 | 0 | 16 | 43 |
-| 2026-04-24 05:15:42 | 0 | 16 | 43 |
-| 2026-04-24 04:59:42 | 0 | 16 | 43 |
-| 2026-04-24 04:43:42 | 0 | 16 | 43 |
-| 2026-04-24 04:27:42 | 0 | 16 | 43 |
-| 2026-04-24 04:11:42 | 0 | 16 | 43 |
-| 2026-04-24 03:55:42 | 0 | 16 | 43 |
-| 2026-04-24 03:39:42 | 0 | 17 | 43 |
-| 2026-04-24 03:23:42 | 0 | 17 | 43 |
-| 2026-04-24 03:07:42 | 0 | 17 | 43 |
-| 2026-04-24 02:51:42 | 0 | 17 | 43 |
-| 2026-04-24 02:35:42 | 0 | 17 | 43 |
-| 2026-04-24 02:19:42 | 0 | 17 | 43 |
-| 2026-04-24 02:03:42 | 0 | 17 | 43 |
-| 2026-04-24 01:47:42 | 0 | 17 | 43 |
-| 2026-04-24 01:31:42 | 0 | 17 | 43 |
-| 2026-04-24 01:15:42 | 0 | 17 | 43 |
-| 2026-04-24 00:59:42 | 0 | 17 | 43 |
-| 2026-04-24 00:43:42 | 0 | 17 | 43 |
-| 2026-04-24 00:27:42 | 0 | 17 | 43 |
-| 2026-04-24 00:11:42 | 0 | 17 | 43 |
-| 2026-04-23 23:55:42 | 0 | 17 | 43 |
-| 2026-04-23 23:39:42 | 0 | 17 | 43 |
-| 2026-04-23 23:23:42 | 0 | 17 | 43 |
-| 2026-04-23 23:07:42 | 0 | 17 | 43 |
-| 2026-04-23 22:53:14 | 0 | 18 | 43 |
-| 2026-04-23 22:35:42 | 0 | 17 | 43 |
-| 2026-04-23 22:21:03 | 0 | 17 | 43 |
-| 2026-04-23 22:03:42 | 0 | 17 | 43 |
-| 2026-04-23 21:47:42 | 0 | 18 | 43 |
-| 2026-04-23 21:32:51 | 0 | 18 | 43 |
-| 2026-04-23 21:15:42 | 0 | 18 | 43 |
-| 2026-04-23 21:00:51 | 0 | 18 | 43 |
-| 2026-04-23 20:45:05 | 0 | 17 | 43 |
-| 2026-04-23 20:27:42 | 0 | 16 | 43 |
-| 2026-04-23 20:14:25 | 0 | 18 | 43 |
-| 2026-04-23 19:55:42 | 0 | 16 | 43 |
-| 2026-04-23 19:42:26 | 1 | 17 | 43 |
-| 2026-04-23 19:23:42 | 0 | 15 | 42 |
-| 2026-04-23 19:08:51 | 0 | 18 | 42 |
-| 2026-04-23 18:51:42 | 0 | 17 | 42 |
-| 2026-04-23 18:35:42 | 0 | 17 | 42 |
-| 2026-04-23 18:19:42 | 0 | 17 | 42 |
-| 2026-04-23 18:03:42 | 0 | 18 | 42 |
-| 2026-04-23 17:47:42 | 0 | 18 | 42 |
-| 2026-04-23 17:32:51 | 0 | 19 | 42 |
-| 2026-04-23 17:15:42 | 0 | 19 | 42 |
-| 2026-04-23 17:00:51 | 0 | 20 | 42 |
-| 2026-04-23 16:44:51 | 0 | 19 | 42 |
-| 2026-04-23 16:29:03 | 0 | 18 | 42 |
-| 2026-04-23 16:11:42 | 0 | 17 | 42 |
-| 2026-04-23 15:56:51 | 0 | 20 | 42 |
-| 2026-04-23 15:42:16 | 0 | 19 | 42 |
-| 2026-04-23 15:23:42 | 0 | 17 | 42 |
-| 2026-04-23 15:09:24 | 0 | 19 | 42 |
-| 2026-04-23 14:58:46 | 0 | 18 | 42 |
-| 2026-04-23 14:52:51 | 0 | 18 | 42 |
-| 2026-04-23 14:35:42 | 0 | 17 | 41 |
-| 2026-04-23 14:19:42 | 0 | 17 | 41 |
-| 2026-04-23 14:03:42 | 0 | 17 | 41 |
-| 2026-04-23 13:47:42 | 0 | 17 | 41 |
-| 2026-04-23 13:31:42 | 0 | 17 | 41 |
-| 2026-04-23 13:15:42 | 0 | 17 | 41 |
-| 2026-04-23 13:00:50 | 0 | 17 | 41 |
-| 2026-04-23 12:43:42 | 0 | 16 | 41 |
-| 2026-04-23 12:27:42 | 0 | 16 | 41 |
-| 2026-04-23 12:11:42 | 0 | 16 | 41 |
-| 2026-04-23 11:56:14 | 0 | 16 | 41 |
-| 2026-04-23 11:55:40 | 16 | 16 | 41 |
-<<<<<<< HEAD
-=======
-| 2026-04-23 11:18:42 | 0 | 16 | 42 |
-| 2026-04-23 11:12:43 | 0 | 17 | 42 |
-| 2026-04-23 11:02:42 | 0 | 16 | 40 |
-| 2026-04-23 10:46:42 | 0 | 16 | 40 |
-| 2026-04-23 10:31:51 | 0 | 16 | 40 |
-| 2026-04-23 10:14:42 | 0 | 15 | 40 |
-| 2026-04-23 09:58:42 | 0 | 15 | 40 |
-| 2026-04-23 09:42:42 | 0 | 15 | 40 |
-| 2026-04-23 09:26:42 | 0 | 15 | 40 |
-| 2026-04-23 09:10:42 | 0 | 15 | 40 |
-| 2026-04-23 08:54:42 | 0 | 16 | 40 |
-| 2026-04-23 08:38:42 | 0 | 16 | 40 |
-| 2026-04-23 08:22:42 | 0 | 16 | 40 |
-| 2026-04-23 08:06:42 | 0 | 16 | 40 |
->>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
-| 2026-04-23 07:50:42 | 0 | 16 | 40 |
-| 2026-04-23 07:34:42 | 0 | 16 | 40 |
-| 2026-04-23 07:18:42 | 0 | 16 | 40 |
-| 2026-04-23 07:02:42 | 0 | 16 | 40 |
-| 2026-04-23 06:46:42 | 0 | 16 | 39 |
-| 2026-04-23 06:32:23 | 0 | 16 | 39 |
-| 2026-04-23 06:14:42 | 0 | 15 | 39 |
-| 2026-04-23 05:58:42 | 0 | 15 | 39 |
-| 2026-04-23 05:42:42 | 0 | 15 | 39 |
-| 2026-04-23 05:26:42 | 0 | 15 | 39 |
-| 2026-04-23 05:10:42 | 0 | 15 | 39 |
-| 2026-04-23 04:54:42 | 0 | 15 | 39 |
-| 2026-04-23 04:38:42 | 0 | 15 | 39 |
-| 2026-04-23 04:22:42 | 0 | 15 | 39 |
-| 2026-04-23 04:06:42 | 0 | 15 | 39 |
-| 2026-04-23 03:50:42 | 0 | 15 | 39 |
-| 2026-04-23 03:34:42 | 0 | 16 | 39 |
-| 2026-04-23 03:19:50 | 0 | 16 | 39 |
-| 2026-04-23 03:02:42 | 0 | 15 | 39 |
-| 2026-04-23 02:46:42 | 0 | 15 | 39 |
-| 2026-04-23 02:32:04 | 0 | 16 | 39 |
-| 2026-04-23 02:14:42 | 0 | 15 | 39 |
-| 2026-04-23 01:59:50 | 0 | 16 | 39 |
-| 2026-04-23 01:42:42 | 0 | 15 | 39 |
-| 2026-04-23 01:26:42 | 0 | 15 | 39 |
-| 2026-04-23 01:10:42 | 0 | 15 | 39 |
-| 2026-04-23 00:56:07 | 0 | 16 | 39 |
-| 2026-04-23 00:38:42 | 0 | 15 | 39 |
-| 2026-04-23 00:22:42 | 0 | 16 | 39 |
-| 2026-04-23 00:06:47 | 0 | 16 | 39 |
-| 2026-04-22 23:52:20 | 0 | 15 | 39 |
-| 2026-04-22 23:36:48 | 0 | 14 | 39 |
-| 2026-04-22 23:18:42 | 0 | 13 | 39 |
-| 2026-04-22 23:02:42 | 0 | 13 | 39 |
-| 2026-04-22 22:46:42 | 0 | 13 | 39 |
-| 2026-04-22 22:30:42 | 0 | 14 | 39 |
-| 2026-04-22 22:14:42 | 0 | 14 | 39 |
-| 2026-04-22 21:58:42 | 0 | 14 | 39 |
-| 2026-04-22 21:42:42 | 0 | 15 | 39 |
-| 2026-04-22 21:30:27 | 0 | 15 | 39 |
-| 2026-04-22 21:10:42 | 0 | 13 | 39 |
-| 2026-04-22 20:54:42 | 0 | 14 | 39 |
-| 2026-04-22 20:38:42 | 0 | 14 | 39 |
-| 2026-04-22 20:16:11 | 0 | 14 | 39 |
-| 2026-04-22 20:07:42 | 0 | 14 | 39 |
-| 2026-04-22 19:38:21 | 0 | 14 | 39 |
-| 2026-04-22 19:07:08 | 0 | 13 | 39 |
-| 2026-04-22 18:34:42 | 0 | 12 | 39 |
-| 2026-04-22 18:03:42 | 0 | 13 | 39 |
-| 2026-04-22 17:32:42 | 0 | 13 | 39 |
-| 2026-04-22 17:01:42 | 0 | 13 | 39 |
-| 2026-04-22 16:30:42 | 0 | 13 | 39 |
-| 2026-04-22 16:09:29 | 0 | 13 | 39 |
-| 2026-04-22 15:31:02 | 0 | 9 | 38 |
-| 2026-04-22 15:00:18 | 0 | 9 | 38 |
-| 2026-04-22 14:59:27 | 0 | 9 | 38 |
-| 2026-04-22 14:16:02 | 0 | 9 | 38 |
-| 2026-04-22 13:15:02 | 0 | 9 | 38 |
-| 2026-04-22 12:14:02 | 0 | 9 | 38 |
-| 2026-04-22 11:13:02 | 0 | 9 | 38 |
-| 2026-04-22 10:12:02 | 0 | 8 | 38 |
-| 2026-04-22 09:11:02 | 0 | 9 | 38 |
-| 2026-04-22 08:10:02 | 0 | 9 | 38 |
-| 2026-04-22 07:09:02 | 0 | 8 | 38 |
-| 2026-04-22 06:08:02 | 0 | 8 | 38 |
-| 2026-04-22 05:07:02 | 0 | 9 | 38 |
-| 2026-04-22 04:06:02 | 0 | 10 | 38 |
-| 2026-04-22 03:05:02 | 0 | 9 | 38 |
-| 2026-04-22 02:04:02 | 0 | 10 | 38 |
-| 2026-04-22 01:03:02 | 0 | 10 | 38 |
-| 2026-04-22 00:02:02 | 0 | 9 | 38 |
-| 2026-04-21 23:01:02 | 0 | 10 | 38 |
-| 2026-04-21 22:00:02 | 0 | 12 | 38 |
-| 2026-04-21 20:59:09 | 1 | 13 | 38 |
-| 2026-04-21 19:58:02 | 0 | 12 | 37 |
-| 2026-04-21 18:57:02 | 0 | 12 | 37 |
-| 2026-04-21 17:56:02 | 0 | 12 | 37 |
-| 2026-04-21 16:55:02 | 0 | 12 | 37 |
-| 2026-04-21 15:54:02 | 0 | 11 | 37 |
-| 2026-04-21 14:53:02 | 0 | 11 | 37 |
-| 2026-04-21 13:52:02 | 0 | 11 | 37 |
-| 2026-04-21 12:51:02 | 0 | 11 | 37 |
-| 2026-04-21 11:50:02 | 0 | 11 | 37 |
-| 2026-04-21 11:42:48 | 0 | 11 | 37 |
-| 2026-04-21 11:36:32 | 0 | 11 | 37 |
-| 2026-04-21 10:49:02 | 0 | 10 | 37 |
-| 2026-04-21 10:08:07 | 0 | 12 | 37 |
-| 2026-04-21 10:05:17 | 0 | 12 | 37 |
-| 2026-04-21 09:48:02 | 0 | 12 | 37 |
-| 2026-04-21 08:47:22 | 0 | 12 | 37 |
-| 2026-04-21 07:47:02 | 0 | 11 | 37 |
-| 2026-04-21 07:01:43 | 0 | 11 | 37 |
-| 2026-04-21 06:57:44 | 0 | 12 | 37 |
-| 2026-04-21 06:47:02 | 0 | 11 | 37 |
-| 2026-04-21 06:46:46 | 0 | 11 | 37 |
-| 2026-04-21 05:46:02 | 0 | 11 | 37 |
-| 2026-04-21 04:45:02 | 0 | 11 | 37 |
-| 2026-04-21 03:44:02 | 0 | 11 | 37 |
-| 2026-04-21 02:43:02 | 0 | 11 | 37 |
-| 2026-04-21 01:42:02 | 0 | 11 | 37 |
-| 2026-04-21 00:41:02 | 0 | 11 | 37 |
-| 2026-04-20 23:40:02 | 0 | 11 | 37 |
-| 2026-04-20 22:39:02 | 0 | 12 | 37 |
-| 2026-04-20 21:38:02 | 0 | 11 | 37 |
-| 2026-04-20 20:37:02 | 0 | 12 | 37 |
-| 2026-04-20 19:36:02 | 0 | 12 | 37 |
-| 2026-04-20 18:35:03 | 1 | 14 | 37 |
-| 2026-04-20 17:34:02 | 0 | 13 | 36 |
-| 2026-04-20 16:33:02 | 1 | 14 | 36 |
-| 2026-04-20 15:36:51 | 0 | 13 | 35 |
-
-
-<<<<<<< HEAD
-*Last updated: 2026-05-02 08:34:59*
-=======
-*Last updated: 2026-05-02 08:34:59*
->>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
-
----
-
-## Recent Online/Offline Changes (Since Last Scan)
-
-This table shows only devices that changed state (came online or went offline) between scans. Hostnames are included where known.
-
-| Status       | Devices                          | Scan Time           | Notes |
-|--------------|----------------------------------|---------------------|-------|
-| **Online** | —                                 | None                         | 2026-04-21 07:01:43 | No devices came online in the latest scan. |
-| **Offline**| —                                 | None                         | 2026-04-21 07:01:43 | No devices went offline in the latest scan. |
-| **Online** | esp32s3-9F9FA0.MG8702             | ESP32-S3 IoT (192.168.0.246) | 2026-04-20 18:35:03 | New IoT device joined the LAN. |
-| **Online** | device.MG8702                     | Unknown Client (192.168.0.158) | 2026-04-20 16:33:02 | New client device discovered. |
-
-*This table is focused exclusively on state changes. The full scan history is in the section above.*
-
 ---
 
 
@@ -2377,248 +2568,38 @@ This table shows only devices that changed state (came online or went offline) b
 
 ---
 
+## 🔬 Deep Scan Results - 2026-05-03 18:45:42
 
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
-## 🔬 Deep Scan Results - 2026-04-26 20:47:19
-
-**Scanned 40 devices with full Nmap service/OS detection.**
+**Scanned 30 devices with full Nmap service/OS detection.**
 
 ### Key Findings:
 - No open ports discovered in this run (likely filtered/host firewalls).
 
-*Deep scan completed at 2026-04-26 20:47:19. Full JSON results in `deep_scan_results.json`.*
+*Deep scan completed at 2026-05-03 18:45:42. Full JSON results in `deep_scan_results.json`.*
 ### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
+- **192.168.2.120**: TCP [49152, 62078] | UDP [] | OS: Unknown
 
-*Deep scan completed at 2026-04-22 14:32:14. Full JSON results in `deep_scan_results.json`.*
+*Deep scan completed at 2026-05-03 17:44:35. Full JSON results in `deep_scan_results.json`.*
 ### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
+- **192.168.2.120**: TCP [49152, 62078] | UDP [] | OS: Unknown
+- **192.168.2.181**: TCP [49152, 49304, 50234, 62078] | UDP [] | OS: Unknown
 
-*Deep scan completed at 2026-04-22 12:31:42. Full JSON results in `deep_scan_results.json`.*
+*Deep scan completed at 2026-05-03 16:43:07. Full JSON results in `deep_scan_results.json`.*
 ### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
+- **192.168.2.120**: TCP [49152, 62078] | UDP [] | OS: Unknown
 
-*Deep scan completed at 2026-04-22 11:31:30. Full JSON results in `deep_scan_results.json`.*
+*Deep scan completed at 2026-05-03 15:41:24. Full JSON results in `deep_scan_results.json`.*
 ### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
+- **192.168.2.120**: TCP [49152, 62078] | UDP [] | OS: Unknown
 
-*Deep scan completed at 2026-04-22 10:29:28. Full JSON results in `deep_scan_results.json`.*
+*Deep scan completed at 2026-05-03 14:43:41. Full JSON results in `deep_scan_results.json`.*
 ### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
+- **192.168.2.120**: TCP [49152, 62078] | UDP [] | OS: Unknown
+- **192.168.2.169**: TCP [5000, 7000, 51403] | UDP [] | OS: Unknown
 
-*Deep scan completed at 2026-04-22 09:31:48. Full JSON results in `deep_scan_results.json`.*
+*Deep scan completed at 2026-05-03 13:41:49. Full JSON results in `deep_scan_results.json`.*
 ### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
+- **192.168.2.120**: TCP [49152, 62078] | UDP [] | OS: Unknown
+- **192.168.2.169**: TCP [5000, 7000, 51403] | UDP [] | OS: Unknown
 
-*Deep scan completed at 2026-04-22 08:32:34. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-22 07:30:35. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-22 06:30:58. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-22 05:31:20. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-22 04:31:43. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-22 03:30:33. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-22 02:31:41. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-22 01:31:10. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-22 00:31:41. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-21 23:31:41. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-21 22:33:28. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-21 21:34:38. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-21 20:33:40. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-21 19:33:24. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- **100.79.216.111**: TCP [5000, 7000, 41009, 51403] | UDP [] | OS: Unknown
-
-*Deep scan completed at 2026-04-21 18:33:58. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- **192.168.0.15**: TCP [135, 139, 445, 3389, 9595, 33354] | UDP [] | OS: Unknown
-
-*Deep scan completed at 2026-04-21 17:32:57. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-21 16:33:56. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-21 15:32:38. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-21 14:32:06. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-21 13:33:33. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-21 12:32:31. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- **149.154.167.99**: TCP [80, 443] | UDP [] | OS: Unknown
-- **192.168.50.1**: TCP [53, 80, 443, 5000] | UDP [] | OS: Unknown
-
-*Deep scan completed at 2026-04-21 11:52:12. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- **149.154.167.99**: TCP [80, 443] | UDP [] | OS: Unknown
-
-*Deep scan completed at 2026-04-21 11:41:56. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-- No open ports discovered in this run (likely filtered/host firewalls).
-
-*Deep scan completed at 2026-04-21 11:25:46. Full JSON results in `deep_scan_results.json`.*
-### Key Findings:
-
-*Deep scan completed at 2026-04-21 10:29:53. Full JSON results in `deep_scan_results.json`.*
-
----
-
-## ⚡ Online Detector Enrichment
-
-Updated: 2026-05-02 08:34:58
-
-| IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
-|-----|----------|-----|--------|------------|---------------|----------|
-| 192.168.100.222 | yahboom | — | Online | None | No known access | Unknown |
-## 📱 iPhone Identity Correlation
-
-Updated: 2026-04-26 13:03:28
-
-| Reference IP | Candidate IP | Ref Hostname | Candidate Hostname | Ref MAC | Candidate MAC | Result | Confidence | Evidence |
-|--------------|--------------|--------------|--------------------|---------|---------------|--------|------------|----------|
-| 192.168.0.49 | 192.168.50.106 | iPhone.MG8702 | iPhone.MG8702 | e6:40:e4:dc:e1:f0 | — | likely_same_device | medium | Ma
+*Deep scan completed at 2026-05-03 12:44:42. Full JSON results in `deep_scan_results.json`.*
