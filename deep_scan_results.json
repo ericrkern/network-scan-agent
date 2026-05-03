@@ -1,6 +1,6 @@
 {
-  "scan_time": "2026-04-30T13:58:42.257603",
-  "devices_scanned": 6,
+  "scan_time": "2026-05-02T08:34:58.129396",
+  "devices_scanned": 7,
   "results": {
     "100.79.216.111": {
       "ip": "100.79.216.111",
@@ -47,6 +47,11 @@
     },
     "192.168.0.197": {
       "ip": "192.168.0.197",
+      "status": "timeout",
+      "error": "Scan timed out"
+    },
+    "192.168.100.222": {
+      "ip": "192.168.100.222",
       "status": "timeout",
       "error": "Scan timed out"
     }

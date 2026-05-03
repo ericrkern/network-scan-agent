@@ -62,7 +62,7 @@ Devices below are consolidated when identity evidence indicates one logical devi
 | Combined Device | Match Basis | Identifier | IP Addresses | Status | Notes |
 |-----------------|-------------|------------|--------------|--------|-------|
 | Combined Device 1 | MAC | d4:be:dc:ed:dd:90 | 192.168.0.1, 192.168.0.192 | online | Same MAC observed on multiple IPs; grouped as one logical device. |
-| Combined Device 2 | Correlated iPhone | e6:40:e4:dc:e1:f0 | 192.168.0.49, 192.168.50.106 | offline | Hostname correlation + prior identity check indicates one iPhone across two subnets. |
+| Combined Device 2 | Correlated iPhone | e6:40:e4:dc:e1:f0 | 192.168.0.49, 192.168.0.131 | offline | Hostname correlation + prior identity check indicates one iPhone across two subnets. |
 ## Device Connectivity Log
 
 This table tracks when devices were first seen (came online), their last known activity, and current status. Updated by the hourly network scan agent.
@@ -81,9 +81,9 @@ This table tracks when devices were first seen (came online), their last known a
 | 192.168.0.67 | R7000.MG8702 | 2026-04-20 | 2026-04-21 06:47 | ~1d 0h | **Stealth/Online** (Secondary Router) |
 
 <<<<<<< HEAD
-*Last updated: 2026-04-30 14:01:27*
+*Last updated: 2026-05-02 08:34:59*
 =======
-*Last updated: 2026-04-30 14:01:27*
+*Last updated: 2026-05-02 08:34:59*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -612,6 +612,29 @@ openclaw gateway start
 
 ```bash
 # Check channel status
+
+## 🔔 Network Scan Alert - 2026-05-02 08:34:59
+
+**1 new device(s) discovered!**
+
+### New Device Discovered: 192.168.100.222
+
+| Attribute | Value |
+|-----------|-------|
+| **IP Address** | 192.168.100.222 |
+| **Hostname** | yahboom |
+| **MAC Address** | — |
+| **Open Ports** | 22, 631, 5000 |
+| **Device Type** | Printer/Scanner |
+| **Discovered** | 2026-05-02 08:34:59 |
+
+**Access Methods:**
+- SSH: `ssh user@192.168.100.222`
+- CUPS: http://192.168.100.222:631
+
+---
+
+
 
 ## 🔔 Network Scan Alert - 2026-04-28 14:03:56
 
@@ -1640,6 +1663,7 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 | Scan Time | New Devices | Online | Total Known |
 |-----------|-------------|--------|-------------|
+| 2026-05-02 08:34:59 | 1 | 11 | 52 |
 | 2026-04-30 14:01:27 | 0 | 13 | 50 |
 | 2026-04-30 13:52:50 | 0 | 14 | 50 |
 | 2026-04-30 10:57:20 | 0 | 13 | 50 |
@@ -2311,9 +2335,9 @@ PicoClaw is a lightweight Go-based OpenClaw implementation also supporting Teleg
 
 
 <<<<<<< HEAD
-*Last updated: 2026-04-30 14:01:27*
+*Last updated: 2026-05-02 08:34:59*
 =======
-*Last updated: 2026-04-30 14:01:27*
+*Last updated: 2026-05-02 08:34:59*
 >>>>>>> 9d1f2b8 (Auto-update daily website/network data snapshot.)
 
 ---
@@ -2586,11 +2610,11 @@ This table shows only devices that changed state (came online or went offline) b
 
 ## ⚡ Online Detector Enrichment
 
-Updated: 2026-04-30 13:52:50
+Updated: 2026-05-02 08:34:58
 
 | IP | Hostname | MAC | Status | Open Ports | Access Method | Identity |
 |-----|----------|-----|--------|------------|---------------|----------|
-| 100.71.191.72 | emergingtechs-mac-mini.tail2a3b45.ts.net | — | Online | 22, 5900, 47490, 49243 | SSH (`ssh user@100.71.191.72`), VNC | VNC/Remote Desktop |
+| 192.168.100.222 | yahboom | — | Online | None | No known access | Unknown |
 ## 📱 iPhone Identity Correlation
 
 Updated: 2026-04-26 13:03:28
