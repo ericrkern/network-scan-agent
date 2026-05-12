@@ -1234,9 +1234,12 @@ def update_devices_file(new_devices):
         return
     
     try:
-        # Read existing content
-        with open(DEVICES_FILE, 'r') as f:
-            existing_content = f.read()
+        # Read existing content (bootstrap empty inventory on first run)
+        if os.path.exists(DEVICES_FILE):
+            with open(DEVICES_FILE, 'r') as f:
+                existing_content = f.read()
+        else:
+            existing_content = "# Network device inventory\n\n"
         
         # Create new section header
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

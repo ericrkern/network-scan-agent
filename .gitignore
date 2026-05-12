@@ -1,6 +1,7 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyc
 .venv/
 venv/
 
@@ -11,3 +12,29 @@ dashboard/__pycache__/
 
 # Local backups / noise (adjust if you want these tracked)
 reset-backups-*/
+
+# ---------------------------------------------------------------------------
+# Instance-local data (this host / this install — not for version control)
+# ---------------------------------------------------------------------------
+
+# Scanner + dashboard state and generated inventory
+.scan_snapshots.json
+.seen_devices.json
+.iphone_identity_checks.json
+devices.md
+deep_scan_results.json
+device_groups_config.json
+
+# Scan exports and one-off dumps
+public_ip_nmap.xml
+jetson-io-debug.txt
+
+# Logs (any component)
+*.log
+deep_scan_cron.log
+watch-monitor.log
+
+# Optional local overrides / secrets
+.env
+.env.*
+*.local.json
