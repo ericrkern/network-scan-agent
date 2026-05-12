@@ -1,7 +1,9 @@
-# Allow the dashboard service user to run only the WiFi scan helper as root.
-# Install (once):
+# Example static rule (paths/user may not match your machine).
+# Prefer running:  dashboard/bin/install_wifi_sudoers.sh
+# That script writes /etc/sudoers.d/network-pulse-wifi using realpath + your login name.
+#
+# Manual install:
 #   sudo install -m 440 network-pulse-wifi.sudoers /etc/sudoers.d/network-pulse-wifi
 #   sudo visudo -cf /etc/sudoers.d/network-pulse-wifi
 #
-# If your dashboard runs as a different user, replace "yb" below.
-yb ALL=(root) NOPASSWD: /usr/local/yb/.Network/dashboard/bin/scan_wifi_ssids.sh
+ekern ALL=(root) NOPASSWD: /home/ekern/Documents/network-scan-agent/dashboard/bin/scan_wifi_ssids.sh

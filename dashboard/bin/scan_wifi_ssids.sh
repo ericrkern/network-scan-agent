@@ -6,6 +6,9 @@ iface="${WIFI_SCAN_IFACE:-}"
 if [[ -z "$iface" ]]; then
   iface="$(iw dev 2>/dev/null | awk '/Interface / {print $2; exit}')"
 fi
+if [[ -z "$iface" ]]; then
+  iface="$(nmcli -t -f DEVICE,TYPE,STATE device 2>/dev/null | awk -F: '$2=="wifi" && $1 !~ /^p2p-/ {print $1; exit}')"
+fi
 
 if [[ -z "$iface" ]]; then
   echo '{"interface":"unknown","networks":[],"error":"No wireless interface found"}'
@@ -106,8 +109,11 @@ if ! command -v nmcli >/dev/null 2>&1; then
   exit 0
 fi
 
+# Try to refresh scan cache first; this may fail without privileges.
+nmcli dev wifi rescan ifname "$iface" >/dev/null 2>&1 || true
+
 nmcli_tmp="$(mktemp)"
-nmcli -m multiline -f BSSID,SSID,SIGNAL,CHAN,FREQ,SECURITY dev wifi list ifname "$iface" >"$nmcli_tmp" 2>/dev/null || true
+nmcli --wait 15 -m multiline -f BSSID,SSID,SIGNAL,CHAN,FREQ,SECURITY dev wifi list ifname "$iface" --rescan yes >"$nmcli_tmp" 2>/dev/null || true
 python3 - "$iface" "$nmcli_tmp" <<'PY'
 import json
 import sys

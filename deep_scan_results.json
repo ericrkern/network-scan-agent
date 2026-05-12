@@ -1,273 +1,456 @@
 {
-  "scan_time": "2026-05-03T18:45:42.258287",
-  "devices_scanned": 30,
+  "scan_time": "2026-05-11T21:34:24.581389",
+  "devices_scanned": 90,
   "results": {
-    "100.65.1.48": {
-      "ip": "100.65.1.48",
-      "status": "timeout",
-      "error": "Scan timed out"
-    },
     "100.67.102.109": {
       "ip": "100.67.102.109",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": true,
-      "scan_time": "2026-05-03T18:11:17.071889",
-      "raw_output_length": 697,
-      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
-      "status": "success"
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
     "100.70.174.39": {
       "ip": "100.70.174.39",
-      "status": "timeout",
-      "error": "Scan timed out"
-    },
-    "100.71.191.72": {
-      "ip": "100.71.191.72",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": true,
-      "scan_time": "2026-05-03T18:13:54.495766",
-      "raw_output_length": 693,
-      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
-      "status": "success"
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
     "100.78.64.7": {
       "ip": "100.78.64.7",
-      "status": "timeout",
-      "error": "Scan timed out"
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
     "100.79.216.111": {
       "ip": "100.79.216.111",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": true,
-      "scan_time": "2026-05-03T18:16:46.953145",
-      "raw_output_length": 697,
-      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
-      "status": "success"
-    },
-    "100.87.84.95": {
-      "ip": "100.87.84.95",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": true,
-      "scan_time": "2026-05-03T18:17:55.218207",
-      "raw_output_length": 689,
-      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
-      "status": "success"
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
     "100.92.6.101": {
       "ip": "100.92.6.101",
-      "status": "timeout",
-      "error": "Scan timed out"
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
     "100.95.15.82": {
       "ip": "100.95.15.82",
-      "status": "timeout",
-      "error": "Scan timed out"
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.1": {
+      "ip": "192.168.0.1",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.153": {
+      "ip": "192.168.0.153",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.154": {
+      "ip": "192.168.0.154",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.160": {
+      "ip": "192.168.0.160",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
     "192.168.0.170": {
       "ip": "192.168.0.170",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": true,
-      "scan_time": "2026-05-03T18:21:55.079256",
-      "raw_output_length": 693,
-      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
-      "status": "success"
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.1": {
-      "ip": "192.168.2.1",
-      "status": "timeout",
-      "error": "Scan timed out"
+    "192.168.0.171": {
+      "ip": "192.168.0.171",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.102": {
-      "ip": "192.168.2.102",
-      "status": "timeout",
-      "error": "Scan timed out"
+    "192.168.0.185": {
+      "ip": "192.168.0.185",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.114": {
-      "ip": "192.168.2.114",
-      "status": "timeout",
-      "error": "Scan timed out"
+    "100.70.15.3": {
+      "ip": "100.70.15.3",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.120": {
-      "ip": "192.168.2.120",
-      "status": "timeout",
-      "error": "Scan timed out"
+    "100.71.191.72": {
+      "ip": "100.71.191.72",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.122": {
-      "ip": "192.168.2.122",
-      "status": "timeout",
-      "error": "Scan timed out"
+    "100.86.22.47": {
+      "ip": "100.86.22.47",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.136": {
-      "ip": "192.168.2.136",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": true,
-      "scan_time": "2026-05-03T18:31:21.134613",
-      "raw_output_length": 576,
-      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
-      "status": "success"
+    "192.168.0.190": {
+      "ip": "192.168.0.190",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.137": {
-      "ip": "192.168.2.137",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": true,
-      "scan_time": "2026-05-03T18:32:06.647009",
-      "raw_output_length": 710,
-      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
-      "status": "success"
+    "192.168.0.184": {
+      "ip": "192.168.0.184",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.155": {
-      "ip": "192.168.2.155",
-      "status": "timeout",
-      "error": "Scan timed out"
+    "100.96.35.106": {
+      "ip": "100.96.35.106",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.157": {
-      "ip": "192.168.2.157",
-      "status": "timeout",
-      "error": "Scan timed out"
+    "100.65.1.48": {
+      "ip": "100.65.1.48",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.168": {
-      "ip": "192.168.2.168",
-      "status": "timeout",
-      "error": "Scan timed out"
+    "192.168.0.152": {
+      "ip": "192.168.0.152",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.169": {
-      "ip": "192.168.2.169",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": true,
-      "scan_time": "2026-05-03T18:37:33.434569",
-      "raw_output_length": 710,
-      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
-      "status": "success"
+    "192.168.0.198": {
+      "ip": "192.168.0.198",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.181": {
-      "ip": "192.168.2.181",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": false,
-      "scan_time": "2026-05-03T18:38:41.687873",
-      "raw_output_length": 336,
-      "stderr_tail": "",
-      "status": "no_response"
+    "192.168.0.2": {
+      "ip": "192.168.0.2",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.196": {
-      "ip": "192.168.2.196",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": true,
-      "scan_time": "2026-05-03T18:39:00.001675",
-      "raw_output_length": 445,
-      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
-      "status": "success"
+    "100.87.84.95": {
+      "ip": "100.87.84.95",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.197": {
-      "ip": "192.168.2.197",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": true,
-      "scan_time": "2026-05-03T18:39:06.307047",
-      "raw_output_length": 444,
-      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
-      "status": "success"
+    "192.168.0.202": {
+      "ip": "192.168.0.202",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.199": {
-      "ip": "192.168.2.199",
-      "status": "timeout",
-      "error": "Scan timed out"
+    "192.168.0.128": {
+      "ip": "192.168.0.128",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.200": {
-      "ip": "192.168.2.200",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": true,
-      "scan_time": "2026-05-03T18:40:33.920824",
-      "raw_output_length": 711,
-      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
-      "status": "success"
+    "192.168.0.192": {
+      "ip": "192.168.0.192",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.225": {
-      "ip": "192.168.2.225",
-      "status": "timeout",
-      "error": "Scan timed out"
+    "192.168.0.127": {
+      "ip": "192.168.0.127",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.226": {
-      "ip": "192.168.2.226",
-      "status": "timeout",
-      "error": "Scan timed out"
+    "100.124.98.101": {
+      "ip": "100.124.98.101",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.227": {
-      "ip": "192.168.2.227",
-      "status": "timeout",
-      "error": "Scan timed out"
+    "192.168.0.119": {
+      "ip": "192.168.0.119",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     },
-    "192.168.2.241": {
-      "ip": "192.168.2.241",
-      "hostname": "\u2014",
-      "os": "Unknown",
-      "ports": [],
-      "tcp_ports": [],
-      "udp_ports": [],
-      "services": {},
-      "host_up": true,
-      "scan_time": "2026-05-03T18:45:38.087311",
-      "raw_output_length": 445,
-      "stderr_tail": "You requested a scan type which requires root privileges.\nQUITTING!",
-      "status": "success"
+    "192.168.0.120": {
+      "ip": "192.168.0.120",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.121": {
+      "ip": "192.168.0.121",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.122": {
+      "ip": "192.168.0.122",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.123": {
+      "ip": "192.168.0.123",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.124": {
+      "ip": "192.168.0.124",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.125": {
+      "ip": "192.168.0.125",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.126": {
+      "ip": "192.168.0.126",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.116": {
+      "ip": "192.168.0.116",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.117": {
+      "ip": "192.168.0.117",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.118": {
+      "ip": "192.168.0.118",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.112": {
+      "ip": "192.168.0.112",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.113": {
+      "ip": "192.168.0.113",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.114": {
+      "ip": "192.168.0.114",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.115": {
+      "ip": "192.168.0.115",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "100.73.17.92": {
+      "ip": "100.73.17.92",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.107": {
+      "ip": "192.168.0.107",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.108": {
+      "ip": "192.168.0.108",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.109": {
+      "ip": "192.168.0.109",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.110": {
+      "ip": "192.168.0.110",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.111": {
+      "ip": "192.168.0.111",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.104": {
+      "ip": "192.168.0.104",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.105": {
+      "ip": "192.168.0.105",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.106": {
+      "ip": "192.168.0.106",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.197": {
+      "ip": "192.168.0.197",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.205": {
+      "ip": "192.168.0.205",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.206": {
+      "ip": "192.168.0.206",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.194": {
+      "ip": "192.168.0.194",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.158": {
+      "ip": "192.168.0.158",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.193": {
+      "ip": "192.168.0.193",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.196": {
+      "ip": "192.168.0.196",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.210": {
+      "ip": "192.168.0.210",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "100.127.198.77": {
+      "ip": "100.127.198.77",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.195": {
+      "ip": "192.168.0.195",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.204": {
+      "ip": "192.168.0.204",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.212": {
+      "ip": "192.168.0.212",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.213": {
+      "ip": "192.168.0.213",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.214": {
+      "ip": "192.168.0.214",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.215": {
+      "ip": "192.168.0.215",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.216": {
+      "ip": "192.168.0.216",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.180": {
+      "ip": "192.168.0.180",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.211": {
+      "ip": "192.168.0.211",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "100.106.159.8": {
+      "ip": "100.106.159.8",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.203": {
+      "ip": "192.168.0.203",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.168": {
+      "ip": "192.168.0.168",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.218": {
+      "ip": "192.168.0.218",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.151": {
+      "ip": "192.168.0.151",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.221": {
+      "ip": "192.168.0.221",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.222": {
+      "ip": "192.168.0.222",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.207": {
+      "ip": "192.168.0.207",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.217": {
+      "ip": "192.168.0.217",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.223": {
+      "ip": "192.168.0.223",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.225": {
+      "ip": "192.168.0.225",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "100.93.92.44": {
+      "ip": "100.93.92.44",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.224": {
+      "ip": "192.168.0.224",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "100.110.144.98": {
+      "ip": "100.110.144.98",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.100": {
+      "ip": "192.168.0.100",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "100.78.146.61": {
+      "ip": "100.78.146.61",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.229": {
+      "ip": "192.168.0.229",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.230": {
+      "ip": "192.168.0.230",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
+    },
+    "192.168.0.226": {
+      "ip": "192.168.0.226",
+      "status": "error",
+      "error": "[Errno 2] No such file or directory: 'nmap'"
     }
   }
 }

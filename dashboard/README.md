@@ -23,7 +23,7 @@ cd /home/jetson/Documents/Network/dashboard
 python3 app.py
 ```
 
-Then open: **http://localhost:5000** or **http://192.168.0.197:5000**
+Then open **http://localhost:5000**, or from another machine use this host’s LAN IP (shown in the startup log, e.g. `http://192.168.0.153:5000`) or its Tailscale IP (`http://100.x.x.x:5000`). Ensure UFW allows the port: `sudo dashboard/bin/open_firewall_for_pulse.sh`.
 
 ## As a Service (Recommended)
 
@@ -45,7 +45,7 @@ systemctl --user enable --now network-pulse.service
 
 ## Access
 
-- Default port: **5000**
+- Default port: **5000**; bind address defaults to **0.0.0.0** (`NETWORK_PULSE_BIND_ADDR`) so LAN and Tailscale clients can use the same process.
 - Runs as user `irene` (with root privileges via sudo when needed)
 - Fully compatible with the existing network monitoring agent
 

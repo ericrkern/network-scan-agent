@@ -625,7 +625,7 @@ def scan_ports(ip, ports):
 
 
 def get_hostname(ip):
-    """Try to resolve hostname via reverse DNS"""
+    """Try reverse DNS (NSS), then Avahi mDNS reverse lookup if available."""
     try:
         result = subprocess.run(
             ["getent", "hosts", ip],
@@ -636,8 +636,23 @@ def get_hostname(ip):
         if result.returncode == 0 and result.stdout:
             parts = result.stdout.split()
             return parts[1] if len(parts) > 1 else None
-    except:
+    except Exception:
         pass
+
+    try:
+        proc = subprocess.run(
+            ["avahi-resolve-address", ip],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if proc.returncode == 0 and proc.stdout.strip():
+            cols = proc.stdout.strip().split()
+            if len(cols) >= 2:
+                return cols[1].strip()
+    except Exception:
+        pass
+
     return None
 
 

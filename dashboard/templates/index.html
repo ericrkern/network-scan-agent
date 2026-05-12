@@ -60,14 +60,16 @@
                     <div class="w-9 h-9 bg-yellow-500 rounded-2xl flex items-center justify-center text-zinc-950 font-bold text-xl">📡</div>
                     <div>
                         <h1 class="logo-font text-4xl font-semibold tracking-tighter text-white">NETWORK PULSE</h1>
-                        <p class="text-sm font-mono -mt-1">
+                        <div class="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                            <span class="text-[11px] uppercase tracking-widest text-zinc-500 font-medium">Public IPv4</span>
+                            <span id="public-ip" class="font-mono text-xl sm:text-2xl font-semibold text-yellow-400 tabular-nums">{{ public_ip }}</span>
+                        </div>
+                        <p class="text-sm font-mono mt-2">
                             <span id="connectivity-badge" class="text-emerald-400">ONLINE</span>
                             <span class="text-zinc-500">• LOCAL</span>
                             <span id="local-ip" class="text-sky-400">{{ local_ip }}</span>
                             <span class="text-zinc-500">• TAILSCALE</span>
                             <span id="tailscale-ip" class="text-emerald-300">{{ tailscale_ip }}</span>
-                            <span class="text-zinc-500">• WAN</span>
-                            <span id="public-ip" class="text-yellow-400">Loading...</span>
                         </p>
                     </div>
                 </div>
@@ -183,6 +185,11 @@
                         <i class="fa-solid fa-filter"></i>
                         <span>FILTER</span>
                     </div>
+                    <div onclick="openEditGroupsModal()"
+                         class="px-5 py-3 bg-zinc-900 border border-zinc-700 hover:border-yellow-500/50 rounded-2xl cursor-pointer text-sm flex items-center gap-x-2">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>EDIT GROUPS</span>
+                    </div>
                 </div>
                 
                 <div class="flex gap-x-2 text-xs uppercase tracking-widest font-mono text-zinc-500">
@@ -195,10 +202,8 @@
                 </div>
             </div>
 
-            <!-- Devices by subnet (sections injected by JavaScript) -->
-            <div id="devices-grid" class="space-y-12">
-                <!-- Populated by JavaScript -->
-            </div>
+            <script type="application/json" id="section-order-boot">{{ dashboard_section_order | default([]) | tojson }}</script>
+            <div id="dynamic-dashboard-sections" class="space-y-2"></div>
             </div>
 
             <!-- Topology Tab Content -->
@@ -399,7 +404,10 @@
 
         <!-- Footer -->
         <footer class="border-t border-zinc-800 bg-zinc-900 mt-12">
-            <div class="max-w-7xl mx-auto px-8 py-8 text-xs font-mono text-zinc-500 flex justify-end items-center">
+            <div class="max-w-7xl mx-auto px-8 py-8 text-xs font-mono text-zinc-500 flex justify-between items-center">
+                <div>
+                    Network Scan Agent • Last scan from <span class="text-yellow-400">192.168.0.197</span>
+                </div>
                 <div class="flex items-center gap-x-6">
                     <a href="https://github.com" target="_blank" class="hover:text-white transition-colors">
                         <i class="fa-brands fa-github"></i>
@@ -492,6 +500,36 @@
         </div>
     </div>
 
+    <!-- Edit dashboard groups -->
+    <div id="edit-groups-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[60] p-4" onclick="if (event.target === this) closeEditGroupsModal()">
+        <div class="bg-zinc-900 border border-zinc-700 rounded-3xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl" onclick="event.stopPropagation()">
+            <div class="px-6 py-4 border-b border-zinc-700 flex justify-between items-center bg-zinc-950">
+                <div>
+                    <div class="font-semibold text-white">Edit dashboard groups</div>
+                    <div class="text-xs text-zinc-500 mt-1">Reorder sections. Built-in groups list current devices automatically. Custom groups: pick hostnames below or edit IPs as text.</div>
+                </div>
+                <button type="button" onclick="closeEditGroupsModal()" class="text-zinc-400 hover:text-white text-xl leading-none px-2" aria-label="Close">✕</button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1 space-y-4">
+                <div id="edit-groups-section-list" class="space-y-3"></div>
+                <button type="button" onclick="addCustomGroup()"
+                    class="text-sm px-4 py-2 bg-zinc-800 rounded-xl border border-zinc-600 hover:border-yellow-500/50 text-zinc-200 w-full sm:w-auto">
+                    + Add custom group
+                </button>
+                <div class="border-t border-zinc-800 pt-4">
+                    <div class="text-xs uppercase tracking-widest text-zinc-500 mb-2">LAN IPs under “Other networks &amp; devices” (not OpenClaw)</div>
+                    <textarea id="edit-groups-openclaw-excluded" rows="3"
+                        class="w-full bg-zinc-950 border border-zinc-700 rounded-xl p-3 text-sm font-mono text-zinc-200 outline-none focus:border-yellow-500/50"
+                        placeholder="One IP per line or comma-separated"></textarea>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-zinc-700 flex justify-end gap-2 bg-zinc-950">
+                <button type="button" onclick="closeEditGroupsModal()" class="px-4 py-2 rounded-xl border border-zinc-600 text-sm text-zinc-300 hover:bg-zinc-800">Cancel</button>
+                <button type="button" onclick="saveEditGroups()" class="px-4 py-2 rounded-xl bg-yellow-500 text-zinc-950 text-sm font-semibold hover:bg-yellow-400">Save</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Terminal Modal (existing) -->
     <div id="terminal-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
         <div class="bg-zinc-900 border border-zinc-700 rounded-3xl w-full max-w-2xl mx-4 overflow-hidden">
@@ -516,20 +554,557 @@
 
     <script>
         let allDevices = [];
-        let subnetSectionOrder = [
-            "Local LAN (192.168.2.0/24)",
-            "Local LAN (192.168.0.0/24)",
-            "Adjacent Subnet (192.168.1.0/24)",
-            "Adjacent Subnet (192.168.100.0/24)",
-            "Docker Network (172.17.0.0/16)",
-            "External/Public Internet",
-            "Other Networks",
-            "Tailscale Mesh VPN",
-        ];
+        let dashboardSectionOrder = [];
+        try {
+            const _bootEl = document.getElementById('section-order-boot');
+            if (_bootEl && _bootEl.textContent.trim()) {
+                dashboardSectionOrder = JSON.parse(_bootEl.textContent);
+            }
+        } catch (e) {
+            console.warn('Could not parse section-order-boot', e);
+        }
+        let editGroupsDraft = null;
         let currentFilter = 'all';
         let currentMainTab = 'dashboard';
         let traceAutoRefresh = null;
         let traceRequestInFlight = false;
+
+        const BUILTIN_SECTION_LABELS = {
+            ollama: 'Ollama Servers',
+            openclaw: 'OpenClaw Devices',
+            access_point: 'Access Point',
+            other_wide: 'Other networks & devices',
+            tailscale: 'Tailscale devices',
+        };
+
+        function escapeHtmlText(str) {
+            if (str === undefined || str === null) return '';
+            const d = document.createElement('div');
+            d.textContent = String(str);
+            return d.innerHTML;
+        }
+
+        function accentTitleClass(accent) {
+            const m = {
+                amber: 'text-amber-400',
+                sky: 'text-sky-400',
+                violet: 'text-violet-400',
+                zinc: 'text-zinc-500',
+                emerald: 'text-emerald-400',
+                rose: 'text-rose-400',
+                fuchsia: 'text-fuchsia-400',
+                orange: 'text-orange-400',
+                cyan: 'text-cyan-400',
+                lime: 'text-lime-400',
+                pink: 'text-pink-400',
+            };
+            return m[accent] || 'text-zinc-400';
+        }
+
+        function inferSectionKey(d) {
+            if (d.section_key) return d.section_key;
+            if (d.ollama_server) return 'ollama';
+            if (d.access_point) return 'access_point';
+            if (d.openclaw_lan) return 'openclaw';
+            if (d.tailscale_only) return 'tailscale';
+            if (d.personal_device) return 'custom:legacy';
+            return 'other_wide';
+        }
+
+        function escapeAttr(str) {
+            return String(str ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;')
+                .replace(/</g, '&lt;');
+        }
+
+        function getDeviceAllIps(device) {
+            const ips = new Set();
+            if (device && device.ip) ips.add(String(device.ip).trim());
+            (device && device.ip_addresses ? device.ip_addresses : []).forEach((a) => {
+                if (a) ips.add(String(a).trim());
+            });
+            return [...ips];
+        }
+
+        function getBuiltinNameInputValue(sid) {
+            const n = (editGroupsDraft && editGroupsDraft.builtin_names) ? editGroupsDraft.builtin_names[sid] : undefined;
+            if (n !== undefined && n !== null && String(n).trim()) return String(n).trim();
+            return BUILTIN_SECTION_LABELS[sid] || sid;
+        }
+
+        function syncBuiltinName(sid, val) {
+            if (!editGroupsDraft) return;
+            if (!editGroupsDraft.builtin_names) editGroupsDraft.builtin_names = {};
+            const v = String(val || '').trim();
+            const def = BUILTIN_SECTION_LABELS[sid] || '';
+            if (!v || v === def) {
+                delete editGroupsDraft.builtin_names[sid];
+            } else {
+                editGroupsDraft.builtin_names[sid] = v;
+            }
+        }
+
+        function draftBuiltinMembers(bid) {
+            const pins = editGroupsDraft.section_pins || {};
+            const bans = (editGroupsDraft.section_bans || {})[bid] || [];
+            const banSet = new Set(bans.map(String));
+            return (allDevices || []).filter((d) => {
+                const ips = getDeviceAllIps(d);
+                if (ips.some((ip) => banSet.has(ip))) return false;
+                if (ips.some((ip) => pins[ip] === bid)) return true;
+                return inferSectionKey(d) === bid;
+            }).sort((a, b) => String(a.hostname || a.ip || '').localeCompare(String(b.hostname || b.ip || ''), undefined, { sensitivity: 'base' }));
+        }
+
+        function draftBuiltinPinnedOrphans(bid) {
+            const pins = editGroupsDraft.section_pins || {};
+            const covered = new Set();
+            draftBuiltinMembers(bid).forEach((d) => getDeviceAllIps(d).forEach((ip) => covered.add(ip)));
+            return Object.entries(pins)
+                .filter(([ip, t]) => t === bid && !covered.has(ip))
+                .map(([ip]) => ip);
+        }
+
+        function draftBuiltinAvailable(bid) {
+            const inMem = new Set(draftBuiltinMembers(bid).map((d) => String(d.ip)));
+            return (allDevices || [])
+                .filter((d) => !inMem.has(String(d.ip)))
+                .sort((a, b) => String(a.hostname || a.ip || '').localeCompare(String(b.hostname || b.ip || ''), undefined, { sensitivity: 'base' }));
+        }
+
+        function buildBuiltinMembersMarkupDraft(bid, orderIdx) {
+            const matched = draftBuiltinMembers(bid);
+            const orphans = draftBuiltinPinnedOrphans(bid);
+            let html = `
+                <div class="mt-2 w-full">
+                    <div class="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Members (${matched.length} devices${orphans.length ? `, ${orphans.length} pinned IP(s) only` : ''}) — preview uses pins and bans before Save</div>`;
+            if (!matched.length && !orphans.length) {
+                html += '<div class="text-xs text-zinc-500 italic mb-2">No devices — add below or use automatic rules.</div>';
+            } else {
+                html += '<ul class="text-xs max-h-36 overflow-y-auto border border-zinc-800 rounded-lg bg-zinc-900/50 mb-2">';
+                matched.forEach((d) => {
+                    html += `
+                        <li class="px-2 py-1.5 flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800/80 last:border-0">
+                            <span class="text-white truncate max-w-[55%]" title="${escapeAttr(d.hostname || '')}">${escapeHtmlText(d.hostname || '—')}</span>
+                            <span class="font-mono text-[10px] text-zinc-500">${escapeHtmlText(d.ip_display || d.ip || '')}</span>
+                            <button type="button" class="text-[10px] text-red-400 hover:text-red-300 shrink-0"
+                                onclick="removeDeviceFromBuiltinAt(${orderIdx}, '${escapeAttr(d.ip)}')">Remove</button>
+                        </li>`;
+                });
+                orphans.forEach((ip) => {
+                    html += `
+                        <li class="px-2 py-1.5 flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800/80 last:border-0">
+                            <span class="text-zinc-400 italic text-[11px]">Pinned only (no device card)</span>
+                            <span class="font-mono text-[10px] text-zinc-400">${escapeHtmlText(ip)}</span>
+                            <button type="button" class="text-[10px] text-red-400 hover:text-red-300 shrink-0"
+                                onclick="removeSinglePinFromBuiltin(${orderIdx}, '${escapeAttr(ip)}')">Remove</button>
+                        </li>`;
+                });
+                html += '</ul>';
+            }
+            html += '</div>';
+            return html;
+        }
+
+        function removeSinglePinFromBuiltin(orderIdx, ip) {
+            const sec = editGroupsDraft.section_order[orderIdx];
+            if (!sec || sec.type !== 'builtin') return;
+            const bid = sec.id;
+            if (editGroupsDraft.section_pins && editGroupsDraft.section_pins[ip] === bid) {
+                delete editGroupsDraft.section_pins[ip];
+            }
+            renderEditGroupsForm();
+        }
+
+        function removeDeviceFromBuiltinAt(orderIdx, primaryIp) {
+            const sec = editGroupsDraft.section_order[orderIdx];
+            if (!sec || sec.type !== 'builtin') return;
+            const bid = sec.id;
+            const device = (allDevices || []).find((d) => String(d.ip) === String(primaryIp));
+            const ips = device ? getDeviceAllIps(device) : [primaryIp];
+            if (!editGroupsDraft.section_pins) editGroupsDraft.section_pins = {};
+            if (!editGroupsDraft.section_bans) editGroupsDraft.section_bans = {};
+            ips.forEach((ipi) => {
+                if (editGroupsDraft.section_pins[ipi] === bid) delete editGroupsDraft.section_pins[ipi];
+            });
+            const bs = new Set((editGroupsDraft.section_bans[bid] || []).map(String));
+            ips.forEach((ipi) => bs.add(ipi));
+            editGroupsDraft.section_bans[bid] = [...bs];
+            renderEditGroupsForm();
+        }
+
+        function addCheckedDevicesToBuiltinGroup(idx) {
+            const sec = editGroupsDraft.section_order[idx];
+            if (!sec || sec.type !== 'builtin') return;
+            const bid = sec.id;
+            const wrap = document.getElementById(`picker-wrap-${idx}`);
+            if (!wrap) return;
+            if (!editGroupsDraft.section_pins) editGroupsDraft.section_pins = {};
+            if (!editGroupsDraft.section_bans) editGroupsDraft.section_bans = {};
+            wrap.querySelectorAll('input[type="checkbox"][data-primary-ip]:checked').forEach((cb) => {
+                const pip = cb.getAttribute('data-primary-ip');
+                const device = (allDevices || []).find((d) => String(d.ip) === String(pip));
+                if (!device) return;
+                getDeviceAllIps(device).forEach((ipi) => {
+                    editGroupsDraft.section_pins[ipi] = bid;
+                });
+                const rm = new Set((editGroupsDraft.section_bans[bid] || []).map(String));
+                getDeviceAllIps(device).forEach((ipi) => rm.delete(ipi));
+                editGroupsDraft.section_bans[bid] = [...rm];
+                cb.checked = false;
+            });
+            renderEditGroupsForm();
+        }
+
+        function buildBuiltinPickerMarkup(bid, idx) {
+            const avail = draftBuiltinAvailable(bid);
+            const rows = avail.map((d) => {
+                const search = `${d.hostname || ''} ${d.label || ''} ${getDeviceAllIps(d).join(' ')}`.toLowerCase();
+                return `
+                    <label data-picker-idx="${idx}" data-search="${escapeAttr(search)}"
+                        class="flex items-center gap-2 py-1 px-2 rounded hover:bg-zinc-800 cursor-pointer text-xs border-b border-zinc-800/40 last:border-0">
+                        <input type="checkbox" data-primary-ip="${escapeAttr(d.ip)}"
+                            class="rounded border-zinc-600 bg-zinc-900 text-yellow-500 focus:ring-yellow-500/40 shrink-0" />
+                        <span class="font-medium text-zinc-100 truncate flex-1">${escapeHtmlText(d.hostname || '—')}</span>
+                        <span class="font-mono text-[10px] text-zinc-500 shrink-0 max-w-[40%] truncate">${escapeHtmlText(d.ip_display || d.ip || '')}</span>
+                    </label>`;
+            }).join('');
+            const empty = avail.length
+                ? ''
+                : '<div class="text-xs text-zinc-500 italic px-2 py-2">Every known device is already in this group for this preview.</div>';
+            return `
+                <div class="mt-3 w-full">
+                    <div class="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Add devices (pins all IPs for that device)</div>
+                    <input type="search" placeholder="Filter by hostname, label, or IP…"
+                        class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white mb-2 outline-none focus:border-yellow-500/50"
+                        oninput="filterPickerInput(${idx}, this)" />
+                    <div id="picker-wrap-${idx}" class="max-h-44 overflow-y-auto border border-zinc-800 rounded-lg bg-zinc-950/80">${empty}${rows}</div>
+                    <button type="button" onclick="addCheckedDevicesToBuiltinGroup(${idx})"
+                        class="mt-2 w-full sm:w-auto px-4 py-2 rounded-xl bg-zinc-800 border border-zinc-600 text-xs text-zinc-100 hover:border-yellow-500/40">
+                        Add selected to group
+                    </button>
+                </div>`;
+        }
+
+        function customGroupIpSet(groupId) {
+            const g = editGroupsDraft && editGroupsDraft.custom_groups && editGroupsDraft.custom_groups[groupId];
+            return new Set((g && g.ips ? g.ips : []).map(String));
+        }
+
+        function devicesAvailableForCustomGroup(groupId) {
+            const inGroup = customGroupIpSet(groupId);
+            return (allDevices || [])
+                .filter((d) => !getDeviceAllIps(d).some((ip) => inGroup.has(ip)))
+                .sort((a, b) => String(a.hostname || a.ip || '').localeCompare(String(b.hostname || b.ip || ''), undefined, { sensitivity: 'base' }));
+        }
+
+        function removeIpsFromCustomGroup(groupId, ipsList) {
+            const g = editGroupsDraft && editGroupsDraft.custom_groups && editGroupsDraft.custom_groups[groupId];
+            if (!g) return;
+            const rm = new Set(ipsList.map(String));
+            g.ips = (g.ips || []).filter((ip) => !rm.has(String(ip)));
+        }
+
+        function removeDeviceFromCustomGroupAt(orderIdx, primaryIp) {
+            const sec = editGroupsDraft.section_order[orderIdx];
+            if (!sec || sec.type !== 'custom') return;
+            const gid = sec.id;
+            const device = (allDevices || []).find((d) => String(d.ip) === String(primaryIp));
+            removeIpsFromCustomGroup(gid, device ? getDeviceAllIps(device) : [primaryIp]);
+            renderEditGroupsForm();
+        }
+
+        function removeSingleIpFromCustomGroupAt(orderIdx, ip) {
+            const sec = editGroupsDraft.section_order[orderIdx];
+            if (!sec || sec.type !== 'custom') return;
+            removeIpsFromCustomGroup(sec.id, [ip]);
+            renderEditGroupsForm();
+        }
+
+        function addCheckedDevicesToCustomGroup(idx) {
+            const sec = editGroupsDraft.section_order[idx];
+            if (!sec || sec.type !== 'custom') return;
+            const groupId = sec.id;
+            const wrap = document.getElementById(`picker-wrap-${idx}`);
+            if (!wrap) return;
+            const g = editGroupsDraft.custom_groups[groupId];
+            if (!g) return;
+            const set = new Set((g.ips || []).map(String));
+            wrap.querySelectorAll('input[type="checkbox"][data-primary-ip]:checked').forEach((cb) => {
+                const pip = cb.getAttribute('data-primary-ip');
+                const device = (allDevices || []).find((d) => String(d.ip) === String(pip));
+                if (!device) return;
+                getDeviceAllIps(device).forEach((ip) => set.add(ip));
+                cb.checked = false;
+            });
+            g.ips = [...set];
+            renderEditGroupsForm();
+        }
+
+        function filterPickerInput(idx, inputEl) {
+            const q = (inputEl.value || '').toLowerCase().trim();
+            document.querySelectorAll(`label[data-picker-idx="${idx}"]`).forEach((row) => {
+                const hay = (row.getAttribute('data-search') || '').toLowerCase();
+                row.classList.toggle('hidden', Boolean(q && !hay.includes(q)));
+            });
+        }
+
+        function buildCustomMembersMarkup(groupId, orderIdx) {
+            const ipSet = customGroupIpSet(groupId);
+            const matched = (allDevices || [])
+                .filter((d) => getDeviceAllIps(d).some((ip) => ipSet.has(ip)))
+                .sort((a, b) => String(a.hostname || a.ip || '').localeCompare(String(b.hostname || b.ip || ''), undefined, { sensitivity: 'base' }));
+            const covered = new Set();
+            matched.forEach((d) => getDeviceAllIps(d).forEach((ip) => {
+                if (ipSet.has(ip)) covered.add(ip);
+            }));
+            const orphans = [...ipSet].filter((ip) => !covered.has(ip));
+
+            let html = `
+                <div class="mt-2 w-full">
+                    <div class="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Members (${matched.length} devices${orphans.length ? `, ${orphans.length} unmatched IP(s)` : ''})</div>`;
+            if (!matched.length && !orphans.length) {
+                html += '<div class="text-xs text-zinc-500 italic mb-2">No devices yet — select hostnames below or paste IPs.</div>';
+            } else {
+                html += '<ul class="text-xs max-h-36 overflow-y-auto border border-zinc-800 rounded-lg bg-zinc-900/50 mb-2">';
+                matched.forEach((d) => {
+                    html += `
+                        <li class="px-2 py-1.5 flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800/80 last:border-0">
+                            <span class="text-white truncate max-w-[55%]" title="${escapeAttr(d.hostname || '')}">${escapeHtmlText(d.hostname || '—')}</span>
+                            <span class="font-mono text-[10px] text-zinc-500">${escapeHtmlText(d.ip_display || d.ip || '')}</span>
+                            <button type="button" class="text-[10px] text-red-400 hover:text-red-300 shrink-0"
+                                onclick="removeDeviceFromCustomGroupAt(${orderIdx}, '${escapeAttr(d.ip)}')">Remove</button>
+                        </li>`;
+                });
+                orphans.forEach((ip) => {
+                    html += `
+                        <li class="px-2 py-1.5 flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800/80 last:border-0">
+                            <span class="text-zinc-500 italic text-[11px]">Not on dashboard</span>
+                            <span class="font-mono text-[10px] text-zinc-400">${escapeHtmlText(ip)}</span>
+                            <button type="button" class="text-[10px] text-red-400 hover:text-red-300 shrink-0"
+                                onclick="removeSingleIpFromCustomGroupAt(${orderIdx}, '${escapeAttr(ip)}')">Remove</button>
+                        </li>`;
+                });
+                html += '</ul>';
+            }
+            html += '</div>';
+            return html;
+        }
+
+        function buildCustomPickerMarkup(groupId, idx) {
+            const avail = devicesAvailableForCustomGroup(groupId);
+            const rows = avail.map((d) => {
+                const search = `${d.hostname || ''} ${d.label || ''} ${getDeviceAllIps(d).join(' ')}`.toLowerCase();
+                return `
+                    <label data-picker-idx="${idx}" data-search="${escapeAttr(search)}"
+                        class="flex items-center gap-2 py-1 px-2 rounded hover:bg-zinc-800 cursor-pointer text-xs border-b border-zinc-800/40 last:border-0">
+                        <input type="checkbox" data-primary-ip="${escapeAttr(d.ip)}"
+                            class="rounded border-zinc-600 bg-zinc-900 text-yellow-500 focus:ring-yellow-500/40 shrink-0" />
+                        <span class="font-medium text-zinc-100 truncate flex-1">${escapeHtmlText(d.hostname || '—')}</span>
+                        <span class="font-mono text-[10px] text-zinc-500 shrink-0 max-w-[40%] truncate">${escapeHtmlText(d.ip_display || d.ip || '')}</span>
+                    </label>`;
+            }).join('');
+            const empty = avail.length
+                ? ''
+                : '<div class="text-xs text-zinc-500 italic px-2 py-2">All known devices are already in this group.</div>';
+            return `
+                <div class="mt-3 w-full">
+                    <div class="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Add devices (hostname)</div>
+                    <input type="search" placeholder="Filter by hostname, label, or IP…"
+                        class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white mb-2 outline-none focus:border-yellow-500/50"
+                        oninput="filterPickerInput(${idx}, this)" />
+                    <div id="picker-wrap-${idx}" class="max-h-44 overflow-y-auto border border-zinc-800 rounded-lg bg-zinc-950/80">${empty}${rows}</div>
+                    <button type="button" onclick="addCheckedDevicesToCustomGroup(${idx})"
+                        class="mt-2 w-full sm:w-auto px-4 py-2 rounded-xl bg-zinc-800 border border-zinc-600 text-xs text-zinc-100 hover:border-yellow-500/40">
+                        Add selected to group
+                    </button>
+                </div>`;
+        }
+
+        function defaultSectionOrderFallback() {
+            return [
+                { key: 'ollama', type: 'builtin', title: 'Ollama Servers', subtitle: '', accent: 'amber' },
+                { key: 'openclaw', type: 'builtin', title: 'OpenClaw Devices', subtitle: '192.168.0.0/24', accent: 'sky' },
+                { key: 'access_point', type: 'builtin', title: 'Access Point', subtitle: '192.168.0.1', accent: 'violet' },
+                { key: 'other_wide', type: 'builtin', title: 'Other networks & devices', subtitle: '', accent: 'zinc' },
+                { key: 'tailscale', type: 'builtin', title: 'Tailscale devices', subtitle: '100.x mesh', accent: 'emerald' },
+            ];
+        }
+
+        function openEditGroupsModal() {
+            (async () => {
+                try {
+                    const [grRes, devRes] = await Promise.all([
+                        fetch('/api/device-groups'),
+                        fetch(`/api/devices?_ts=${Date.now()}`, { cache: 'no-store' }),
+                    ]);
+                    if (!grRes.ok) throw new Error('load failed');
+                    editGroupsDraft = await grRes.json();
+                    editGroupsDraft.builtin_names = editGroupsDraft.builtin_names || {};
+                    editGroupsDraft.section_pins = editGroupsDraft.section_pins || {};
+                    editGroupsDraft.section_bans = editGroupsDraft.section_bans || {};
+                    if (devRes.ok) {
+                        const devData = await devRes.json();
+                        allDevices = Array.isArray(devData.devices) ? devData.devices : [];
+                        if (Array.isArray(devData.section_order) && devData.section_order.length) {
+                            dashboardSectionOrder = devData.section_order;
+                        }
+                    }
+                    renderEditGroupsForm();
+                    document.getElementById('edit-groups-modal').classList.remove('hidden');
+                } catch (e) {
+                    console.error(e);
+                    alert('Could not load group configuration.');
+                }
+            })();
+        }
+
+        function closeEditGroupsModal() {
+            const m = document.getElementById('edit-groups-modal');
+            if (m) m.classList.add('hidden');
+        }
+
+        function renderEditGroupsForm() {
+            const list = document.getElementById('edit-groups-section-list');
+            const taExcluded = document.getElementById('edit-groups-openclaw-excluded');
+            if (!list || !editGroupsDraft) return;
+            const order = editGroupsDraft.section_order || [];
+            const cg = editGroupsDraft.custom_groups || {};
+            list.innerHTML = order.map((sec, idx) => {
+                if (sec.type === 'builtin') {
+                    const displayName = getBuiltinNameInputValue(sec.id);
+                    const membersBlock = buildBuiltinMembersMarkupDraft(sec.id, idx);
+                    const pickerBlock = buildBuiltinPickerMarkup(sec.id, idx);
+                    return `
+                        <div class="flex flex-col gap-2 bg-zinc-950 border border-zinc-800 rounded-xl p-3">
+                            <div class="flex flex-wrap items-start gap-2">
+                                <div class="flex-1 min-w-[200px] space-y-2">
+                                    <label class="text-[10px] uppercase tracking-widest text-zinc-500">Built-in group name</label>
+                                    <input type="text" value="${escapeHtmlText(displayName)}"
+                                        onchange="syncBuiltinName('${escapeAttr(sec.id)}', this.value)"
+                                        class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white outline-none focus:border-yellow-500/50" />
+                                    <p class="text-[11px] text-zinc-500">Rename this section on the dashboard. Add pins devices here; Remove applies bans so automatic placement can move them.</p>
+                                    ${membersBlock}
+                                    ${pickerBlock}
+                                </div>
+                                <div class="flex gap-1 shrink-0 self-start">
+                                    <button type="button" onclick="moveSectionRow(${idx}, -1)" class="px-3 py-1 rounded-lg bg-zinc-800 border border-zinc-600 text-xs hover:border-zinc-400 ${idx === 0 ? 'opacity-40 cursor-not-allowed' : ''}" ${idx === 0 ? 'disabled' : ''}>↑</button>
+                                    <button type="button" onclick="moveSectionRow(${idx}, 1)" class="px-3 py-1 rounded-lg bg-zinc-800 border border-zinc-600 text-xs hover:border-zinc-400 ${idx === order.length - 1 ? 'opacity-40 cursor-not-allowed' : ''}" ${idx === order.length - 1 ? 'disabled' : ''}>↓</button>
+                                </div>
+                            </div>
+                        </div>`;
+                }
+                const g = cg[sec.id] || { name: 'Custom group', ips: [] };
+                const ipsText = (g.ips || []).join('\n');
+                const membersBlock = buildCustomMembersMarkup(sec.id, idx);
+                const pickerBlock = buildCustomPickerMarkup(sec.id, idx);
+                return `
+                    <div class="flex flex-col gap-2 bg-zinc-950 border border-zinc-800 rounded-xl p-3">
+                        <div class="flex flex-wrap items-start gap-2">
+                            <div class="flex-1 min-w-[200px] space-y-2">
+                                <label class="text-[10px] uppercase tracking-widest text-zinc-500">Custom group name</label>
+                                <input type="text" value="${escapeHtmlText(g.name)}"
+                                    onchange="syncCustomGroupName('${escapeAttr(sec.id)}', this.value)"
+                                    class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white outline-none focus:border-yellow-500/50" />
+                                ${membersBlock}
+                                ${pickerBlock}
+                                <details class="text-xs text-zinc-500">
+                                    <summary class="cursor-pointer text-zinc-400 hover:text-zinc-300 py-1">Edit IPs as text</summary>
+                                    <label class="text-[10px] uppercase tracking-widest text-zinc-500 mt-2 block">IPs (one per line or comma-separated)</label>
+                                    <textarea rows="3"
+                                        onchange="syncCustomGroupIps('${escapeAttr(sec.id)}', this.value)"
+                                        class="w-full mt-1 bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-xs font-mono text-zinc-200 outline-none focus:border-yellow-500/50">${escapeHtmlText(ipsText)}</textarea>
+                                </details>
+                            </div>
+                            <div class="flex gap-1 self-start shrink-0">
+                                <button type="button" onclick="moveSectionRow(${idx}, -1)" class="px-3 py-1 rounded-lg bg-zinc-800 border border-zinc-600 text-xs hover:border-zinc-400 ${idx === 0 ? 'opacity-40 cursor-not-allowed' : ''}" ${idx === 0 ? 'disabled' : ''}>↑</button>
+                                <button type="button" onclick="moveSectionRow(${idx}, 1)" class="px-3 py-1 rounded-lg bg-zinc-800 border border-zinc-600 text-xs hover:border-zinc-400 ${idx === order.length - 1 ? 'opacity-40 cursor-not-allowed' : ''}" ${idx === order.length - 1 ? 'disabled' : ''}>↓</button>
+                                <button type="button" onclick="removeCustomGroup('${escapeAttr(sec.id)}')" class="px-3 py-1 rounded-lg bg-red-950/50 border border-red-900 text-red-300 text-xs hover:bg-red-950">Remove</button>
+                            </div>
+                        </div>
+                    </div>`;
+            }).join('');
+            if (taExcluded) {
+                taExcluded.value = (editGroupsDraft.openclaw_excluded_ips || []).join('\n');
+            }
+        }
+
+        function syncCustomGroupName(id, val) {
+            if (!editGroupsDraft || !editGroupsDraft.custom_groups) return;
+            if (!editGroupsDraft.custom_groups[id]) editGroupsDraft.custom_groups[id] = { name: val || 'Custom group', ips: [] };
+            editGroupsDraft.custom_groups[id].name = val;
+        }
+
+        function syncCustomGroupIps(id, raw) {
+            if (!editGroupsDraft || !editGroupsDraft.custom_groups) return;
+            const ips = String(raw).split(/[\s,;]+/).map((s) => s.trim()).filter(Boolean);
+            if (!editGroupsDraft.custom_groups[id]) editGroupsDraft.custom_groups[id] = { name: 'Custom group', ips: [] };
+            editGroupsDraft.custom_groups[id].ips = ips;
+        }
+
+        function moveSectionRow(idx, delta) {
+            if (!editGroupsDraft || !editGroupsDraft.section_order) return;
+            const arr = editGroupsDraft.section_order;
+            const j = idx + delta;
+            if (j < 0 || j >= arr.length) return;
+            const t = arr[idx];
+            arr[idx] = arr[j];
+            arr[j] = t;
+            renderEditGroupsForm();
+        }
+
+        function addCustomGroup() {
+            if (!editGroupsDraft) return;
+            const id = (typeof crypto !== 'undefined' && crypto.randomUUID)
+                ? crypto.randomUUID()
+                : ('cg-' + Date.now());
+            if (!editGroupsDraft.custom_groups) editGroupsDraft.custom_groups = {};
+            editGroupsDraft.custom_groups[id] = { name: 'New group', ips: [] };
+            if (!editGroupsDraft.section_order) editGroupsDraft.section_order = [];
+            editGroupsDraft.section_order.push({ type: 'custom', id });
+            renderEditGroupsForm();
+        }
+
+        function removeCustomGroup(id) {
+            if (!editGroupsDraft) return;
+            editGroupsDraft.section_order = (editGroupsDraft.section_order || []).filter(
+                (s) => !(s.type === 'custom' && s.id === id)
+            );
+            if (editGroupsDraft.custom_groups && editGroupsDraft.custom_groups[id]) {
+                delete editGroupsDraft.custom_groups[id];
+            }
+            renderEditGroupsForm();
+        }
+
+        async function saveEditGroups() {
+            if (!editGroupsDraft) return;
+            const taExcluded = document.getElementById('edit-groups-openclaw-excluded');
+            if (taExcluded) {
+                editGroupsDraft.openclaw_excluded_ips = taExcluded.value
+                    .split(/[\s,;]+/)
+                    .map((s) => s.trim())
+                    .filter(Boolean);
+            }
+            try {
+                const res = await fetch('/api/device-groups', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(editGroupsDraft),
+                });
+                const j = await res.json();
+                if (!res.ok || !j.ok) {
+                    alert(j.error || 'Save failed');
+                    return;
+                }
+                closeEditGroupsModal();
+                await loadDevices();
+            } catch (e) {
+                console.error(e);
+                alert('Save failed.');
+            }
+        }
         
         function tailwindScript() {
             tailwind.config = {
@@ -539,9 +1114,25 @@
                 }
             }
         }
+
+        function buildOllamaIdentityLabel(device) {
+            const explicitNames = {
+                '192.168.0.104': 'ollama prime',
+            };
+            if (explicitNames[device.ip]) return explicitNames[device.ip];
+
+            const raw = (device.hostname && device.hostname !== device.ip ? device.hostname : (device.label || device.ip || 'node')).toString();
+            const normalized = raw
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+            const suffix = normalized || 'node';
+            return `ollama ${suffix}`;
+        }
         
         function createDeviceCard(device) {
             const isOnline = device.status === 'Online';
+            const ollamaIdentity = buildOllamaIdentityLabel(device);
             
             return `
                 <div onclick="showDeviceHistory('${device.ip}')" 
@@ -551,7 +1142,7 @@
                             <div class="font-mono text-sm text-yellow-400">${device.ip_display || device.ip}</div>
                             <div class="text-xl font-semibold text-white mt-0.5 leading-tight truncate" title="${device.hostname}">${device.hostname}</div>
                             ${device.label && device.label !== device.hostname ? `<div class="text-xs text-sky-300/90 mt-1 truncate" title="${device.label}">${device.label}</div>` : ''}
-                            <div class="text-emerald-300/70 text-sm line-clamp-2 mt-1">${device.identity}</div>
+                            <div class="text-emerald-300/70 text-sm line-clamp-2 mt-1">${ollamaIdentity}</div>
                         </div>
                         
                         <div onclick="event.stopImmediatePropagation(); toggleDeviceDetail(this)" 
@@ -583,35 +1174,53 @@
             `;
         }
         
-        function subnetRank(name) {
-            const i = subnetSectionOrder.indexOf(name);
-            return i === -1 ? subnetSectionOrder.length : i;
-        }
+        function renderDevices(devices, sectionOrder) {
+            const order = (sectionOrder && sectionOrder.length)
+                ? sectionOrder
+                : (dashboardSectionOrder && dashboardSectionOrder.length
+                    ? dashboardSectionOrder
+                    : defaultSectionOrderFallback());
+            const root = document.getElementById('dynamic-dashboard-sections');
+            if (!root) return;
+            root.innerHTML = '';
 
-        function renderDevices(devices) {
-            const container = document.getElementById('devices-grid');
-            const bySubnet = new Map();
-            for (const d of devices) {
-                const k = d.dashboard_subnet || 'Other Networks';
-                if (!bySubnet.has(k)) bySubnet.set(k, []);
-                bySubnet.get(k).push(d);
-            }
-            const keys = [...bySubnet.keys()].sort((a, b) => subnetRank(a) - subnetRank(b));
-            container.innerHTML = keys.map((subnet) => {
-                const list = bySubnet.get(subnet);
-                return `
-                <section class="subnet-section" aria-label="${subnet}">
-                    <h2 class="text-sm font-semibold uppercase tracking-wider text-sky-400 mb-4 pb-2 border-b border-zinc-800">${subnet}</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                        ${list.map((d) => createDeviceCard(d)).join('')}
+            for (const sec of order) {
+                const key = sec.key;
+                const isCustomSection = sec.type === 'custom' || (typeof key === 'string' && key.startsWith('custom:'));
+                const subset = devices.filter((d) => inferSectionKey(d) === key);
+                if (subset.length === 0 && !isCustomSection) continue;
+
+                const accentCls = accentTitleClass(sec.accent || 'zinc');
+                const subEl = sec.subtitle
+                    ? `<div class="text-[10px] font-mono text-zinc-500">${escapeHtmlText(sec.subtitle)}</div>`
+                    : '';
+
+                const wrap = document.createElement('div');
+                wrap.className = 'mb-10';
+                wrap.innerHTML = `
+                    <div class="flex items-center gap-3 mb-4 flex-wrap">
+                        <div class="text-xs uppercase tracking-widest font-semibold ${accentCls}">${escapeHtmlText(sec.title)}</div>
+                        ${subEl}
+                        <div class="h-px flex-1 bg-zinc-800 min-w-[4rem]"></div>
                     </div>
-                </section>`;
-            }).join('');
-            
-            // Update stats
-            const online = devices.filter(d => d.status === 'Online').length;
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+                `;
+                const grid = wrap.querySelector('.grid');
+                if (subset.length > 0) {
+                    grid.innerHTML = subset.map((d) => createDeviceCard(d)).join('');
+                } else {
+                    grid.innerHTML = `
+                        <div class="col-span-full border border-dashed border-zinc-700 bg-zinc-900/50 rounded-2xl p-5 text-sm text-zinc-400">
+                            This group is empty. Add devices in Edit Groups to populate it.
+                        </div>
+                    `;
+                }
+                root.appendChild(wrap);
+            }
+
+            const online = devices.filter((d) => d.status === 'Online').length;
             document.getElementById('stat-online').textContent = online;
-            document.getElementById('stat-offline').textContent = devices.filter(d => d.status === 'Offline').length;
+            document.getElementById('stat-offline').textContent = devices.filter((d) => d.status === 'Offline').length;
             document.getElementById('stat-total').textContent = devices.length;
             document.getElementById('online-count').innerHTML = `${online} <span class="text-xs text-zinc-500">ONLINE</span>`;
             document.getElementById('total-devices').textContent = `${devices.length} DEVICES`;
@@ -1141,19 +1750,15 @@
             }
             
             if (searchTerm) {
-                filtered = filtered.filter(device => {
-                    const extraIps = (device.ip_addresses || []).map((x) => String(x).toLowerCase());
-                    return (
-                        (device.ip && device.ip.toLowerCase().includes(searchTerm)) ||
-                        ((device.ip_display || '').toLowerCase().includes(searchTerm)) ||
-                        extraIps.some((ip) => ip.includes(searchTerm)) ||
-                        (device.hostname && device.hostname.toLowerCase().includes(searchTerm)) ||
-                        (device.type && device.type.toLowerCase().includes(searchTerm))
-                    );
-                });
+                filtered = filtered.filter(device => 
+                    (device.ip && device.ip.toLowerCase().includes(searchTerm)) ||
+                    ((device.ip_display || '').toLowerCase().includes(searchTerm)) ||
+                    (device.hostname && device.hostname.toLowerCase().includes(searchTerm)) ||
+                    (device.type && device.type.toLowerCase().includes(searchTerm))
+                );
             }
             
-            renderDevices(filtered);
+            renderDevices(filtered, dashboardSectionOrder);
         }
         
         function setFilter(filter) {
@@ -1181,8 +1786,8 @@
                 const data = await response.json();
                 
                 allDevices = data.devices;
-                if (Array.isArray(data.subnet_section_order) && data.subnet_section_order.length) {
-                    subnetSectionOrder = data.subnet_section_order;
+                if (Array.isArray(data.section_order) && data.section_order.length) {
+                    dashboardSectionOrder = data.section_order;
                 }
                 document.getElementById('last-updated').textContent = `UPDATED ${data.last_updated.split(' ')[1]}`;
                 const users = Array.isArray(data.active_users) ? data.active_users : [];
@@ -1209,7 +1814,7 @@
                 connectivityEl.textContent = isOnline ? 'ONLINE' : 'OFFLINE';
                 connectivityEl.className = isOnline ? 'text-emerald-400' : 'text-red-400';
                 
-                renderDevices(allDevices);
+                renderDevices(allDevices, dashboardSectionOrder);
                 renderTopology(allDevices);
                 renderScanHistory(data.scan_history || []);
                 renderScanMatrix(data.scan_matrix || { devices: [], rows: [] });
@@ -1292,7 +1897,7 @@
                 // Fill modal header
                 document.getElementById('modal-ip').textContent = data.ip_display || device.ip;
                 document.getElementById('modal-hostname').textContent = device.hostname;
-                document.getElementById('modal-identity').textContent = device.identity || device.type || 'Network Device';
+                document.getElementById('modal-identity').textContent = buildOllamaIdentityLabel(device);
                 
                 // Status badge
                 const statusEl = document.getElementById('modal-status-badge');
@@ -1636,8 +2241,10 @@
             // Make modal close on escape
             document.addEventListener('keydown', function(e) {
                 if (e.key === "Escape") {
-                    const modal = document.getElementById('terminal-modal');
-                    if (!modal.classList.contains('hidden')) hideTerminalModal();
+                    const terminalModal = document.getElementById('terminal-modal');
+                    if (terminalModal && !terminalModal.classList.contains('hidden')) hideTerminalModal();
+                    const groupsModal = document.getElementById('edit-groups-modal');
+                    if (groupsModal && !groupsModal.classList.contains('hidden')) closeEditGroupsModal();
                 }
             });
             

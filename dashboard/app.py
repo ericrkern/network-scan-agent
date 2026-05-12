@@ -4,12 +4,14 @@ Network Dashboard - Live Device Status Monitor
 Built for the Jetson Network Scanner
 """
 
+import ipaddress
 import json
 import os
 import shlex
 import re
 import subprocess
 import socket
+import threading
 from datetime import datetime
 from pathlib import Path
 import urllib.request
@@ -32,32 +34,47 @@ def _disable_caching_for_dynamic_pages(resp):
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+DEVICE_GROUPS_CONFIG_FILE = BASE_DIR / "device_groups_config.json"
+ALLOWED_BUILTIN_SECTION_IDS = frozenset({"ollama", "openclaw", "access_point", "other_wide", "tailscale"})
+BUILTIN_SECTION_ITER = (
+    "ollama",
+    "openclaw",
+    "access_point",
+    "other_wide",
+    "tailscale",
+)
 DEVICES_FILE = str(BASE_DIR / "devices.md")
 CACHE_FILE = str(BASE_DIR / ".seen_devices.json")
 SCAN_SNAPSHOTS_FILE = str(BASE_DIR / ".scan_snapshots.json")
 SCAN_SCRIPT = str(BASE_DIR / "network_scan_agent.py")
 LAN_LABELS_FILE = os.environ.get(
-    "LAN_LABELS_FILE", str(Path.home() / ".config" / "lan-labels")
+    "LAN_LABELS_FILE",
+    str(Path.home() / ".config" / "lan-labels"),
 )
 KNOWN_HOSTNAME_OVERRIDES = {
     "192.168.0.98": "Irene's Watch",
     "192.168.0.81": "Friends Watch",
     "192.168.0.170": "Prime",
     "100.78.64.7": "Prime",
-    "192.168.0.171": "M90q",
+    "192.168.0.171": "borgson",
     "192.168.0.153": "Cindy",
+    "192.168.0.151": "Cindy",
     "100.67.102.109": "x9-14",
     "192.168.0.172": "x19-14",
+    "192.168.0.198": "belikemike",
+    "100.71.191.72": "belikemike",
 }
 KNOWN_LABEL_OVERRIDES = {
     "192.168.0.170": "MacBook Pro M5 Max",
     "100.78.64.7": "MacBook Pro M5 Max",
-    "192.168.0.171": "Tiny",
-    "192.168.0.186": "Proxmox VE",
+    "192.168.0.171": "Nvidia AGX",
     "192.168.0.153": "PGX",
+    "192.168.0.151": "PGX",
     "100.92.6.101": "PGX",
     "100.67.102.109": "Nicks Laptop",
     "192.168.0.172": "x19-14",
+    "192.168.0.198": "Mac mini",
+    "100.71.191.72": "Mac mini",
     "192.168.0.1": "Verizon 5G Hotspot",
 }
 KNOWN_MAC_OVERRIDES = {
@@ -70,108 +87,364 @@ KNOWN_SUBNET_OVERRIDES = {
     # Keep Prime (LAN + Tailscale) anchored to local LAN when mesh alias is active.
     "192.168.0.170": "Local LAN (192.168.0.0/24)",
     "100.78.64.7": "Local LAN (192.168.0.0/24)",
+    "192.168.0.198": "Local LAN (192.168.0.0/24)",
+    "100.71.191.72": "Local LAN (192.168.0.0/24)",
 }
 ONLINE_ALIAS_SYNC_CLUSTERS = [
     {"192.168.0.170", "100.78.64.7"},
+    {"192.168.0.198", "100.71.191.72"},
 ]
 HIDDEN_DEVICE_IPS = {
     "100.70.174.39",
     "100.95.15.82",
     "100.79.216.111",
+    "100.65.1.48",
 }
 
-# Dashboard section order (Tailscale always last).
-DASHBOARD_SUBNET_ORDER = [
-    "Local LAN (192.168.2.0/24)",
-    "Local LAN (192.168.0.0/24)",
-    "Adjacent Subnet (192.168.1.0/24)",
-    "Adjacent Subnet (192.168.100.0/24)",
-    "Docker Network (172.17.0.0/16)",
-    "External/Public Internet",
-    "Other Networks",
-    "Tailscale Mesh VPN",
-]
+OLLAMA_SERVER_IPS = frozenset({
+    "192.168.0.170",
+    "100.78.64.7",
+    "192.168.0.153",
+    "192.168.0.151",
+    "100.92.6.101",
+    "192.168.0.198",
+    "100.71.191.72",
+})
+
+ACCESS_POINT_GATEWAY_IP = "192.168.0.1"
+
+_DEFAULT_DEVICE_GROUPS_CONFIG = {
+    "version": 1,
+    "section_order": [
+        {"type": "builtin", "id": "ollama"},
+        {"type": "builtin", "id": "openclaw"},
+        {"type": "builtin", "id": "access_point"},
+        {"type": "builtin", "id": "other_wide"},
+        {"type": "builtin", "id": "tailscale"},
+        {"type": "custom", "id": "cg-personal"},
+    ],
+    "custom_groups": {
+        "cg-personal": {
+            "name": "Personal Devices",
+            "ips": ["192.168.0.190", "192.168.0.152"],
+        },
+    },
+    "openclaw_excluded_ips": [],
+    "builtin_names": {},
+    "section_pins": {},
+    "section_bans": {},
+}
+
+BUILTIN_SECTION_META = {
+    "ollama": {"title": "Ollama Servers", "subtitle": "", "accent": "amber"},
+    "openclaw": {"title": "OpenClaw Devices", "subtitle": "192.168.0.0/24", "accent": "sky"},
+    "access_point": {"title": "Access Point", "subtitle": "192.168.0.1", "accent": "violet"},
+    "other_wide": {"title": "Other networks & devices", "subtitle": "", "accent": "zinc"},
+    "tailscale": {"title": "Tailscale devices", "subtitle": "100.x mesh", "accent": "emerald"},
+}
+
+_CUSTOM_GROUP_ACCENTS = ["rose", "fuchsia", "orange", "cyan", "lime", "pink"]
 
 
-def subnet_group_for_ip(ip: str) -> str:
-    """Human-readable subnet bucket for a single IPv4 address."""
-    if ip in KNOWN_SUBNET_OVERRIDES:
-        return KNOWN_SUBNET_OVERRIDES[ip]
-    if ip == "24.192.17.178":
-        return "External/Public Internet"
-    if ip.startswith("192.168.2."):
-        return "Local LAN (192.168.2.0/24)"
-    if ip.startswith("192.168.0."):
-        return "Local LAN (192.168.0.0/24)"
-    if ip.startswith("192.168.1."):
-        return "Adjacent Subnet (192.168.1.0/24)"
-    if ip.startswith("192.168.100."):
-        return "Adjacent Subnet (192.168.100.0/24)"
-    if ip.startswith("172.17."):
-        return "Docker Network (172.17.0.0/16)"
-    if ip.startswith("100."):
-        return "Tailscale Mesh VPN"
-    return "Other Networks"
-
-
-def dashboard_subnet_rank(label: str) -> int:
+def _ensure_device_groups_config_file() -> None:
+    if DEVICE_GROUPS_CONFIG_FILE.exists():
+        return
     try:
-        return DASHBOARD_SUBNET_ORDER.index(label)
-    except ValueError:
-        return len(DASHBOARD_SUBNET_ORDER)
+        with open(DEVICE_GROUPS_CONFIG_FILE, "w", encoding="utf-8") as f:
+            json.dump(_DEFAULT_DEVICE_GROUPS_CONFIG, f, indent=2)
+    except OSError as e:
+        print(f"Warning: could not write default device groups config: {e}")
 
 
-def _lan_ip_preference_tuple(ip: str) -> tuple:
-    """Sort key: lower is preferred for dashboard identity (192.168.2.x first)."""
-    parts = str(ip).split(".")
-    if len(parts) != 4:
-        return (9, 255, 255, 255, 255, str(ip))
+def _normalize_device_groups_config(raw: dict) -> dict:
+    data = dict(_DEFAULT_DEVICE_GROUPS_CONFIG)
+    if isinstance(raw, dict):
+        if raw.get("version") is not None:
+            data["version"] = raw["version"]
+        if isinstance(raw.get("section_order"), list) and raw["section_order"]:
+            data["section_order"] = raw["section_order"]
+        if isinstance(raw.get("custom_groups"), dict):
+            data["custom_groups"] = {
+                k: {
+                    "name": str((v or {}).get("name") or "Custom group"),
+                    "ips": [str(x).strip() for x in ((v or {}).get("ips") or []) if str(x).strip()],
+                }
+                for k, v in raw["custom_groups"].items()
+            }
+        if isinstance(raw.get("openclaw_excluded_ips"), list):
+            data["openclaw_excluded_ips"] = [
+                str(x).strip() for x in raw["openclaw_excluded_ips"] if str(x).strip()
+            ]
+        if isinstance(raw.get("builtin_names"), dict):
+            data["builtin_names"] = {
+                str(k).strip(): str(v).strip()
+                for k, v in raw["builtin_names"].items()
+                if str(k).strip() in ALLOWED_BUILTIN_SECTION_IDS and str(v).strip()
+            }
+        if isinstance(raw.get("section_pins"), dict):
+            data["section_pins"] = {
+                str(k).strip(): str(v).strip()
+                for k, v in raw["section_pins"].items()
+                if str(k).strip()
+                and str(v).strip() in ALLOWED_BUILTIN_SECTION_IDS
+            }
+        if isinstance(raw.get("section_bans"), dict):
+            data["section_bans"] = {}
+            for k, v in raw["section_bans"].items():
+                bid = str(k).strip()
+                if bid not in ALLOWED_BUILTIN_SECTION_IDS:
+                    continue
+                data["section_bans"][bid] = [
+                    str(x).strip() for x in (v or []) if str(x).strip()
+                ]
+    return data
+
+
+def load_device_groups_config() -> dict:
+    _ensure_device_groups_config_file()
     try:
-        a, b, c, d = (int(x) for x in parts)
-    except ValueError:
-        return (9, 255, 255, 255, 255, str(ip))
-    if a == 192 and b == 168 and c == 2:
-        return (0, a, b, c, d)
-    if a == 192 and b == 168:
-        return (1, a, b, c, d)
-    if a == 10:
-        return (2, a, b, c, d)
-    return (3, a, b, c, d)
+        with open(DEVICE_GROUPS_CONFIG_FILE, "r", encoding="utf-8") as f:
+            loaded = json.load(f)
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"Warning: device groups config unreadable ({e}); using defaults")
+        loaded = {}
+    return _normalize_device_groups_config(loaded)
 
 
-def preferred_lan_ip_from_candidates(candidates: list[str]) -> str | None:
-    """Best LAN IPv4 among addresses; excludes Tailscale 100.x."""
-    lan_only = [
-        str(ip).strip()
-        for ip in candidates
-        if ip and not str(ip).startswith("100.")
-    ]
-    if not lan_only:
-        return None
-    return sorted(lan_only, key=_lan_ip_preference_tuple)[0]
+def save_device_groups_config(cfg: dict) -> None:
+    normalized = _normalize_device_groups_config(cfg)
+    tmp_path = DEVICE_GROUPS_CONFIG_FILE.with_suffix(".tmp")
+    with open(tmp_path, "w", encoding="utf-8") as f:
+        json.dump(normalized, f, indent=2)
+    tmp_path.replace(DEVICE_GROUPS_CONFIG_FILE)
 
 
-def pick_primary_lan_ip_for_dashboard(device: dict) -> str | None:
-    """Prefer a LAN/routable IP for grouping; ignore Tailscale 100.x here."""
-    ips = device.get("ip_addresses")
-    if isinstance(ips, list) and ips:
-        candidates = [str(ip) for ip in ips if ip]
-    else:
-        candidates = [str(device.get("ip") or "")]
-    return preferred_lan_ip_from_candidates(candidates)
+def validate_device_groups_config(cfg: dict) -> tuple[bool, str]:
+    """Return (ok, error_message)."""
+    so = cfg.get("section_order")
+    if not isinstance(so, list) or not so:
+        return False, "section_order must be a non-empty list"
+    seen_builtin = set()
+    for sec in so:
+        if not isinstance(sec, dict):
+            return False, "invalid section_order entry"
+        st = sec.get("type")
+        sid = sec.get("id")
+        if st == "builtin":
+            if sid not in ALLOWED_BUILTIN_SECTION_IDS:
+                return False, f"unknown builtin section id: {sid}"
+            if sid in seen_builtin:
+                return False, f"duplicate builtin section: {sid}"
+            seen_builtin.add(sid)
+        elif st == "custom":
+            if not sid or not isinstance(sid, str):
+                return False, "custom section needs a string id"
+            cgs = cfg.get("custom_groups") or {}
+            if sid not in cgs:
+                return False, f"custom group not defined: {sid}"
+        else:
+            return False, f"invalid section type: {st}"
+    return True, ""
 
 
-def attach_dashboard_subnet(device: dict) -> None:
-    """Set dashboard_subnet for UI grouping (LAN-first; Tailscale-only at bottom)."""
-    lan_ip = pick_primary_lan_ip_for_dashboard(device)
-    device["dashboard_subnet"] = (
-        subnet_group_for_ip(lan_ip) if lan_ip else "Tailscale Mesh VPN"
-    )
-    # One address on cards when multiple are tracked (e.g. LAN + Tailscale).
-    addrs = device.get("ip_addresses")
-    if isinstance(addrs, list) and len(addrs) > 1 and lan_ip:
-        device["ip"] = lan_ip
-        device["ip_display"] = lan_ip
+def _classify_builtin_section(
+    device: dict,
+    forbidden: frozenset[str],
+    openclaw_excluded: frozenset[str],
+) -> str:
+    """Pick exactly one builtin section; forbidden omits those buckets (for re-homing)."""
+    if "ollama" not in forbidden and device.get("ollama_server"):
+        return "ollama"
+    if "access_point" not in forbidden and _device_is_access_point(device):
+        return "access_point"
+    if (
+        "openclaw" not in forbidden
+        and _device_has_openclaw_lan_subnet(device)
+        and not (_device_ip_set(device) & openclaw_excluded)
+    ):
+        return "openclaw"
+    if (
+        "other_wide" not in forbidden
+        and _device_has_openclaw_lan_subnet(device)
+        and (_device_ip_set(device) & openclaw_excluded)
+    ):
+        return "other_wide"
+    if "tailscale" not in forbidden and _device_is_tailscale_only(device):
+        return "tailscale"
+    if "other_wide" not in forbidden:
+        return "other_wide"
+    if "tailscale" not in forbidden and _device_is_tailscale_only(device):
+        return "tailscale"
+    return "other_wide"
+
+
+def _dedupe_device_list(devices: list) -> list:
+    seen: set[int] = set()
+    out = []
+    for d in devices:
+        i = id(d)
+        if i in seen:
+            continue
+        seen.add(i)
+        out.append(d)
+    return out
+
+
+def _apply_section_bans_and_rehome(
+    builtin_lists: dict[str, list],
+    section_bans: dict,
+    openclaw_excluded: frozenset[str],
+) -> None:
+    """Remove banned devices from each section and re-home (repeat until stable)."""
+    changed = True
+    rounds = 0
+    while changed and rounds < 24:
+        changed = False
+        rounds += 1
+        for bid in BUILTIN_SECTION_ITER:
+            ban_ips = frozenset((section_bans or {}).get(bid) or [])
+            if not ban_ips:
+                continue
+            cur = builtin_lists.get(bid) or []
+            remain: list = []
+            evicted: list = []
+            for d in cur:
+                if _device_ip_set(d) & ban_ips:
+                    evicted.append(d)
+                else:
+                    remain.append(d)
+            if not evicted:
+                builtin_lists[bid] = remain
+                continue
+            builtin_lists[bid] = remain
+            changed = True
+            for d in evicted:
+                dest = _classify_builtin_section(
+                    d,
+                    frozenset({bid}),
+                    openclaw_excluded,
+                )
+                lst = builtin_lists.setdefault(dest, [])
+                if not any(id(x) == id(d) for x in lst):
+                    lst.append(d)
+
+
+def build_ip_to_custom_group(cfg: dict) -> dict[str, str]:
+    """Map IP -> custom group id; first matching section in section_order wins."""
+    ip_to_gid: dict[str, str] = {}
+    groups = cfg.get("custom_groups") or {}
+    for sec in cfg.get("section_order") or []:
+        if sec.get("type") != "custom":
+            continue
+        gid = sec.get("id")
+        if not gid or gid not in groups:
+            continue
+        for ip in groups[gid].get("ips") or []:
+            ip = str(ip).strip()
+            if ip and ip not in ip_to_gid:
+                ip_to_gid[ip] = gid
+    return ip_to_gid
+
+
+def build_section_order_for_api(cfg: dict) -> list[dict]:
+    out: list[dict] = []
+    cg = cfg.get("custom_groups") or {}
+    ai = 0
+    for sec in cfg.get("section_order") or []:
+        stype = sec.get("type")
+        sid = sec.get("id")
+        if stype == "builtin" and sid in BUILTIN_SECTION_META:
+            meta = BUILTIN_SECTION_META[sid]
+            names = (cfg.get("builtin_names") or {}) if isinstance(cfg, dict) else {}
+            title = names.get(sid) or meta["title"]
+            out.append({
+                "key": sid,
+                "type": "builtin",
+                "title": title,
+                "subtitle": meta.get("subtitle", ""),
+                "accent": meta.get("accent", "zinc"),
+            })
+        elif stype == "custom" and sid:
+            name = (cg.get(sid) or {}).get("name") or "Custom group"
+            ac = _CUSTOM_GROUP_ACCENTS[ai % len(_CUSTOM_GROUP_ACCENTS)]
+            ai += 1
+            out.append({
+                "key": f"custom:{sid}",
+                "type": "custom",
+                "title": name,
+                "subtitle": "",
+                "accent": ac,
+                "group_id": sid,
+            })
+    return out
+
+
+def _device_ip_set(device: dict) -> set[str]:
+    ips: set[str] = set()
+    primary = device.get("ip")
+    if primary:
+        ips.add(str(primary))
+    for addr in device.get("ip_addresses") or []:
+        if addr:
+            ips.add(str(addr))
+    return ips
+
+
+def _device_is_access_point(device: dict) -> bool:
+    """Default gateway / hotspot shown as its own Access Point group."""
+    return ACCESS_POINT_GATEWAY_IP in _device_ip_set(device)
+
+
+def _device_has_openclaw_lan_subnet(device: dict) -> bool:
+    """True when any address is a host on 192.168.0.0/24 (excludes .0 and .255)."""
+    for raw in _device_ip_set(device):
+        ip = str(raw).strip()
+        if not ip.startswith("192.168.0."):
+            continue
+        parts = ip.split(".")
+        if len(parts) != 4:
+            continue
+        try:
+            last = int(parts[3])
+        except ValueError:
+            continue
+        if 1 <= last <= 254:
+            return True
+    return False
+
+
+def _device_is_tailscale_only(device: dict) -> bool:
+    """True when every known address for this device is a Tailscale IPv4 (100.x)."""
+    ips = _device_ip_set(device)
+    if not ips:
+        return False
+    for ip in ips:
+        if not is_tailscale_ip(str(ip).strip()):
+            return False
+    return True
+
+
+def _is_ollama_server_device(device: dict) -> bool:
+    if _device_ip_set(device) & OLLAMA_SERVER_IPS:
+        return True
+    hostname = str(device.get("hostname") or "").strip().lower()
+    base = hostname.split(".")[0] if hostname else ""
+    base = base.split("-")[0] if base else ""
+    return base in ("prime", "cindy", "belikemike")
+
+
+def _ollama_server_rank(device: dict) -> int:
+    """Sort order within Ollama Servers: Prime, Cindy, belikemike."""
+    ips = _device_ip_set(device)
+    if ips & {"192.168.0.170", "100.78.64.7"}:
+        return 0
+    if ips & {"192.168.0.153", "192.168.0.151", "100.92.6.101"}:
+        return 1
+    if ips & {"192.168.0.198", "100.71.191.72"}:
+        return 2
+    hostname = str(device.get("hostname") or "").strip().lower()
+    base = hostname.split(".")[0].split("-")[0] if hostname else ""
+    return {"prime": 0, "cindy": 1, "belikemike": 2}.get(base, 99)
 
 
 def load_ip_labels():
@@ -223,6 +496,20 @@ def normalize_mac(mac: str) -> str:
 
 def is_tailscale_ip(ip: str) -> bool:
     return isinstance(ip, str) and ip.startswith("100.")
+
+
+def _ordered_ips_for_manual_merge(present):
+    """
+    Member order for explicit manual_clusters in collapse_duplicate_devices.
+    Tailscale IPs first (sorted); LAN IPs sorted with 192.168.0.153 before 192.168.0.151
+    so the merged card's primary stays the canonical Wi‑Fi address when both NICs are up.
+    """
+    ts = sorted(ip for ip in present if is_tailscale_ip(str(ip)))
+    lan = sorted(
+        (ip for ip in present if not is_tailscale_ip(str(ip))),
+        key=lambda ip: (str(ip) != "192.168.0.153", str(ip)),
+    )
+    return ts + lan
 
 
 def ip_subnet_prefix(ip: str) -> str:
@@ -355,8 +642,10 @@ def collapse_duplicate_devices(devices):
     # Explicit operator-defined merges for known same-device dual addressing.
     manual_clusters = [
         ["192.168.0.170", "100.78.64.7"],
-        ["192.168.0.153", "100.92.6.101"],
+        ["192.168.0.153", "192.168.0.151", "100.92.6.101"],
         ["100.67.102.109", "192.168.0.172"],
+        ["192.168.0.198", "100.71.191.72"],
+        ["192.168.0.158", "100.106.159.8"],
     ]
     for cluster in manual_clusters:
         present = [ip for ip in cluster if ip in by_ip]
@@ -370,7 +659,7 @@ def collapse_duplicate_devices(devices):
             normalized_groups.append(g)
         groups = normalized_groups
         grouped_ips = {ip for g in groups for ip in g}
-        groups.append(sorted(present))
+        groups.append(_ordered_ips_for_manual_merge(present))
         grouped_ips.update(present)
 
     merged_devices = []
@@ -380,38 +669,51 @@ def collapse_duplicate_devices(devices):
             continue
 
         online_members = [m for m in members if m.get("status") == "Online"]
-        group_ips = [str(m.get("ip")) for m in members if m.get("ip")]
-        preferred_lan = preferred_lan_ip_from_candidates(group_ips)
-
-        def pick_primary_member():
-            if preferred_lan:
-                lan_matches = [m for m in members if str(m.get("ip")) == preferred_lan]
-                online_lan = [m for m in lan_matches if m.get("status") == "Online"]
-                return online_lan[0] if online_lan else lan_matches[0]
-            online_non_ts = [
-                m for m in online_members if not is_tailscale_ip(m.get("ip"))
-            ]
-            if online_non_ts:
-                return online_non_ts[0]
-            non_ts = [m for m in members if not is_tailscale_ip(m.get("ip"))]
-            if non_ts:
-                return non_ts[0]
-            if online_members:
-                return online_members[0]
-            return members[0]
-
-        primary = pick_primary_member()
+        online_primary_lan_members = [
+            m for m in online_members
+            if str(m.get("ip", "")).startswith("192.168.0.")
+        ]
+        primary_lan_members = [
+            m for m in members
+            if str(m.get("ip", "")).startswith("192.168.0.")
+        ]
+        online_non_tailscale = [
+            m for m in online_members
+            if not is_tailscale_ip(m.get("ip"))
+        ]
+        non_tailscale_members = [
+            m for m in members
+            if not is_tailscale_ip(m.get("ip"))
+        ]
+        # Prefer 192.168.0.0/24 as primary identity when present.
+        primary = (
+            online_primary_lan_members[0]
+            if online_primary_lan_members else (
+                primary_lan_members[0]
+                if primary_lan_members else (
+                    online_non_tailscale[0]
+                    if online_non_tailscale else (
+                        online_members[0]
+                        if online_members else (
+                            non_tailscale_members[0]
+                            if non_tailscale_members else members[0]
+                        )
+                    )
+                )
+            )
+        )
 
         status = "Online" if online_members else ("Offline" if all(m.get("status") == "Offline" for m in members) else "Unknown")
         status_color = "emerald" if status == "Online" else ("red" if status == "Offline" else "amber")
 
-        unique_ips = sorted({m.get("ip") for m in members if m.get("ip")})
-        lan_ips = sorted(
-            [ip for ip in unique_ips if ip and not is_tailscale_ip(ip)],
-            key=lambda ip: _lan_ip_preference_tuple(str(ip)),
+        ip_addresses = sorted(
+            {m.get("ip") for m in members if m.get("ip")},
+            key=lambda ip: (
+                0 if str(ip).startswith("192.168.0.") else 1,
+                1 if is_tailscale_ip(ip) else 0,
+                ip,
+            ),
         )
-        ts_ips = sorted([ip for ip in unique_ips if ip and is_tailscale_ip(ip)])
-        ip_addresses = lan_ips + ts_ips
         per_ip_status = []
         for m in sorted(members, key=lambda item: item.get("ip", "")):
             per_ip_status.append({
@@ -432,15 +734,12 @@ def collapse_duplicate_devices(devices):
 
         member_labels = [m.get("label") for m in members if m.get("label") not in (None, "", "—", "None")]
         merged = dict(primary)
-        card_ip = preferred_lan if preferred_lan else str(primary.get("ip") or "")
-        merged["ip"] = card_ip
+        merged["ip"] = primary.get("ip")
         merged["ip_addresses"] = ip_addresses
-        merged["ip_display"] = card_ip
+        merged["ip_display"] = ", ".join(ip_addresses)
         merged["status"] = status
         merged["status_color"] = status_color
-        merged["subnet_group"] = (
-            subnet_group_for_ip(card_ip) if card_ip else primary.get("subnet_group")
-        )
+        merged["subnet_group"] = primary.get("subnet_group")
         merged["per_ip_status"] = per_ip_status
         # Merge timestamps across all correlated IPs.
         first_seen_candidates = [m.get("first_seen") for m in members if m.get("first_seen") not in (None, "", "—")]
@@ -465,18 +764,23 @@ def collapse_duplicate_devices(devices):
             key=lambda ev: ev.get("timestamp", ""),
             reverse=True,
         )[:50]
-        preferred_hostname = None
-        for ip in ip_addresses:
-            preferred_hostname = KNOWN_HOSTNAME_OVERRIDES.get(str(ip))
-            if preferred_hostname:
-                break
+        # When merged members have distinct non-IP hostnames, show both names.
+        hostname_candidates = []
+        for m in members:
+            name = str(m.get("hostname") or "").strip()
+            if not name or name in ("—", "None"):
+                continue
+            if re.match(r"^\d{1,3}(?:\.\d{1,3}){3}$", name):
+                continue
+            if name not in hostname_candidates:
+                hostname_candidates.append(name)
+        if len(hostname_candidates) >= 2:
+            merged["hostname"] = " / ".join(hostname_candidates)
+        primary_ip = str(primary.get("ip") or "")
+        preferred_hostname = KNOWN_HOSTNAME_OVERRIDES.get(primary_ip)
         if preferred_hostname:
             merged["hostname"] = preferred_hostname
-        preferred_label = None
-        for ip in ip_addresses:
-            preferred_label = KNOWN_LABEL_OVERRIDES.get(str(ip))
-            if preferred_label:
-                break
+        preferred_label = KNOWN_LABEL_OVERRIDES.get(primary_ip)
         if preferred_label:
             merged["label"] = preferred_label
             merged["labels"] = sorted(set(member_labels + [preferred_label]))
@@ -1096,7 +1400,7 @@ def build_scan_status_matrix(scan_history_rows):
         device_ips.update(online_ips)
 
     # Include currently known devices as columns even if they never appeared online in recent rows.
-    current_devices = load_device_data()
+    current_devices, _ = load_device_data()
     for d in current_devices:
         ip = d.get("ip")
         if ip:
@@ -1154,6 +1458,23 @@ def load_device_data():
     md_info = parse_markdown_devices()
     labels = load_ip_labels()
 
+    def get_subnet_group(ip: str) -> str:
+        if ip in KNOWN_SUBNET_OVERRIDES:
+            return KNOWN_SUBNET_OVERRIDES[ip]
+        if ip == "24.192.17.178":
+            return "External/Public Internet"
+        if ip.startswith("192.168.0."):
+            return "Local LAN (192.168.0.0/24)"
+        if ip.startswith("192.168.1."):
+            return "Adjacent Subnet (192.168.1.0/24)"
+        if ip.startswith("192.168.100."):
+            return "Adjacent Subnet (192.168.100.0/24)"
+        if ip.startswith("172.17."):
+            return "Docker Network (172.17.0.0/16)"
+        if ip.startswith("100."):
+            return "Tailscale Mesh VPN"
+        return "Other Networks"
+    
     # Load from JSON cache (status, timestamps)
     try:
         if os.path.exists(CACHE_FILE):
@@ -1213,7 +1534,7 @@ def load_device_data():
                     "hostname": hostname,
                     "label": KNOWN_LABEL_OVERRIDES.get(ip, labels.get(ip, "")),
                     "identity": identity,
-                    "subnet_group": subnet_group_for_ip(ip),
+                    "subnet_group": get_subnet_group(ip),
                     "status": status_text,
                     "status_color": status_color,
                     "last_seen": last_seen,
@@ -1231,32 +1552,163 @@ def load_device_data():
     # Collapse correlated aliases (MAC, known clusters, Tailscale<->LAN hostname pairs).
     devices = collapse_duplicate_devices(devices)
 
+    cfg = load_device_groups_config()
+    ip_to_custom = build_ip_to_custom_group(cfg)
+    openclaw_excluded = frozenset(cfg.get("openclaw_excluded_ips") or [])
+
+    custom_buckets: dict[str, list] = {gid: [] for gid in (cfg.get("custom_groups") or {})}
+    builtin_input: list = []
     for d in devices:
-        attach_dashboard_subnet(d)
+        gid = None
+        for ip in _device_ip_set(d):
+            if ip in ip_to_custom:
+                gid = ip_to_custom[ip]
+                break
+        if gid:
+            custom_buckets.setdefault(gid, []).append(d)
+        else:
+            builtin_input.append(d)
+
+    for d in builtin_input:
+        d["ollama_server"] = _is_ollama_server_device(d)
+
+    pins_cfg = cfg.get("section_pins") or {}
+    pinned_by: dict[str, list] = {bid: [] for bid in BUILTIN_SECTION_ITER}
+    unpinned: list = []
+    for d in builtin_input:
+        pin_target = None
+        for ip in sorted(_device_ip_set(d)):
+            tgt = pins_cfg.get(ip)
+            if tgt in ALLOWED_BUILTIN_SECTION_IDS:
+                pin_target = tgt
+                break
+        if pin_target:
+            pinned_by[pin_target].append(d)
+        else:
+            unpinned.append(d)
+
+    ollama_devices = [d for d in unpinned if d.get("ollama_server")]
+    non_ollama = [d for d in unpinned if not d.get("ollama_server")]
+    access_point_devices = [d for d in non_ollama if _device_is_access_point(d)]
+    rest_non_ollama = [d for d in non_ollama if not _device_is_access_point(d)]
+    openclaw_devices = [d for d in rest_non_ollama if _device_has_openclaw_lan_subnet(d)]
+    other_networks_lan = [d for d in openclaw_devices if _device_ip_set(d) & openclaw_excluded]
+    openclaw_devices = [d for d in openclaw_devices if not (_device_ip_set(d) & openclaw_excluded)]
+    other_devices = [d for d in rest_non_ollama if not _device_has_openclaw_lan_subnet(d)]
+    tailscale_only_devices = [d for d in other_devices if _device_is_tailscale_only(d)]
+    other_wide_devices = [d for d in other_devices if not _device_is_tailscale_only(d)]
+    other_wide_devices = other_wide_devices + other_networks_lan
+
+    ollama_devices = _dedupe_device_list(ollama_devices + pinned_by["ollama"])
+    openclaw_devices = _dedupe_device_list(openclaw_devices + pinned_by["openclaw"])
+    access_point_devices = _dedupe_device_list(access_point_devices + pinned_by["access_point"])
+    other_wide_devices = _dedupe_device_list(other_wide_devices + pinned_by["other_wide"])
+    tailscale_only_devices = _dedupe_device_list(tailscale_only_devices + pinned_by["tailscale"])
 
     def status_priority(d):
-        if d["status"] == "Online": return 0
-        if d["status"] == "Unknown": return 1
-        if d["status"] == "Offline": return 2
+        if d["status"] == "Online":
+            return 0
+        if d["status"] == "Unknown":
+            return 1
+        if d["status"] == "Offline":
+            return 2
         return 3
 
     def name_priority(d):
         """Put devices with real hostnames before those that only show IP"""
         hostname = d.get("hostname", "")
-        # If hostname is just an IP address or very generic, treat it as "no name"
-        if not hostname or hostname == d.get("ip", "") or hostname.startswith("192.168.") or hostname.startswith("100.") or hostname.startswith("172."):
-            return 1  # no-name devices at bottom
-        return 0  # named devices first
+        if (
+            not hostname
+            or hostname == d.get("ip", "")
+            or hostname.startswith("192.168.")
+            or hostname.startswith("100.")
+            or hostname.startswith("172.")
+        ):
+            return 1
+        return 0
 
-    devices.sort(
-        key=lambda x: (
-            dashboard_subnet_rank(x.get("dashboard_subnet", "Other Networks")),
-            status_priority(x),
-            name_priority(x),
-            x.get("hostname", "").lower(),
+    for _gid, lst in custom_buckets.items():
+        lst.sort(
+            key=lambda x: (
+                status_priority(x),
+                name_priority(x),
+                x.get("hostname", "").lower(),
+            )
         )
+
+    builtin_lists = {
+        "ollama": ollama_devices,
+        "openclaw": openclaw_devices,
+        "access_point": access_point_devices,
+        "other_wide": other_wide_devices,
+        "tailscale": tailscale_only_devices,
+    }
+
+    _apply_section_bans_and_rehome(
+        builtin_lists,
+        cfg.get("section_bans") or {},
+        openclaw_excluded,
     )
-    return devices
+
+    for bid in BUILTIN_SECTION_ITER:
+        lst = _dedupe_device_list(builtin_lists.get(bid) or [])
+        if bid == "ollama":
+            lst.sort(
+                key=lambda x: (
+                    _ollama_server_rank(x),
+                    status_priority(x),
+                    name_priority(x),
+                    x.get("hostname", "").lower(),
+                )
+            )
+        else:
+            lst.sort(
+                key=lambda x: (
+                    status_priority(x),
+                    name_priority(x),
+                    x.get("hostname", "").lower(),
+                )
+            )
+        builtin_lists[bid] = lst
+
+    merged: list = []
+    for sec in cfg.get("section_order") or []:
+        st = sec.get("type")
+        sid = sec.get("id")
+        if st == "builtin" and sid in builtin_lists:
+            for d in builtin_lists[sid]:
+                d["section_key"] = sid
+                merged.append(d)
+        elif st == "custom" and sid:
+            sk = f"custom:{sid}"
+            for d in custom_buckets.get(sid, []):
+                d["section_key"] = sk
+                merged.append(d)
+
+    merged_ids = {id(d) for d in merged}
+    for bid, lst in builtin_lists.items():
+        for d in lst:
+            if id(d) not in merged_ids:
+                d["section_key"] = bid
+                merged.append(d)
+                merged_ids.add(id(d))
+    for gid, lst in custom_buckets.items():
+        for d in lst:
+            if id(d) not in merged_ids:
+                d["section_key"] = f"custom:{gid}"
+                merged.append(d)
+                merged_ids.add(id(d))
+
+    for d in merged:
+        sk = d.get("section_key") or ""
+        d["ollama_server"] = sk == "ollama"
+        d["openclaw_lan"] = sk == "openclaw"
+        d["access_point"] = sk == "access_point"
+        d["tailscale_only"] = sk == "tailscale"
+        d["personal_device"] = sk.startswith("custom:")
+
+    section_order = build_section_order_for_api(cfg)
+    return merged, section_order
 
 
 def build_watch_correlation_findings():
@@ -1394,34 +1846,25 @@ def check_online_status():
     }
 
 
-def _is_ipv4_address(ip: str) -> bool:
-    """True if *ip* is a syntactically valid IPv4 address string."""
-    s = (ip or "").strip()
-    if not s:
-        return False
-    try:
-        socket.inet_pton(socket.AF_INET, s)
-        return True
-    except OSError:
-        return False
-
-
 def get_public_ip():
-    """Fetch current public/WAN egress IPv4 for dashboard header."""
-    # IPv4-only hostnames so the outbound connection uses IPv4; generic
-    # "what is my ip" URLs often return IPv6 when the client uses IPv6.
+    """Fetch current public WAN egress IPv4 for dashboard header."""
     urls = [
         "https://api4.ipify.org",
         "https://ipv4.icanhazip.com",
-        "https://v4.ident.me",
+        "https://ifconfig.me/ip",
+        "https://api.ipify.org",
     ]
     for url in urls:
         try:
             req = urllib.request.Request(url, headers={"User-Agent": "NetworkPulse/1.0"})
             with urllib.request.urlopen(req, timeout=2.5) as resp:
-                ip = resp.read().decode("utf-8").strip()
-            if ip and _is_ipv4_address(ip):
-                return ip
+                raw = resp.read().decode("utf-8").strip()
+            candidate = raw.split()[0] if raw else ""
+            if not candidate:
+                continue
+            parsed = ipaddress.ip_address(candidate)
+            if parsed.version == 4:
+                return str(parsed)
         except Exception:
             continue
     return "Unavailable"
@@ -1461,6 +1904,56 @@ def get_tailscale_ip():
     except Exception:
         pass
     return "Unavailable"
+
+
+_DOCKER_PRINT_SKIP_IPV4 = frozenset({"172.17.0.1", "172.18.0.1"})
+
+
+def iter_dashboard_ipv4_listen_addrs():
+    """IPv4 addresses browsers may use to reach this host (LAN + Tailscale)."""
+    seen = set()
+    try:
+        result = subprocess.run(
+            ["hostname", "-I"],
+            capture_output=True,
+            text=True,
+            timeout=2,
+        )
+        if result.returncode == 0:
+            for part in (result.stdout or "").split():
+                ip = part.strip()
+                if not ip or ip.startswith("127.") or ip in _DOCKER_PRINT_SKIP_IPV4:
+                    continue
+                try:
+                    parsed = ipaddress.ip_address(ip)
+                except ValueError:
+                    continue
+                if parsed.version != 4:
+                    continue
+                if ip not in seen:
+                    seen.add(ip)
+                    yield ip
+    except Exception:
+        pass
+    if seen:
+        return
+    lan = get_local_ip()
+    if lan and lan != "Unavailable":
+        yield lan
+    ts = get_tailscale_ip()
+    if ts and ts != "Unavailable":
+        yield ts
+
+
+def print_dashboard_listen_hints(port: int, scheme: str = "http") -> None:
+    """Log URLs for each reachable IPv4 (sorted LAN before Tailscale)."""
+    addrs = sorted(
+        iter_dashboard_ipv4_listen_addrs(),
+        key=lambda x: (x.startswith("100."), x),
+    )
+    for ip in addrs:
+        label = "Tailscale" if ip.startswith("100.") else "LAN"
+        print(f" - {scheme}://{ip}:{port}/ ({label})")
 
 
 def get_active_users():
@@ -1530,9 +2023,11 @@ def resolve_audit_helper_cmd(since: str) -> str:
 
 def resolve_wifi_scan_cmd() -> str:
     """Resolve WiFi scan command from env or safe default."""
-    # Default to direct execution; some hosts allow non-root scans via iw/nmcli.
-    # Operators can still force sudo by setting WIFI_SCAN_CMD explicitly.
-    default_cmd = f"{BASE_DIR / 'dashboard' / 'bin' / 'scan_wifi_ssids.sh'}"
+    # Default: run the helper directly (often works under NetworkManager without root).
+    # Set WIFI_SCAN_USE_SUDO=1 plus NOPASSWD sudoers when `iw scan` must run as root.
+    helper = BASE_DIR / "dashboard" / "bin" / "scan_wifi_ssids.sh"
+    use_sudo = os.environ.get("WIFI_SCAN_USE_SUDO", "0").strip().lower() not in ("0", "false", "no")
+    default_cmd = f"sudo -n {helper}" if use_sudo else f"{helper}"
     return os.environ.get("WIFI_SCAN_CMD", default_cmd).strip()
 
 
@@ -1655,6 +2150,30 @@ def get_wifi_ssids(limit: int = 80):
 
     stdout = (result.stdout or "").strip()
     stderr = (result.stderr or "").strip()
+    if result.returncode != 0:
+        # Optional fallback: direct execution can work on some hosts, but it may
+        # return only cached/current SSID data when active scans are restricted.
+        allow_unpriv_fallback = os.environ.get(
+            "WIFI_SCAN_ALLOW_UNPRIVILEGED_FALLBACK", "1"
+        ).strip().lower() in ("1", "true", "yes")
+        if allow_unpriv_fallback and helper_cmd.startswith("sudo -n "):
+            direct_cmd = helper_cmd[len("sudo -n ") :]
+            try:
+                retry = subprocess.run(
+                    shlex.split(direct_cmd),
+                    capture_output=True,
+                    text=True,
+                    timeout=timeout_s,
+                )
+                if retry.returncode == 0:
+                    result = retry
+                    stdout = (result.stdout or "").strip()
+                    stderr = (result.stderr or "").strip()
+                else:
+                    stderr = (retry.stderr or stderr).strip()
+            except Exception:
+                pass
+
     if result.returncode != 0:
         lowered = stderr.lower()
         if "password is required" in lowered or "a password is required" in lowered:
@@ -1893,26 +2412,50 @@ def get_audit_activity(limit: int = 300, since: str = "today", user_filter: str 
 @app.route('/')
 def index():
     """Main dashboard page"""
-    devices = load_device_data()
+    devices, dashboard_section_order = load_device_data()
     last_updated = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     watch_findings = build_watch_correlation_findings()
     local_ip = get_local_ip()
     tailscale_ip = get_tailscale_ip()
-    
-    return render_template('index.html', 
-                         devices=devices, 
-                         last_updated=last_updated,
-                         total_devices=len(devices),
-                         online_count=len([d for d in devices if is_active_status(d.get('status', ''))]),
-                         watch_findings=watch_findings,
-                         local_ip=local_ip,
-                         tailscale_ip=tailscale_ip)
+    public_ip = get_public_ip()
+
+    return render_template(
+        'index.html',
+        devices=devices,
+        last_updated=last_updated,
+        total_devices=len(devices),
+        online_count=len([d for d in devices if is_active_status(d.get('status', ''))]),
+        watch_findings=watch_findings,
+        local_ip=local_ip,
+        tailscale_ip=tailscale_ip,
+        public_ip=public_ip,
+        dashboard_section_order=dashboard_section_order,
+    )
+
+
+@app.route("/api/device-groups", methods=["GET", "PUT"])
+def api_device_groups():
+    """Load or persist dashboard group layout (device_groups_config.json)."""
+    if request.method == "GET":
+        return jsonify(load_device_groups_config())
+    data = request.get_json(force=True, silent=True)
+    if not isinstance(data, dict):
+        return jsonify({"ok": False, "error": "expected JSON object"}), 400
+    normalized = _normalize_device_groups_config(data)
+    ok, err = validate_device_groups_config(normalized)
+    if not ok:
+        return jsonify({"ok": False, "error": err}), 400
+    try:
+        save_device_groups_config(normalized)
+    except OSError as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+    return jsonify({"ok": True})
 
 
 @app.route('/api/devices')
 def api_devices():
     """JSON API endpoint for live updates"""
-    devices = load_device_data()
+    devices, section_order = load_device_data()
     scan_history = enrich_scan_history_with_state_changes(load_scan_history())
     scan_matrix = build_scan_status_matrix(scan_history)
     connectivity = check_online_status()
@@ -1922,7 +2465,7 @@ def api_devices():
     tailscale_ip = get_tailscale_ip()
     return jsonify({
         "devices": devices,
-        "subnet_section_order": DASHBOARD_SUBNET_ORDER,
+        "section_order": section_order,
         "scan_history": scan_history,
         "scan_matrix": scan_matrix,
         "watch_findings": watch_findings,
@@ -1940,8 +2483,8 @@ def api_devices():
 @app.route('/api/device/<ip>')
 def api_device_detail(ip):
     """Return full details including event history and deep scan results"""
-    devices = load_device_data()
-    device = next((d for d in devices if d['ip'] == ip), None)
+    devices, _ = load_device_data()
+    device = next((d for d in devices if ip in _device_ip_set(d)), None)
     
     if not device:
         return jsonify({"error": "Device not found"}), 404
@@ -2109,22 +2652,79 @@ def serve_static(path):
     return send_from_directory('static', path)
 
 
+def _start_adhoc_https_listener(flask_app: Flask) -> None:
+    """
+    Serve the same app over HTTPS with a fresh self-signed cert (Werkzeug adhoc).
+    Helps browsers that upgrade http:// to https:// on custom IPs. Disable by setting
+    NETWORK_PULSE_ADHOC_TLS_PORT=0 (or empty).
+    """
+    raw = os.environ.get("NETWORK_PULSE_ADHOC_TLS_PORT", "5443").strip()
+    if raw in ("", "0", "false", "no", "off"):
+        return
+    try:
+        tls_port = int(raw)
+    except ValueError:
+        print(f"NETWORK_PULSE_ADHOC_TLS_PORT invalid: {raw!r}")
+        return
+    bind_host = os.environ.get("NETWORK_PULSE_BIND_ADDR", "0.0.0.0").strip() or "0.0.0.0"
+
+    def runner():
+        try:
+            from werkzeug.serving import run_simple
+
+            run_simple(
+                bind_host,
+                tls_port,
+                flask_app,
+                threaded=True,
+                ssl_context="adhoc",
+                use_reloader=False,
+                use_debugger=False,
+            )
+        except OSError as e:
+            print(f"Adhoc HTTPS could not bind {bind_host}:{tls_port}: {e}")
+        except Exception as e:
+            print(f"Adhoc HTTPS server error: {e}")
+
+    threading.Thread(target=runner, daemon=True, name="network-pulse-adhoc-tls").start()
+
+
 if __name__ == '__main__':
     # Create directories if they don't exist
     os.makedirs('templates', exist_ok=True)
     os.makedirs('static', exist_ok=True)
-    host = os.environ.get("HOST", "0.0.0.0").strip() or "0.0.0.0"
+    bind_host = os.environ.get("NETWORK_PULSE_BIND_ADDR", "0.0.0.0").strip() or "0.0.0.0"
     try:
-        port = int(os.environ.get("PORT", "5000"))
+        bind_port = int(os.environ.get("NETWORK_PULSE_PORT", "5000"))
     except ValueError:
-        port = 5000
-    debug_mode = os.environ.get("FLASK_DEBUG", "").strip().lower() in ("1", "true", "yes")
-    ts_ip = get_tailscale_ip()
-    lan_ip = get_local_ip()
-    print(f"Network Dashboard starting on http://{host}:{port}")
+        bind_port = 5000
+    # Debug/reloader breaks a stable second listener on 5443; default off so LAN + HTTPS work reliably.
+    debug_mode = os.environ.get("NETWORK_PULSE_DEBUG", "0").strip().lower() in (
+        "1",
+        "true",
+        "yes",
+    )
+    print(f"Network Dashboard listening on http://{bind_host}:{bind_port}")
+    if bind_host not in ("0.0.0.0", "::", "::0"):
+        print(
+            "Tip: set NETWORK_PULSE_BIND_ADDR=0.0.0.0 to listen on LAN and Tailscale at once."
+        )
     print(f"Audit helper command (effective): {resolve_audit_helper_cmd('today')}")
-    print("Try:")
-    print(f" - LAN: http://{lan_ip}:{port}")
-    if ts_ip not in ("Unavailable", ""):
-        print(f" - Tailscale: http://{ts_ip}:{port}")
-    app.run(host=host, port=port, debug=debug_mode)
+    print("Reachability (HTTP):")
+    print_dashboard_listen_hints(bind_port, scheme="http")
+    raw_tls = os.environ.get("NETWORK_PULSE_ADHOC_TLS_PORT", "5443").strip()
+    if raw_tls not in ("", "0", "false", "no", "off") and not debug_mode:
+        try:
+            tls_hint = int(raw_tls)
+        except ValueError:
+            tls_hint = None
+        if tls_hint:
+            print("HTTPS (self-signed, same UI as HTTP):")
+            print_dashboard_listen_hints(tls_hint, scheme="https")
+    print("Browsers that force HTTPS-only should use the HTTPS URL above or disable HTTPS-only for this LAN.")
+    print("Firewall (UFW): sudo dashboard/bin/open_firewall_for_pulse.sh — opens LAN + Tailscale to this port.")
+    if debug_mode:
+        print("NETWORK_PULSE_DEBUG is on (hot reload). Adhoc HTTPS on 5443 is disabled — use DEBUG=0 for TLS.")
+    else:
+        _start_adhoc_https_listener(app)
+    app.run(host=bind_host, port=bind_port, debug=debug_mode)
