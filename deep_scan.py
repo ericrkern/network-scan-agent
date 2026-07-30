@@ -10,6 +10,7 @@ Performs multi-stage scanning:
 5) Optional OS detection when running as root
 """
 
+import argparse
 import json
 import os
 import re
@@ -73,6 +74,104 @@ def load_known_devices():
     # Filter non-host entries aggressively.
     valid_devices = {ip for ip in devices if is_valid_host_ip(ip)}
     return sorted(list(valid_devices))
+
+
+def load_online_device_ips(exclude_tailscale: bool = False) -> List[str]:
+    """
+    Hosts currently marked online in .seen_devices.json.
+    When exclude_tailscale is True, skips 100.x (often slow or unreachable for nmap from LAN).
+    """
+    ips: List[str] = []
+    try:
+        if not Path(CACHE_FILE).exists():
+            return ips
+        with open(CACHE_FILE, "r") as f:
+            cache = json.load(f)
+        if not isinstance(cache, dict):
+            return ips
+        for ip, rec in cache.items():
+            if not isinstance(ip, str) or not isinstance(rec, dict):
+                continue
+            if rec.get("last_status") != "online":
+                continue
+            if not is_valid_host_ip(ip):
+                continue
+            if exclude_tailscale and ip.startswith("100."):
+                continue
+            ips.append(ip)
+    except Exception as e:
+        print(f"Warning: Could not read online devices from cache: {e}")
+    return sorted(set(ips))
+
+
+def enrich_cache_from_deep_results(results_by_ip: Dict[str, Any]) -> None:
+    """Merge ports/type/services from deep scan into .seen_devices.json for list/API views."""
+    if not results_by_ip:
+        return
+    # Import here to avoid import cycles when network_scan_agent loads this module lazily.
+    from network_scan_agent import (
+        access_methods_from_ports,
+        get_hostname,
+        get_mac,
+        infer_device_type_from_ports,
+        merge_deep_scan_results_json,
+    )
+
+    merge_deep_scan_results_json(results_by_ip)
+
+    try:
+        with open(CACHE_FILE, "r") as f:
+            records = json.load(f)
+    except Exception as e:
+        print(f"Warning: could not load cache for enrichment: {e}")
+        return
+    if not isinstance(records, dict):
+        return
+
+    for ip, deep in results_by_ip.items():
+        if not isinstance(deep, dict) or ip not in records:
+            continue
+        record = records[ip]
+        if not isinstance(record, dict):
+            continue
+
+        hostname = get_hostname(ip) or record.get("hostname", "—")
+        mac = get_mac(ip) or record.get("mac", "—")
+
+        open_ports = deep.get("ports") if isinstance(deep.get("ports"), list) else []
+        deep_ok = deep.get("status") in ("success", "no_response") and deep.get("error") is None
+        if not open_ports and not deep_ok:
+            prev = record.get("ports")
+            open_ports = prev if isinstance(prev, list) else []
+
+        inferred_type = infer_device_type_from_ports(hostname or "", open_ports)
+        if inferred_type == "Unknown":
+            inferred_type = record.get("type", "Unknown")
+
+        record["hostname"] = hostname or record.get("hostname", "—")
+        record["mac"] = mac or record.get("mac", "—")
+        record["type"] = inferred_type
+        record["ports"] = open_ports
+        if deep.get("services"):
+            record["services"] = deep.get("services", {})
+
+        os_guess = (deep.get("os") or "").strip()
+        if os_guess and os_guess != "Unknown":
+            record["deep_os"] = os_guess
+        scan_ts = deep.get("scan_time")
+        if scan_ts:
+            record["deep_scan_time"] = scan_ts
+
+        access_txt = access_methods_from_ports(ip, open_ports)
+        if access_txt and access_txt != "No known access":
+            record["access_methods_hint"] = access_txt
+
+    try:
+        with open(CACHE_FILE, "w") as f:
+            json.dump(records, f, indent=2)
+        print(f"   Cache enriched from deep scan ({len(results_by_ip)} host(s)).")
+    except Exception as e:
+        print(f"Warning: could not write enriched cache: {e}")
 
 
 def run_cmd(cmd: List[str], timeout: int = 90) -> Tuple[int, str, str]:
@@ -142,7 +241,7 @@ def run_nmap_deep_scan(ip: str) -> Dict[str, Any]:
             "nmap", "-n", "-Pn", "-sT", "--open", "--reason", "-T4",
             "--top-ports", "300", "--host-timeout", "20s", ip
         ]
-        rc, out, err = run_cmd(cmd_quick, timeout=45)
+        rc, out, err = run_cmd(cmd_quick, timeout=90)
         aggregate_stdout.append(out)
         aggregate_stderr.append(err)
 
@@ -172,9 +271,9 @@ def run_nmap_deep_scan(ip: str) -> Dict[str, Any]:
         if host_up or open_tcp:
             cmd_full_tcp = [
                 "nmap", "-n", "-Pn", "-sT", "--open", "--reason", "-T4",
-                "-p-", "--max-retries", "1", "--min-rate", "1500", "--host-timeout", "45s", ip
+                "-p-", "--max-retries", "1", "--min-rate", "1200", "--host-timeout", "90s", ip
             ]
-            rc2, out2, err2 = run_cmd(cmd_full_tcp, timeout=60)
+            rc2, out2, err2 = run_cmd(cmd_full_tcp, timeout=150)
             aggregate_stdout.append(out2)
             aggregate_stderr.append(err2)
             t2, _, svc2 = parse_open_ports(out2)
@@ -187,7 +286,7 @@ def run_nmap_deep_scan(ip: str) -> Dict[str, Any]:
                 "nmap", "-n", "-Pn", "-sU", "--open", "--reason", "-T4",
                 "--max-retries", "1", "--host-timeout", "30s", "-p", udp_arg, ip
             ]
-            rc3, out3, err3 = run_cmd(cmd_udp, timeout=45)
+            rc3, out3, err3 = run_cmd(cmd_udp, timeout=70)
             aggregate_stdout.append(out3)
             aggregate_stderr.append(err3)
             _, u3, svc3 = parse_open_ports(out3)
@@ -203,7 +302,7 @@ def run_nmap_deep_scan(ip: str) -> Dict[str, Any]:
                 "--script", "default,safe,banner,http-title,ssl-cert,ssh2-enum-algos,smb-os-discovery",
                 "-p", detailed_ports, ip
             ]
-            rc4, out4, err4 = run_cmd(cmd_detail, timeout=75)
+            rc4, out4, err4 = run_cmd(cmd_detail, timeout=120)
             aggregate_stdout.append(out4)
             aggregate_stderr.append(err4)
             _, _, svc4 = parse_open_ports(out4)
@@ -287,6 +386,39 @@ def run_deep_scan():
     return results
 
 
+def run_deep_scan_online(*, exclude_tailscale: bool) -> Dict[str, Any]:
+    """Deep-scan only hosts marked online; merge JSON + enrich dashboard cache."""
+    print("🚀 Deep scan — online hosts only")
+    if exclude_tailscale:
+        print("   (excluding Tailscale 100.x addresses)")
+    print("=" * 60)
+
+    devices = load_online_device_ips(exclude_tailscale=exclude_tailscale)
+    print(f"Found {len(devices)} online host IP(s) to scan\n")
+    if not devices:
+        print("Nothing to scan.")
+        return {}
+
+    results: Dict[str, Any] = {}
+    start_time = time.time()
+
+    for i, ip in enumerate(devices, 1):
+        print(f"[{i:2d}/{len(devices)}] ", end="")
+        result = run_nmap_deep_scan(ip)
+        results[ip] = result
+        time.sleep(0.1)
+
+    duration = time.time() - start_time
+    print(f"\n✅ Online deep scan finished in {duration:.1f} seconds")
+
+    # Merges into deep_scan_results.json + updates .seen_devices.json for /api/devices cards.
+    enrich_cache_from_deep_results(results)
+    print(f"   This run: {len(results)} host(s) → merged into {OUTPUT_FILE}")
+
+    update_devices_md_with_deep_results(results)
+    return results
+
+
 def update_devices_md_with_deep_results(results):
     """Append deep scan summary to devices.md"""
     try:
@@ -339,12 +471,28 @@ def update_devices_md_with_deep_results(results):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Deep nmap-based scanner")
+    parser.add_argument(
+        "--online-only",
+        action="store_true",
+        help="Scan only IPs marked online in .seen_devices.json (recommended).",
+    )
+    parser.add_argument(
+        "--exclude-tailscale",
+        action="store_true",
+        help="With --online-only, skip 100.x (Tailscale) targets.",
+    )
+    args = parser.parse_args()
+
     print("🧪 Network Deep Scanner (Aggressive)")
-    print("This run performs quick discovery + full TCP + UDP + service script scans.")
+    print("Stages: discovery + TCP + UDP + service scripts (UDP may require root).")
     print("This may take several minutes.\n")
-    
+
     try:
-        run_deep_scan()
+        if args.online_only:
+            run_deep_scan_online(exclude_tailscale=args.exclude_tailscale)
+        else:
+            run_deep_scan()
         print("\n🎉 Deep scan complete! Check the dashboard for updated device details.")
     except KeyboardInterrupt:
         print("\n\n🛑 Scan cancelled by user.")

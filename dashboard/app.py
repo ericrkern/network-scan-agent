@@ -20,6 +20,13 @@ import xml.etree.ElementTree as ET
 
 from flask import Flask, render_template, jsonify, request, send_from_directory
 
+from cron_control import (
+    get_jobs_status,
+    run_job_now,
+    set_job_enabled,
+    set_job_schedule,
+)
+
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
 
@@ -46,6 +53,7 @@ BUILTIN_SECTION_ITER = (
 DEVICES_FILE = str(BASE_DIR / "devices.md")
 CACHE_FILE = str(BASE_DIR / ".seen_devices.json")
 SCAN_SNAPSHOTS_FILE = str(BASE_DIR / ".scan_snapshots.json")
+DEEP_SCAN_RESULTS_FILE = str(BASE_DIR / "deep_scan_results.json")
 SCAN_SCRIPT = str(BASE_DIR / "network_scan_agent.py")
 LAN_LABELS_FILE = os.environ.get(
     "LAN_LABELS_FILE",
@@ -466,19 +474,18 @@ def load_ip_labels():
     return labels
 
 
+IPV4_RE = re.compile(r"^\d{1,3}(?:\.\d{1,3}){3}$")
+
+
 def choose_device_name(ip: str, *candidates):
-    """Pick best display name: real hostname -> configured label -> IP."""
+    """Pick display name from detected hostname candidates, else IP."""
     for value in candidates:
         if value in (None, "", "—", "None"):
             continue
-        if value == ip:
+        text = str(value).strip()
+        if not text or text == ip or IPV4_RE.match(text):
             continue
-        return value
-
-    labels = load_ip_labels()
-    label = labels.get(ip)
-    if label not in (None, "", "—", "None"):
-        return label
+        return text
     return ip
 
 
@@ -541,6 +548,35 @@ def canonical_hostname_for_grouping(device: dict) -> str:
     hostname = re.sub(r"\.ts\.net$", "", hostname)
     hostname = re.sub(r"\.local$", "", hostname)
     return hostname.strip()
+
+
+def load_deep_scan_results_map():
+    """Per-IP payloads from the last merged deep_scan_results.json run."""
+    try:
+        if not os.path.exists(DEEP_SCAN_RESULTS_FILE):
+            return {}
+        with open(DEEP_SCAN_RESULTS_FILE, "r") as f:
+            payload = json.load(f)
+        results = payload.get("results") if isinstance(payload, dict) else None
+        return results if isinstance(results, dict) else {}
+    except Exception:
+        return {}
+
+
+def format_deep_services_preview(services, limit=5):
+    """Short single-line summary of nmap service fingerprints for device cards."""
+    if not isinstance(services, dict) or not services:
+        return ""
+    parts = []
+    for k in sorted(services.keys())[:limit]:
+        val = str(services.get(k) or "").strip().replace("\n", " ")
+        if len(val) > 56:
+            val = val[:53] + "…"
+        parts.append(f"{k}: {val}")
+    joined = " · ".join(parts)
+    if len(joined) > 260:
+        return joined[:257] + "…"
+    return joined
 
 
 def collapse_duplicate_devices(devices):
@@ -734,6 +770,32 @@ def collapse_duplicate_devices(devices):
 
         member_labels = [m.get("label") for m in members if m.get("label") not in (None, "", "—", "None")]
         merged = dict(primary)
+        # Prefer richest deep-scan hints across LAN + Tailscale aliases.
+        deep_os_pick = (merged.get("deep_os") or "").strip()
+        svc_pick = (merged.get("deep_services_preview") or "").strip()
+        scan_ts_pick = (merged.get("deep_scan_time") or "").strip()
+        access_pick = (merged.get("access_methods_hint") or "").strip()
+        for m in members:
+            mo = (m.get("deep_os") or "").strip()
+            if mo and mo != "Unknown" and len(mo) > len(deep_os_pick):
+                deep_os_pick = mo
+            ms = (m.get("deep_services_preview") or "").strip()
+            if ms and len(ms) > len(svc_pick):
+                svc_pick = ms
+            mt = (m.get("deep_scan_time") or "").strip()
+            if mt > scan_ts_pick:
+                scan_ts_pick = mt
+            ah = (m.get("access_methods_hint") or "").strip()
+            if ah and len(ah) > len(access_pick):
+                access_pick = ah
+        if deep_os_pick:
+            merged["deep_os"] = deep_os_pick
+        if svc_pick:
+            merged["deep_services_preview"] = svc_pick
+        if scan_ts_pick:
+            merged["deep_scan_time"] = scan_ts_pick
+        if access_pick:
+            merged["access_methods_hint"] = access_pick
         merged["ip"] = primary.get("ip")
         merged["ip_addresses"] = ip_addresses
         merged["ip_display"] = ", ".join(ip_addresses)
@@ -1457,6 +1519,7 @@ def load_device_data():
     devices = []
     md_info = parse_markdown_devices()
     labels = load_ip_labels()
+    deep_map = load_deep_scan_results_map()
 
     def get_subnet_group(ip: str) -> str:
         if ip in KNOWN_SUBNET_OVERRIDES:
@@ -1492,12 +1555,22 @@ def load_device_data():
                 rich = md_info.get(ip, {})
                 
                 rich_hostname = rich.get("hostname")
-                hostname = choose_device_name(ip, rich_hostname, cache_hostname, labels.get(ip))
-                if ip in KNOWN_HOSTNAME_OVERRIDES:
-                    hostname = KNOWN_HOSTNAME_OVERRIDES[ip]
+                hostname = choose_device_name(ip, cache_hostname, rich_hostname)
                 
-                rich_identity = rich.get("identity")
-                identity = rich_identity if rich_identity not in ["Unknown Device", "Unknown", "—", "None", None, ""] else data.get("type", "Unknown Device")
+                cached_identity = (data.get("identity") or "").strip()
+                if cached_identity and cached_identity not in ("Unknown Device", "Unknown", "—", "None"):
+                    identity = cached_identity
+                else:
+                    device_type = (data.get("type") or "Unknown").strip()
+                    if device_type and device_type != "Unknown":
+                        identity = device_type
+                    else:
+                        rich_identity = rich.get("identity")
+                        identity = (
+                            rich_identity
+                            if rich_identity not in ["Unknown Device", "Unknown", "—", "None", None, ""]
+                            else "Unknown device"
+                        )
                 mac = rich.get("mac", data.get("mac", "—"))
                 if ip in KNOWN_MAC_OVERRIDES and mac in (None, "", "—", "None"):
                     mac = KNOWN_MAC_OVERRIDES[ip]
@@ -1513,7 +1586,24 @@ def load_device_data():
                     ports = ", ".join(str(p) for p in rich_ports) if rich_ports else "—"
                 else:
                     ports = rich_ports
-                
+
+                deep_row = deep_map.get(ip, {})
+                if not isinstance(deep_row, dict):
+                    deep_row = {}
+                deep_os = (data.get("deep_os") or "").strip()
+                if not deep_os:
+                    deep_os = (deep_row.get("os") or "").strip()
+                if deep_os == "Unknown":
+                    deep_os = ""
+                svc_src = data.get("services") if isinstance(data.get("services"), dict) else {}
+                svc_preview = format_deep_services_preview(svc_src)
+                if not svc_preview:
+                    svc_preview = format_deep_services_preview(
+                        deep_row.get("services") if isinstance(deep_row.get("services"), dict) else {}
+                    )
+                deep_scan_ts = (data.get("deep_scan_time") or deep_row.get("scan_time") or "").strip()
+                access_hint = (data.get("access_methods_hint") or "").strip()
+
                 # Drop legacy stealth-tagged devices from previous network installs.
                 if "stealth" in str(identity).lower():
                     continue
@@ -1532,7 +1622,7 @@ def load_device_data():
                 devices.append({
                     "ip": ip,
                     "hostname": hostname,
-                    "label": KNOWN_LABEL_OVERRIDES.get(ip, labels.get(ip, "")),
+                    "label": "",
                     "identity": identity,
                     "subnet_group": get_subnet_group(ip),
                     "status": status_text,
@@ -1544,7 +1634,11 @@ def load_device_data():
                     "first_seen": data.get("first_seen", "—"),
                     "ports": ports,
                     "events": data.get("events", []),
-                    "last_status_time": data.get("last_status_time", last_seen)
+                    "last_status_time": data.get("last_status_time", last_seen),
+                    "deep_os": deep_os,
+                    "deep_services_preview": svc_preview,
+                    "deep_scan_time": deep_scan_ts,
+                    "access_methods_hint": access_hint,
                 })
     except Exception as e:
         print(f"Error loading cache: {e}")
@@ -2496,9 +2590,8 @@ def api_device_detail(ip):
     # Load deep scan results
     deep_scan_data = {}
     try:
-        deep_file = str(BASE_DIR / "deep_scan_results.json")
-        if os.path.exists(deep_file):
-            with open(deep_file, 'r') as f:
+        if os.path.exists(DEEP_SCAN_RESULTS_FILE):
+            with open(DEEP_SCAN_RESULTS_FILE, 'r') as f:
                 deep_results = json.load(f)
                 deep_scan_data = deep_results.get("results", {}).get(ip, {})
     except Exception as e:
@@ -2623,6 +2716,55 @@ def api_scan_online_devices(scan_time):
     })
 
 
+@app.route('/api/cron')
+def api_cron_status():
+    """Return scheduled scan cron job status and recent log tails."""
+    return jsonify(get_jobs_status())
+
+
+@app.route('/api/cron/<job_id>', methods=['POST'])
+def api_cron_update(job_id):
+    """Enable/disable a cron job or update its schedule."""
+    job_id = (job_id or "").strip().lower()
+    payload = request.get_json(silent=True) or {}
+    action = (payload.get("action") or request.args.get("action") or "").strip().lower()
+
+    try:
+        from cron_control import CRON_JOBS
+        if job_id not in CRON_JOBS:
+            return jsonify({"ok": False, "message": f"Unknown job: {job_id}"}), 404
+    except Exception:
+        pass
+
+    if action == "run":
+        ok, message, pid = run_job_now(job_id)
+        return jsonify({
+            "ok": ok,
+            "message": message,
+            "pid": pid,
+            **get_jobs_status(),
+        }), (200 if ok else 409)
+
+    if action == "enable":
+        schedule = (payload.get("schedule") or "").strip() or None
+        ok, message = set_job_enabled(job_id, True, schedule=schedule)
+        return jsonify({"ok": ok, "message": message, **get_jobs_status()}), (200 if ok else 400)
+
+    if action == "disable":
+        ok, message = set_job_enabled(job_id, False)
+        return jsonify({"ok": ok, "message": message, **get_jobs_status()}), (200 if ok else 400)
+
+    schedule = (payload.get("schedule") or "").strip()
+    if schedule:
+        ok, message = set_job_schedule(job_id, schedule)
+        return jsonify({"ok": ok, "message": message, **get_jobs_status()}), (200 if ok else 400)
+
+    return jsonify({
+        "ok": False,
+        "message": "Unknown action. Use run, enable, disable, or provide schedule.",
+    }), 400
+
+
 @app.route('/api/scan', methods=['POST'])
 def trigger_scan():
     """Trigger a network scan"""
@@ -2632,7 +2774,7 @@ def trigger_scan():
             capture_output=True, 
             text=True, 
             cwd=str(BASE_DIR),
-            timeout=60
+            timeout=int(os.environ.get("NETWORK_SCAN_TIMEOUT_SEC", "300")),
         )
         success = result.returncode == 0
         return jsonify({
@@ -2642,7 +2784,7 @@ def trigger_scan():
             "error": result.stderr[-300:] if result.stderr else None
         })
     except subprocess.TimeoutExpired:
-        return jsonify({"success": False, "message": "Scan timed out after 60 seconds."})
+        return jsonify({"success": False, "message": "Scan timed out (configure NETWORK_SCAN_TIMEOUT_SEC if needed)."})
     except Exception as e:
         return jsonify({"success": False, "message": f"Error: {str(e)}"})
 

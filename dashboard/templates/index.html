@@ -84,10 +84,17 @@
                         <span id="total-devices" class="font-mono text-zinc-400">0 Devices</span>
                     </div>
                     
-                    <div onclick="triggerScan()" 
-                         class="scan-button flex items-center gap-x-2 bg-yellow-500 hover:bg-yellow-400 text-zinc-950 px-6 py-2.5 rounded-2xl font-semibold text-sm cursor-pointer active:scale-95 transition-all">
-                        <i class="fa-solid fa-satellite-dish"></i>
-                        <span id="scan-text">SCAN NETWORK</span>
+                    <div class="flex items-center gap-x-2">
+                        <div onclick="triggerScan()" 
+                             class="scan-button flex items-center gap-x-2 bg-yellow-500 hover:bg-yellow-400 text-zinc-950 px-6 py-2.5 rounded-2xl font-semibold text-sm cursor-pointer active:scale-95 transition-all">
+                            <i class="fa-solid fa-satellite-dish"></i>
+                            <span id="scan-text">SCAN NETWORK</span>
+                        </div>
+                        <div onclick="showSchedulerModal()"
+                             class="scan-button flex items-center gap-x-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-100 px-5 py-2.5 rounded-2xl font-semibold text-sm cursor-pointer active:scale-95 transition-all border border-zinc-600">
+                            <i class="fa-solid fa-clock"></i>
+                            <span>Scheduler</span>
+                        </div>
                     </div>
                     
                     <div class="flex items-center gap-x-2 text-xs font-mono text-zinc-500">
@@ -133,7 +140,7 @@
 
             <div id="dashboard-tab-content">
             <!-- Stats -->
-            <div class="grid grid-cols-3 gap-4 mb-10">
+            <div class="grid grid-cols-2 gap-4 mb-10">
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
                     <div class="flex justify-between items-start">
                         <div>
@@ -143,17 +150,6 @@
                         <i class="fa-solid fa-circle-check text-4xl text-emerald-500/20"></i>
                     </div>
                     <div class="text-xs text-zinc-500 mt-6 font-mono">CURRENTLY REACHABLE</div>
-                </div>
-                
-                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <div class="text-red-400 text-sm font-medium mb-1">OFFLINE</div>
-                            <div id="stat-offline" class="text-5xl font-semibold text-white tabular-nums">2</div>
-                        </div>
-                        <i class="fa-solid fa-circle-xmark text-4xl text-red-500/20"></i>
-                    </div>
-                    <div class="text-xs text-zinc-500 mt-6 font-mono">LAST SEEN &gt;1HR AGO</div>
                 </div>
                 
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 relative overflow-hidden">
@@ -196,9 +192,9 @@
                     <div onclick="setFilter('all')" id="filter-all"
                          class="px-5 py-2 bg-emerald-500/10 text-emerald-400 rounded-2xl cursor-pointer hover:bg-emerald-500/20 transition-colors border border-emerald-500/30">ALL</div>
                     <div onclick="setFilter('online')" id="filter-online"
-                         class="px-5 py-2 hover:bg-zinc-800 rounded-2xl cursor-pointer transition-colors">ONLINE</div>
-                    <div onclick="setFilter('offline')" id="filter-offline"
-                         class="px-5 py-2 hover:bg-zinc-800 rounded-2xl cursor-pointer transition-colors">OFFLINE</div>
+                         class="px-5 py-2 hover:bg-zinc-800 rounded-2xl cursor-pointer transition-colors">ONLINE ONLY</div>
+                    <div onclick="setFilter('unknown')" id="filter-unknown"
+                         class="px-5 py-2 hover:bg-zinc-800 rounded-2xl cursor-pointer transition-colors">UNKNOWN</div>
                 </div>
             </div>
 
@@ -210,7 +206,7 @@
             <div id="topology-tab-content" class="hidden">
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 mb-6">
                     <div class="text-lg font-semibold text-white mb-1">Network Topology</div>
-                    <div class="text-sm text-zinc-400">Live logical map of all detected devices. Click any device below to open details.</div>
+                    <div class="text-sm text-zinc-400">Live map of online and unknown-status devices (offline hosts hidden). Click any device to open details.</div>
                 </div>
                 <div id="topology-map" class="space-y-6">
                     <!-- Populated by JavaScript -->
@@ -219,6 +215,24 @@
 
             <!-- Scans Tab Content -->
             <div id="scans-tab-content" class="hidden">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 mb-8">
+                    <div class="flex items-center justify-between mb-4 gap-4">
+                        <div>
+                            <div class="text-sm font-semibold text-white">Scheduled Scans (Cron)</div>
+                            <div class="text-xs text-zinc-500 font-mono">Ping scan (quick discovery) and deep scan (nmap) schedules</div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="loadCronData()"
+                                class="px-3 py-1.5 rounded-xl text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700">
+                                Refresh
+                            </button>
+                            <div id="cron-message" class="text-xs text-zinc-500 font-mono max-w-md text-right"></div>
+                        </div>
+                    </div>
+                    <div id="cron-jobs-panel" class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                        <div class="text-xs text-zinc-500">Loading cron jobs...</div>
+                    </div>
+                </div>
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 mb-8">
                     <div class="flex items-center justify-between mb-4">
                         <div class="text-sm font-semibold text-white">Network Scans (Today + Yesterday)</div>
@@ -526,6 +540,39 @@
             <div class="px-6 py-4 border-t border-zinc-700 flex justify-end gap-2 bg-zinc-950">
                 <button type="button" onclick="closeEditGroupsModal()" class="px-4 py-2 rounded-xl border border-zinc-600 text-sm text-zinc-300 hover:bg-zinc-800">Cancel</button>
                 <button type="button" onclick="saveEditGroups()" class="px-4 py-2 rounded-xl bg-yellow-500 text-zinc-950 text-sm font-semibold hover:bg-yellow-400">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scan Scheduler Modal -->
+    <div id="scheduler-modal" onclick="if(event.target.id === 'scheduler-modal') hideSchedulerModal()"
+         class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+        <div onclick="event.stopImmediatePropagation()"
+             class="bg-zinc-900 border border-zinc-700 rounded-3xl w-full max-w-3xl mx-4 overflow-hidden max-h-[90vh] flex flex-col">
+            <div class="px-8 py-6 border-b border-zinc-700 bg-zinc-950 flex items-start justify-between shrink-0">
+                <div>
+                    <div class="text-xs uppercase tracking-widest text-sky-400 font-mono mb-1">Automated scans</div>
+                    <h2 class="text-2xl font-semibold text-white">Scan Scheduler</h2>
+                    <p class="text-sm text-zinc-400 mt-2">Choose how often quick (ping) and deep scans run via cron.</p>
+                </div>
+                <div onclick="hideSchedulerModal()"
+                     class="w-10 h-10 flex items-center justify-center text-2xl text-zinc-400 hover:text-white cursor-pointer transition-colors">✕</div>
+            </div>
+            <div class="px-8 py-6 overflow-y-auto flex-1">
+                <div id="scheduler-message" class="text-xs text-zinc-500 font-mono mb-4"></div>
+                <div id="scheduler-cron-panel" class="grid grid-cols-1 gap-4">
+                    <div class="text-xs text-zinc-500">Loading schedules...</div>
+                </div>
+            </div>
+            <div class="px-8 py-4 border-t border-zinc-800 bg-zinc-950 flex justify-end gap-2 shrink-0">
+                <button onclick="loadCronData()"
+                    class="px-4 py-2 rounded-xl text-sm font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700">
+                    Refresh
+                </button>
+                <button onclick="hideSchedulerModal()"
+                    class="px-4 py-2 rounded-xl text-sm font-medium bg-yellow-500 hover:bg-yellow-400 text-zinc-950">
+                    Done
+                </button>
             </div>
         </div>
     </div>
@@ -1143,6 +1190,9 @@
                             <div class="text-xl font-semibold text-white mt-0.5 leading-tight truncate" title="${device.hostname}">${device.hostname}</div>
                             ${device.label && device.label !== device.hostname ? `<div class="text-xs text-sky-300/90 mt-1 truncate" title="${device.label}">${device.label}</div>` : ''}
                             <div class="text-emerald-300/70 text-sm line-clamp-2 mt-1">${ollamaIdentity}</div>
+                            ${device.deep_os ? `<div class="text-purple-300/90 text-xs mt-1 line-clamp-2">OS: ${device.deep_os}</div>` : ''}
+                            ${device.deep_services_preview ? `<div class="text-zinc-500 text-[11px] mt-1 line-clamp-2 font-mono leading-snug">${device.deep_services_preview}</div>` : ''}
+                            ${device.access_methods_hint ? `<div class="text-sky-400/85 text-[11px] mt-1 line-clamp-2">${device.access_methods_hint}</div>` : ''}
                         </div>
                         
                         <div onclick="event.stopImmediatePropagation(); toggleDeviceDetail(this)" 
@@ -1392,6 +1442,7 @@
                 wifiBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 traceBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 border border-zinc-700 hover:text-white';
                 scansBtn.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30';
+                loadCronData();
             } else {
                 scans.classList.add('hidden');
                 topology.classList.add('hidden');
@@ -1744,18 +1795,25 @@
             if (currentFilter !== 'all') {
                 filtered = filtered.filter(d => {
                     if (currentFilter === 'online') return d.status === 'Online';
-                    if (currentFilter === 'offline') return d.status === 'Offline';
+                    if (currentFilter === 'unknown') return d.status === 'Unknown';
                     return true;
                 });
             }
             
             if (searchTerm) {
-                filtered = filtered.filter(device => 
-                    (device.ip && device.ip.toLowerCase().includes(searchTerm)) ||
-                    ((device.ip_display || '').toLowerCase().includes(searchTerm)) ||
-                    (device.hostname && device.hostname.toLowerCase().includes(searchTerm)) ||
-                    (device.type && device.type.toLowerCase().includes(searchTerm))
-                );
+                filtered = filtered.filter(device => {
+                    const extraIps = (device.ip_addresses || []).map((x) => String(x).toLowerCase());
+                    return (
+                        (device.ip && device.ip.toLowerCase().includes(searchTerm)) ||
+                        ((device.ip_display || '').toLowerCase().includes(searchTerm)) ||
+                        extraIps.some((ip) => ip.includes(searchTerm)) ||
+                        (device.hostname && device.hostname.toLowerCase().includes(searchTerm)) ||
+                        (device.type && device.type.toLowerCase().includes(searchTerm)) ||
+                        (device.deep_os && device.deep_os.toLowerCase().includes(searchTerm)) ||
+                        (device.deep_services_preview && device.deep_services_preview.toLowerCase().includes(searchTerm)) ||
+                        (device.access_methods_hint && device.access_methods_hint.toLowerCase().includes(searchTerm))
+                    );
+                });
             }
             
             renderDevices(filtered, dashboardSectionOrder);
@@ -1767,19 +1825,190 @@
             // Update active styles
             document.getElementById('filter-all').classList.remove('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/30');
             document.getElementById('filter-online').classList.remove('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/30');
-            document.getElementById('filter-offline').classList.remove('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/30');
+            document.getElementById('filter-unknown').classList.remove('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/30');
             
             if (filter === 'all') {
                 document.getElementById('filter-all').classList.add('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/30');
             } else if (filter === 'online') {
                 document.getElementById('filter-online').classList.add('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/30');
-            } else if (filter === 'offline') {
-                document.getElementById('filter-offline').classList.add('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/30');
+            } else if (filter === 'unknown') {
+                document.getElementById('filter-unknown').classList.add('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/30');
             }
             
             filterDevices();
         }
         
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        const CRON_PANEL_TARGETS = [
+            { panelId: 'cron-jobs-panel', prefix: 'scans' },
+            { panelId: 'scheduler-cron-panel', prefix: 'modal' },
+        ];
+
+        function setCronStatusMessage(text) {
+            for (const id of ['cron-message', 'scheduler-message']) {
+                const el = document.getElementById(id);
+                if (el) el.textContent = text;
+            }
+        }
+
+        function renderCronJobs(jobs, panelId, idPrefix) {
+            const panel = document.getElementById(panelId);
+            if (!panel) return;
+            if (!Array.isArray(jobs) || jobs.length === 0) {
+                panel.innerHTML = '<div class="text-xs text-zinc-500">No cron jobs configured.</div>';
+                return;
+            }
+            const compact = idPrefix === 'modal';
+            panel.innerHTML = jobs.map((job) => {
+                const enabled = Boolean(job.enabled);
+                const running = Boolean(job.running);
+                const statusClass = running
+                    ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
+                    : (enabled ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30' : 'bg-zinc-800 text-zinc-400 border-zinc-700');
+                const statusLabel = running ? 'RUNNING' : (enabled ? 'SCHEDULED' : 'DISABLED');
+                const presets = Array.isArray(job.schedule_presets) ? job.schedule_presets : [];
+                const currentSchedule = job.schedule || job.default_schedule || '';
+                const presetOptions = presets.map((p) => {
+                    const selected = p.value === currentSchedule ? 'selected' : '';
+                    return `<option value="${escapeHtml(p.value)}" ${selected}>${escapeHtml(p.label)}</option>`;
+                }).join('');
+                const selectId = `cron-schedule-${idPrefix}-${escapeHtml(job.id)}`;
+                const logTail = Array.isArray(job.log_tail) ? job.log_tail : [];
+                const logHtml = !compact && logTail.length
+                    ? logTail.map((line) => `<div class="whitespace-pre-wrap break-all">${escapeHtml(line)}</div>`).join('')
+                    : '';
+                const displayLabel = job.id === 'ping' ? 'Quick Scan (Ping)' : (job.id === 'deep' ? 'Deep Scan' : job.label);
+                return `
+                    <div class="rounded-2xl border border-zinc-800 bg-zinc-950/70 p-4">
+                        <div class="flex items-start justify-between gap-3 mb-3">
+                            <div>
+                                <div class="text-sm font-semibold text-white">${escapeHtml(displayLabel)}</div>
+                                <div class="text-xs text-zinc-500 mt-1">${escapeHtml(job.description)}</div>
+                            </div>
+                            <span class="px-2 py-1 rounded-lg text-[10px] font-mono border ${statusClass}">${statusLabel}</span>
+                        </div>
+                        <div class="grid grid-cols-1 gap-2 mb-3 text-xs">
+                            <label class="text-zinc-500 font-mono" for="${selectId}">Run every</label>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <select id="${selectId}"
+                                    onchange="cronApplySchedule('${escapeHtml(job.id)}', '${escapeHtml(idPrefix)}')"
+                                    class="bg-zinc-900 border border-zinc-700 text-zinc-200 rounded-xl px-3 py-2 text-sm min-w-[14rem] flex-1">
+                                    ${presetOptions}
+                                </select>
+                                <button onclick="cronApplySchedule('${escapeHtml(job.id)}', '${escapeHtml(idPrefix)}')"
+                                    class="px-3 py-2 rounded-xl text-xs font-medium bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-200 border border-yellow-600/40">
+                                    Save
+                                </button>
+                            </div>
+                            ${enabled
+                                ? `<div class="text-zinc-600 font-mono text-[11px]">Cron: ${escapeHtml(currentSchedule)}</div>`
+                                : `<div class="text-amber-400/90 text-[11px]">Not scheduled — pick a frequency and Save to enable.</div>`}
+                            ${!compact && job.log_updated_at ? `<div class="text-zinc-600 font-mono text-[11px]">Log updated: ${escapeHtml(job.log_updated_at)}</div>` : ''}
+                        </div>
+                        <div class="flex flex-wrap gap-2 ${compact ? '' : 'mb-3'}">
+                            <button onclick="cronRunNow('${escapeHtml(job.id)}')"
+                                class="px-3 py-1.5 rounded-xl text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700"
+                                ${running ? 'disabled' : ''}>
+                                Run now
+                            </button>
+                            ${enabled
+                                ? `<button onclick="cronDisable('${escapeHtml(job.id)}')"
+                                    class="px-3 py-1.5 rounded-xl text-xs font-medium bg-red-600/20 hover:bg-red-600/30 text-red-300 border border-red-700/40">
+                                    Turn off
+                                   </button>`
+                                : ''}
+                        </div>
+                        ${logHtml ? `<div class="rounded-xl border border-zinc-800 bg-zinc-900/80 p-3 max-h-32 overflow-y-auto text-[11px] text-zinc-400 font-mono leading-relaxed">${logHtml}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderAllCronPanels(jobs) {
+            for (const target of CRON_PANEL_TARGETS) {
+                renderCronJobs(jobs, target.panelId, target.prefix);
+            }
+        }
+
+        async function loadCronData() {
+            setCronStatusMessage('Loading cron status...');
+            try {
+                const response = await fetch(`/api/cron?_ts=${Date.now()}`, { cache: 'no-store' });
+                const data = await response.json();
+                renderAllCronPanels(data.jobs || []);
+                setCronStatusMessage(
+                    data.checked_at ? `Last checked ${data.checked_at}` : (data.message || '')
+                );
+            } catch (err) {
+                setCronStatusMessage('Failed to load cron status');
+                console.error(err);
+            }
+        }
+
+        async function cronApi(jobId, action, extra = {}) {
+            setCronStatusMessage(`${action}...`);
+            try {
+                const response = await fetch(`/api/cron/${encodeURIComponent(jobId)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action, ...extra }),
+                });
+                const data = await response.json();
+                renderAllCronPanels(data.jobs || []);
+                setCronStatusMessage(data.message || (data.ok ? 'Schedule saved.' : 'Request failed'));
+                if (!data.ok && data.message) {
+                    console.warn(data.message);
+                }
+                return data;
+            } catch (err) {
+                setCronStatusMessage('Cron request failed');
+                console.error(err);
+                return { ok: false };
+            }
+        }
+
+        function cronSelectedSchedule(jobId, idPrefix = 'modal') {
+            const el = document.getElementById(`cron-schedule-${idPrefix}-${jobId}`);
+            return el ? el.value : null;
+        }
+
+        async function cronRunNow(jobId) {
+            await cronApi(jobId, 'run');
+            setTimeout(loadCronData, 2000);
+        }
+
+        async function cronApplySchedule(jobId, idPrefix = 'modal') {
+            const schedule = cronSelectedSchedule(jobId, idPrefix);
+            if (!schedule) return;
+            await cronApi(jobId, 'enable', { schedule });
+        }
+
+        async function cronDisable(jobId) {
+            await cronApi(jobId, 'disable');
+        }
+
+        function showSchedulerModal() {
+            const modal = document.getElementById('scheduler-modal');
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            loadCronData();
+        }
+
+        function hideSchedulerModal() {
+            const modal = document.getElementById('scheduler-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
         async function loadDevices() {
             try {
                 const response = await fetch(`/api/devices?_ts=${Date.now()}`, { cache: 'no-store' });
@@ -1968,6 +2197,19 @@
                         infoHTML += `<span class="px-3 py-0.5 text-[10px] bg-amber-500/10 text-amber-400 font-mono rounded-xl">${p}</span>`;
                     });
                     infoHTML += `</div></div>`;
+                }
+
+                if (data.deep_scan && data.deep_scan.services && Object.keys(data.deep_scan.services).length > 0) {
+                    infoHTML += `<div class="mt-3 pt-3 border-t border-zinc-700"><div class="text-[10px] text-sky-400 mb-2 flex items-center gap-x-2"><i class="fa-solid fa-fingerprint"></i>SERVICE FINGERPRINTS</div><div class="space-y-1 text-[11px] font-mono text-zinc-300 max-h-48 overflow-y-auto">`;
+                    for (const [portProto, svc] of Object.entries(data.deep_scan.services)) {
+                        const line = `${portProto}: ${String(svc).slice(0, 140)}`;
+                        infoHTML += `<div class="border-b border-zinc-800/60 pb-1 whitespace-normal break-words">${line}</div>`;
+                    }
+                    infoHTML += `</div></div>`;
+                }
+
+                if (device.access_methods_hint) {
+                    infoHTML += `<div class="flex justify-between py-2 border-b border-zinc-800"><span class="text-zinc-400">Likely access</span><span class="text-sky-300 text-right text-xs">${device.access_methods_hint}</span></div>`;
                 }
                 
                 // Additional details from Access Details section
@@ -2245,6 +2487,8 @@
                     if (terminalModal && !terminalModal.classList.contains('hidden')) hideTerminalModal();
                     const groupsModal = document.getElementById('edit-groups-modal');
                     if (groupsModal && !groupsModal.classList.contains('hidden')) closeEditGroupsModal();
+                    const schedulerModal = document.getElementById('scheduler-modal');
+                    if (schedulerModal && !schedulerModal.classList.contains('hidden')) hideSchedulerModal();
                 }
             });
             

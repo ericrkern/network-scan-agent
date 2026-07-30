@@ -20,7 +20,13 @@ DEVICES_FILE = str(BASE_DIR / "devices.md")
 SEEN_DEVICES_CACHE = str(BASE_DIR / ".seen_devices.json")
 SCAN_SNAPSHOTS_FILE = str(BASE_DIR / ".scan_snapshots.json")
 IPHONE_IDENTITY_LOG_FILE = str(BASE_DIR / ".iphone_identity_checks.json")
-_BASE_NETWORKS = ["192.168.0.0/24", "192.168.1.0/24", "192.168.100.0/24"]
+_BASE_NETWORKS = [
+    "10.15.0.0/24",
+    "192.168.2.0/24",
+    "192.168.0.0/24",
+    "192.168.1.0/24",
+    "192.168.100.0/24",
+]
 _NET_ENV = os.environ.get("NETWORK_SCAN_AGENT_NETWORKS", "").strip()
 NETWORKS = (
     [x.strip() for x in _NET_ENV.split(",") if x.strip()]
@@ -1412,6 +1418,14 @@ def main():
             record_event(rec, "offline", "scan")
         else:
             rec["last_status_time"] = now_str
+
+    # Reverse DNS / NSS names for online LAN hosts (Tailscale names stay from daemon above).
+    for ip in live_set:
+        if is_tailscale_ipv4(ip):
+            continue
+        hn = get_hostname(ip)
+        if hn and ip in device_records:
+            device_records[ip]["hostname"] = hn
 
     # Correlate routed-subnet iPhone against baseline iPhone identity whenever candidate is online.
     if IPHONE_IDENTITY_CANDIDATE_IP in live_set:

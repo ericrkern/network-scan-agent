@@ -38,3 +38,4 @@ watch-monitor.log
 .env
 .env.*
 *.local.json
+logs/
