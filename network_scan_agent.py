@@ -28,11 +28,87 @@ _BASE_NETWORKS = [
     "192.168.100.0/24",
 ]
 _NET_ENV = os.environ.get("NETWORK_SCAN_AGENT_NETWORKS", "").strip()
-NETWORKS = (
-    [x.strip() for x in _NET_ENV.split(",") if x.strip()]
-    if _NET_ENV
-    else _BASE_NETWORKS
-)
+
+
+def detect_attached_ipv4_networks():
+    """Prefer the host's current LAN over hardcoded lab subnets."""
+    networks = []
+    try:
+        if sys.platform == "darwin":
+            route = subprocess.run(
+                ["route", "-n", "get", "default"],
+                capture_output=True,
+                text=True,
+                timeout=5,
+            )
+            iface = None
+            for line in (route.stdout or "").splitlines():
+                if "interface:" in line:
+                    iface = line.split(":", 1)[1].strip()
+                    break
+            if iface:
+                addr_p = subprocess.run(
+                    ["ipconfig", "getifaddr", iface],
+                    capture_output=True,
+                    text=True,
+                    timeout=5,
+                )
+                mask_p = subprocess.run(
+                    ["ipconfig", "getoption", iface, "subnet_mask"],
+                    capture_output=True,
+                    text=True,
+                    timeout=5,
+                )
+                addr = (addr_p.stdout or "").strip()
+                mask = (mask_p.stdout or "").strip() or "255.255.255.0"
+                if addr:
+                    import ipaddress as _ip
+
+                    net = _ip.ip_network(f"{addr}/{mask}", strict=False)
+                    if not str(net).startswith("100."):
+                        networks.append(str(net) if net.prefixlen != 32 else str(net.supernet(new_prefix=24)))
+        else:
+            route = subprocess.run(
+                ["ip", "-4", "route", "show", "default"],
+                capture_output=True,
+                text=True,
+                timeout=5,
+            )
+            iface = None
+            for line in (route.stdout or "").splitlines():
+                parts = line.split()
+                if "dev" in parts:
+                    iface = parts[parts.index("dev") + 1]
+                    break
+            if iface:
+                addr_p = subprocess.run(
+                    ["ip", "-4", "-o", "addr", "show", "dev", iface],
+                    capture_output=True,
+                    text=True,
+                    timeout=5,
+                )
+                for line in (addr_p.stdout or "").splitlines():
+                    parts = line.split()
+                    if "inet" in parts:
+                        cidr = parts[parts.index("inet") + 1]
+                        if "/" in cidr and not cidr.startswith("100."):
+                            networks.append(cidr)
+                            break
+    except Exception:
+        return []
+    return networks
+
+
+def resolve_scan_networks():
+    if _NET_ENV:
+        return [x.strip() for x in _NET_ENV.split(",") if x.strip()]
+    detected = detect_attached_ipv4_networks()
+    if detected:
+        return detected
+    return list(_BASE_NETWORKS)
+
+
+NETWORKS = resolve_scan_networks()
 ADJACENT_SUBNET_PREFIX = "192.168.100."
 COMMON_PORTS = [22, 80, 443, 445, 631, 8080, 5900, 3000, 5000]
 SCAN_TIMEOUT = 2
@@ -483,8 +559,9 @@ def merge_deep_scan_results_json(results_by_ip: dict):
 def ping_host(ip):
     """Ping a single host to check if it's alive"""
     try:
+        wait = str(SCAN_TIMEOUT * 1000) if sys.platform == "darwin" else str(SCAN_TIMEOUT)
         result = subprocess.run(
-            ["ping", "-c", "1", "-W", str(SCAN_TIMEOUT), ip],
+            ["ping", "-c", "1", "-W", wait, ip],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             timeout=5
@@ -659,6 +736,13 @@ def get_hostname(ip):
     except Exception:
         pass
 
+    try:
+        name, _, _ = __import__("socket").gethostbyaddr(ip)
+        if name:
+            return name
+    except Exception:
+        pass
+
     return None
 
 
@@ -679,12 +763,55 @@ def get_mac(ip):
                         return parts[i + 1]
     except:
         pass
+    try:
+        result = subprocess.run(
+            ["arp", "-an"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        for line in (result.stdout or "").splitlines():
+            if f"({ip})" not in line:
+                continue
+            match = re.search(r" at ([0-9a-fA-F:.-]+)", line)
+            if not match:
+                continue
+            mac = match.group(1)
+            if mac.lower() in {"(incomplete)", "incomplete"}:
+                return None
+            return mac.replace("-", ":").lower()
+    except:
+        pass
     return None
+
+
+def arp_live_hosts(prefix):
+    """Hosts already in the ARP table for this /24 prefix."""
+    live = []
+    try:
+        result = subprocess.run(
+            ["arp", "-an"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        for line in (result.stdout or "").splitlines():
+            if "(incomplete)" in line.lower():
+                continue
+            match = re.search(r"\((\d+\.\d+\.\d+\.\d+)\)", line)
+            if not match:
+                continue
+            ip = match.group(1)
+            if ip.startswith(prefix + ".") and re.search(r" at ([0-9a-fA-F:.-]+)", line):
+                live.append(ip)
+    except:
+        pass
+    return live
 
 
 def scan_network(network_cidr):
     """Scan a /24 network for live hosts"""
-    base_ip = network_cidr.replace('/24', '')
+    base_ip = network_cidr.replace('/24', '').split("/")[0]
     prefix = '.'.join(base_ip.split('.')[:3])
     
     live_hosts = []
@@ -693,6 +820,10 @@ def scan_network(network_cidr):
     with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
         results = list(executor.map(ping_host, ips))
         live_hosts = [r for r in results if r]
+
+    for ip in arp_live_hosts(prefix):
+        if ip not in live_hosts:
+            live_hosts.append(ip)
     
     return live_hosts
 
