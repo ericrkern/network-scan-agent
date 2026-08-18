@@ -110,7 +110,10 @@ def resolve_scan_networks():
 
 NETWORKS = resolve_scan_networks()
 ADJACENT_SUBNET_PREFIX = "192.168.100."
-COMMON_PORTS = [22, 80, 443, 445, 631, 8080, 5900, 3000, 5000]
+COMMON_PORTS = [
+    21, 22, 23, 53, 80, 81, 135, 139, 161, 443, 445, 554, 631, 1883, 3000, 3389,
+    5000, 5353, 5900, 8008, 8080, 8443, 8554, 9100, 62078,
+]
 SCAN_TIMEOUT = 2
 DEEP_SCAN_SCRIPT = str(BASE_DIR / "deep_scan.py")
 DEEP_SCAN_RESULTS_FILE = str(BASE_DIR / "deep_scan_results.json")
