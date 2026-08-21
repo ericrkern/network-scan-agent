@@ -66,6 +66,7 @@ _BANNER_PORTS = {21, 22, 23, 25, 110, 143, 587, 993, 995, 1883, 3306, 5432, 6379
 _JUNK_HOSTNAMES = {
     "record", "rdata", "timestamp", "starting", "localhost", "local",
     "0.0.0.0", "no", "such", "arpa", "in-addr", "ptr",
+    "workgroup", "mshome", "domain", "__msbrowse__", "msbrowse",
 }
 
 SNMP_OIDS = {
@@ -519,19 +520,236 @@ def snmp_identity(ip: str) -> Dict[str, Any]:
     return info
 
 
-def smb_identity(ip: str) -> Dict[str, Any]:
-    info: Dict[str, Any] = {"tool": "smbutil", "netbios_name": None, "workgroup": None}
-    if not _which("smbutil"):
-        info["tool"] = None
+def netbios_status(ip: str) -> Dict[str, Any]:
+    """UDP/137 NBSTAT — Windows workstation / server NetBIOS computer name (no auth)."""
+    info: Dict[str, Any] = {
+        "tool": "netbios",
+        "netbios_name": None,
+        "workgroup": None,
+        "names": [],
+    }
+    # Standard NBSTAT query for '*' (node status).
+    name = b"CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"  # encoded '*' + NULs + type 0x00
+    trx = os.urandom(2)
+    packet = (
+        trx
+        + b"\x00\x00"  # flags
+        + b"\x00\x01"  # questions
+        + b"\x00\x00\x00\x00\x00\x00"
+        + bytes([len(name)])
+        + name
+        + b"\x00"
+        + b"\x00\x21"  # NBSTAT
+        + b"\x00\x01"  # IN
+    )
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.settimeout(1.8)
+    try:
+        sock.sendto(packet, (ip, 137))
+        data, addr = sock.recvfrom(4096)
+    except OSError:
         return info
-    rc, out, _ = _run(["smbutil", "status", "-e", ip], timeout=2.5)
-    for line in out.splitlines():
-        low = line.lower()
-        if "server" in low and ":" in line:
-            info["netbios_name"] = line.split(":", 1)[1].strip()[:80]
-        if "workgroup" in low and ":" in line:
-            info["workgroup"] = line.split(":", 1)[1].strip()[:80]
+    finally:
+        sock.close()
+    if not data or addr[0] != ip or len(data) < 57:
+        return info
+
+    # Find the name-count byte that precedes 18-byte NetBIOS name entries.
+    # Responses vary (compression pointers); scan for a plausible table.
+    best: List[Dict[str, Any]] = []
+    for start in range(12, min(len(data) - 19, 120)):
+        count = data[start]
+        if count < 1 or count > 32:
+            continue
+        need = 1 + count * 18
+        if start + need > len(data):
+            continue
+        names: List[Dict[str, Any]] = []
+        pos = start + 1
+        ok = True
+        for _ in range(count):
+            raw = data[pos : pos + 15]
+            name_type = data[pos + 15]
+            flags = int.from_bytes(data[pos + 16 : pos + 18], "big")
+            pos += 18
+            try:
+                label = raw.decode("ascii").rstrip(" \x00")
+            except UnicodeDecodeError:
+                ok = False
+                break
+            if not label or not re.fullmatch(r"[A-Za-z0-9_$-]{1,15}", label):
+                # Allow one odd master-browser marker; otherwise reject this offset.
+                if "__MSBROWSE__" in label.upper() or label.startswith("\x01\x02"):
+                    continue
+                ok = False
+                break
+            names.append(
+                {
+                    "name": label,
+                    "type": name_type,
+                    "flags": flags,
+                    "group": bool(flags & 0x8000),
+                }
+            )
+        if ok and names and len(names) >= len(best):
+            best = names
+    if not best:
+        return info
+
+    workstation = None
+    fileserver = None
+    domain = None
+    for entry in best:
+        raw_name = entry["name"]
+        if not _is_plausible_hostname(raw_name):
+            continue
+        if entry["group"] or entry["type"] in {0x1E, 0x1D, 0x01}:
+            if entry["type"] in {0x00, 0x1E} and not domain:
+                domain = raw_name
+            continue
+        if entry["type"] == 0x00 and workstation is None:
+            workstation = raw_name
+        elif entry["type"] == 0x20 and fileserver is None:
+            fileserver = raw_name
+    info["names"] = best[:12]
+    info["netbios_name"] = workstation or fileserver
+    info["workgroup"] = domain
     return info
+
+
+def _parse_smbutil_status(text: str) -> Dict[str, Any]:
+    """Parse `smbutil status` / `smbutil status -a` output."""
+    server = None
+    workgroup = None
+    unique_names: List[Tuple[int, str]] = []  # (type, name)
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line or line.lower().startswith("using ip") or line.lower().startswith("netbios name"):
+            continue
+        low = line.lower()
+        if low.startswith("server:"):
+            candidate = line.split(":", 1)[1].strip().strip("'\"")
+            if _is_plausible_hostname(candidate):
+                server = candidate.split()[0][:15]
+            continue
+        if low.startswith("workgroup:"):
+            candidate = line.split(":", 1)[1].strip().strip("'\"").split()[0]
+            if candidate and candidate.lower() not in _JUNK_HOSTNAMES:
+                workgroup = candidate[:15]
+            continue
+        # Table row: NAME  0xNN  UNIQUE|GROUP  [desc]
+        m = re.match(
+            r"^([A-Za-z0-9_$-]{1,15})\s+(?:0x)?([0-9A-Fa-f]{2})\s+(UNIQUE|GROUP)\b",
+            line,
+            re.I,
+        )
+        if not m:
+            continue
+        name = m.group(1)
+        ntype = int(m.group(2), 16)
+        kind = m.group(3).upper()
+        if kind == "GROUP":
+            if ntype in {0x00, 0x1E} and not workgroup and name.lower() not in _JUNK_HOSTNAMES:
+                workgroup = name
+            continue
+        if not _is_plausible_hostname(name):
+            continue
+        unique_names.append((ntype, name))
+
+    workstation = next((n for t, n in unique_names if t == 0x00), None)
+    fileserver = next((n for t, n in unique_names if t == 0x20), None)
+    master = next((n for t, n in unique_names if t == 0x1D), None)
+    netbios = workstation or fileserver or server or master
+    if netbios and netbios.lower() in _JUNK_HOSTNAMES:
+        netbios = workstation or fileserver
+        if netbios and netbios.lower() in _JUNK_HOSTNAMES:
+            netbios = None
+    return {
+        "netbios_name": netbios,
+        "workgroup": workgroup,
+        "names": [n for _, n in unique_names],
+    }
+
+
+def smb_identity(ip: str) -> Dict[str, Any]:
+    """Resolve Windows/SMB NetBIOS name via smbutil and/or UDP NBSTAT."""
+    info: Dict[str, Any] = {
+        "tool": None,
+        "netbios_name": None,
+        "workgroup": None,
+        "names": [],
+    }
+
+    if _which("smbutil"):
+        for args in (
+            ["smbutil", "status", "-a", ip],
+            ["smbutil", "status", ip],
+        ):
+            _rc, out, err = _run(args, timeout=4.0)
+            text = f"{out}\n{err}"
+            low = text.lower()
+            if not text.strip() or "unable to get status" in low or "timed out" in low:
+                continue
+            parsed = _parse_smbutil_status(text)
+            if parsed.get("netbios_name") or parsed.get("workgroup") or parsed.get("names"):
+                info["tool"] = "smbutil"
+                info["netbios_name"] = parsed.get("netbios_name")
+                info["workgroup"] = parsed.get("workgroup")
+                info["names"] = parsed.get("names") or []
+                if info["netbios_name"]:
+                    break
+
+    if not info.get("netbios_name"):
+        nb = netbios_status(ip)
+        if nb.get("netbios_name"):
+            info["tool"] = "netbios" if not info.get("tool") else f"{info['tool']}+netbios"
+            info["netbios_name"] = nb["netbios_name"]
+            info["workgroup"] = info.get("workgroup") or nb.get("workgroup")
+            info["names"] = info.get("names") or nb.get("names") or []
+        elif nb.get("workgroup") and not info.get("workgroup"):
+            info["workgroup"] = nb.get("workgroup")
+
+    if info.get("netbios_name"):
+        info["netbios_name"] = str(info["netbios_name"]).split(".")[0].strip()[:80]
+        if not _is_plausible_hostname(info["netbios_name"]):
+            info["netbios_name"] = None
+    return info
+
+
+def prefer_windows_hostname(
+    *,
+    dns_name: Optional[str] = None,
+    mdns_name: Optional[str] = None,
+    netbios_name: Optional[str] = None,
+    wsd_name: Optional[str] = None,
+    snmp_name: Optional[str] = None,
+    ssdp_name: Optional[str] = None,
+    os_guess: Optional[str] = None,
+    open_ports: Optional[List[int]] = None,
+) -> Optional[str]:
+    """Pick the best display hostname; prefer NetBIOS/computer name for Windows."""
+    ports = set(open_ports or [])
+    windows_likely = bool(
+        (os_guess or "") and "windows" in str(os_guess).lower()
+    ) or bool(ports & {139, 445, 3389, 5985, 5986, 135, 5357})
+
+    ranked: List[Tuple[int, str]] = []
+
+    def add(score: int, value: Optional[str]) -> None:
+        if _is_plausible_hostname(value):
+            ranked.append((score, str(value).strip().rstrip(".")))
+
+    # NetBIOS / SMB computer name is authoritative for Windows boxes.
+    add(100 if windows_likely else 85, netbios_name)
+    add(90 if windows_likely else 70, wsd_name)
+    add(60, mdns_name)
+    add(40 if windows_likely else 55, dns_name)
+    add(35, snmp_name)
+    add(25, ssdp_name)
+    if not ranked:
+        return None
+    ranked.sort(key=lambda row: (-row[0], len(row[1])))
+    return ranked[0][1]
 
 
 def tls_identity(ip: str, port: int = 443) -> Dict[str, Any]:
@@ -768,34 +986,19 @@ def inspect_host(ip: str, open_ports: Optional[List[int]] = None) -> Dict[str, A
         tools_run.append("arp")
         out["mac"] = arp["mac"]
         findings.append(f"MAC {arp['mac']}")
-    host = None
-    if _is_plausible_hostname(dns.get("hostname")):
-        tools_run.append(str(dns.get("tool") or "dns"))
-        host = dns["hostname"]
-    if _is_plausible_hostname(mdns.get("hostname")):
-        host = host or mdns["hostname"]
+
     if mdns.get("services"):
         tools_run.append("mdns")
         out["mdns"] = mdns
         findings.append("mDNS: " + ", ".join(
             f"{s.get('name')} ({s.get('type')})" for s in mdns["services"][:4]
         ))
-        if not host and mdns.get("names"):
-            candidate = mdns["names"][0]
-            if _is_plausible_hostname(candidate):
-                host = candidate
-    if host:
-        out["hostname"] = host
-        if f"Hostname {host}" not in findings:
-            findings.append(f"Hostname {host}")
     if ssdp.get("manufacturer") or ssdp.get("friendly_name"):
         tools_run.append("ssdp")
         out["upnp"] = ssdp
         out["manufacturer"] = ssdp.get("manufacturer") or out["manufacturer"]
         out["model"] = ssdp.get("model") or out["model"]
         out["model_number"] = ssdp.get("model_number") or out["model_number"]
-        if ssdp.get("friendly_name") and not out.get("hostname"):
-            out["hostname"] = ssdp["friendly_name"]
         findings.append(
             "UPnP "
             + " ".join(x for x in (ssdp.get("manufacturer"), ssdp.get("model"), ssdp.get("friendly_name")) if x)
@@ -809,21 +1012,49 @@ def inspect_host(ip: str, open_ports: Optional[List[int]] = None) -> Dict[str, A
             out["model"] = wsd["name"]
         if wsd.get("hardware") and not out.get("model_number"):
             out["model_number"] = wsd["hardware"]
+        if wsd.get("types") and "windows" in str(wsd.get("types") or "").lower() and not out.get("os_guess"):
+            out["os_guess"] = "Windows (WS-Discovery)"
     if snmp.get("sysDescr") or snmp.get("sysName"):
         tools_run.append("snmp")
         out["snmp"] = snmp
-        if snmp.get("sysName") and not out.get("hostname"):
-            out["hostname"] = snmp["sysName"]
         descr = snmp.get("sysDescr") or ""
         findings.append(f"SNMP {descr[:80]}" if descr else f"SNMP name {snmp.get('sysName')}")
         if "linux" in descr.lower() and not out.get("os_guess"):
             out["os_guess"] = descr.split(",")[0][:80]
+        if "windows" in descr.lower() and not out.get("os_guess"):
+            out["os_guess"] = "Windows (SNMP)"
     if smb.get("netbios_name"):
-        tools_run.append("smb")
+        tools_run.append(str(smb.get("tool") or "smb"))
         out["smb"] = smb
-        if not out.get("hostname"):
-            out["hostname"] = smb["netbios_name"]
         findings.append(f"NetBIOS {smb['netbios_name']}")
+        if smb.get("workgroup"):
+            findings.append(f"Workgroup {smb['workgroup']}")
+        if not out.get("os_guess"):
+            out["os_guess"] = "Windows (NetBIOS/SMB)"
+
+    mdns_host = mdns.get("hostname")
+    if not mdns_host and mdns.get("names"):
+        candidate = mdns["names"][0]
+        if _is_plausible_hostname(candidate):
+            mdns_host = candidate
+    if dns.get("hostname") and dns.get("tool"):
+        tools_run.append(str(dns.get("tool") or "dns"))
+
+    host = prefer_windows_hostname(
+        dns_name=dns.get("hostname"),
+        mdns_name=mdns_host,
+        netbios_name=smb.get("netbios_name"),
+        wsd_name=wsd.get("name"),
+        snmp_name=snmp.get("sysName"),
+        ssdp_name=ssdp.get("friendly_name"),
+        os_guess=out.get("os_guess"),
+        open_ports=all_ports,
+    )
+    if host:
+        out["hostname"] = host
+        if f"Hostname {host}" not in findings:
+            findings.append(f"Hostname {host}")
+
     if tls.get("cn") or tls.get("org"):
         tools_run.append("tls")
         out["tls"] = tls

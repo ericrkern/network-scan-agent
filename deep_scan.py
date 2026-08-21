@@ -160,8 +160,20 @@ def enrich_cache_from_deep_results(results_by_ip: Dict[str, Any]) -> None:
             record["inspect"] = inspect
             record["inspect_tools"] = inspect.get("tools") or []
             record["inspect_findings"] = inspect.get("findings") or []
-            if inspect.get("hostname") and str(record.get("hostname") or "—") in ("—", "", ip):
-                record["hostname"] = inspect["hostname"]
+            inspect_host = inspect.get("hostname")
+            smb = inspect.get("smb") if isinstance(inspect.get("smb"), dict) else {}
+            netbios = smb.get("netbios_name") or inspect_host
+            current = str(record.get("hostname") or "—").strip()
+            # Prefer Windows NetBIOS / inspect hostname over DNS miss or stale IP labels.
+            if netbios and (
+                current in ("—", "", ip)
+                or (smb.get("netbios_name") and current.lower() != str(netbios).lower())
+            ):
+                record["hostname"] = netbios
+                hostname = netbios
+            elif inspect_host and current in ("—", "", ip):
+                record["hostname"] = inspect_host
+                hostname = inspect_host
             if inspect.get("mac") and str(record.get("mac") or "—") in ("—", ""):
                 record["mac"] = inspect["mac"]
             if inspect.get("manufacturer"):
@@ -173,6 +185,10 @@ def enrich_cache_from_deep_results(results_by_ip: Dict[str, Any]) -> None:
             mdns = inspect.get("mdns") or {}
             if mdns.get("services"):
                 record["mdns_services"] = [s.get("type") or s.get("name") for s in mdns["services"] if s]
+            # Re-infer type once hostname is known (DESKTOP-*, WIN-*, etc.).
+            inferred_type = infer_device_type_from_ports(str(hostname or ""), open_ports)
+            if inferred_type != "Unknown":
+                record["type"] = inferred_type
 
         os_guess = (deep.get("os") or "").strip()
         if os_guess and os_guess != "Unknown":
@@ -206,8 +222,10 @@ def _attach_inspect(result: Dict[str, Any], ip: str, ports: List[int]) -> Dict[s
     except Exception:
         return result
     result["inspect"] = inspect
-    if inspect.get("hostname") and result.get("hostname") in (None, "", "—"):
-        result["hostname"] = inspect["hostname"]
+    inspect_host_name = inspect.get("hostname")
+    # inspect_host already ranks NetBIOS ahead of DNS for Windows hosts.
+    if inspect_host_name:
+        result["hostname"] = inspect_host_name
     if inspect.get("os_guess") and result.get("os") in (None, "", "Unknown"):
         result["os"] = inspect["os_guess"]
     if inspect.get("mac"):

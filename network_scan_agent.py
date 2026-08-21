@@ -711,7 +711,7 @@ def scan_ports(ip, ports):
 
 
 def get_hostname(ip):
-    """Try reverse DNS (NSS), then Avahi mDNS reverse lookup if available."""
+    """Try reverse DNS (NSS), Avahi mDNS, then optionally NetBIOS/SMB for Windows names."""
     try:
         result = subprocess.run(
             ["getent", "hosts", ip],
@@ -721,7 +721,8 @@ def get_hostname(ip):
         )
         if result.returncode == 0 and result.stdout:
             parts = result.stdout.split()
-            return parts[1] if len(parts) > 1 else None
+            if len(parts) > 1:
+                return parts[1]
     except Exception:
         pass
 
@@ -740,9 +741,33 @@ def get_hostname(ip):
         pass
 
     try:
-        name, _, _ = __import__("socket").gethostbyaddr(ip)
+        sock = __import__("socket")
+        prev = sock.getdefaulttimeout()
+        sock.setdefaulttimeout(1.25)
+        try:
+            name, _, _ = sock.gethostbyaddr(ip)
+        finally:
+            sock.setdefaulttimeout(prev)
         if name:
             return name
+    except Exception:
+        pass
+
+    # Expensive NetBIOS/SMB lookups belong in deep scan, not the fast pulse pass.
+    fast = os.environ.get("NETWORK_SCAN_AGENT_FAST_HOSTNAME", "").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+    }
+    if fast:
+        return None
+
+    try:
+        from host_inspect import smb_identity
+
+        smb = smb_identity(ip) or {}
+        if smb.get("netbios_name"):
+            return str(smb["netbios_name"]).strip()
     except Exception:
         pass
 
@@ -1601,6 +1626,27 @@ def main():
     print(f"\n🆕 {len(new_ips)} NEW device(s) detected!")
     for ip in new_ips:
         print(f"   - {ip} (NEW!)")
+
+    fast_mode = os.environ.get("NETWORK_SCAN_AGENT_SKIP_DEEP", "").strip().lower() in (
+        "1",
+        "true",
+        "yes",
+    ) or os.environ.get("NETWORK_SCAN_AGENT_FAST_HOSTNAME", "").strip().lower() in (
+        "1",
+        "true",
+        "yes",
+    )
+
+    # Fast pulse: skip per-host port probing (deep scan does that next).
+    if fast_mode:
+        print("\n⚡ Fast mode: skipping per-host port probes (deferred to deep scan)")
+        save_device_records(device_records)
+        update_scan_history(len(new_ips), len(device_records), len(all_live_hosts))
+        reorder_devices_md_tailscale_bottom(DEVICES_FILE)
+        print("\n✨ Fast scan complete!")
+        print(f"   New devices noted: {len(new_ips)}")
+        print(f"   Total known devices: {len(device_records)}")
+        return
     
     # Gather details on new devices (pass records to preserve first_seen)
     print("\n🔎 Gathering device details...")
